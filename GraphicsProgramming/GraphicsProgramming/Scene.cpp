@@ -12,12 +12,23 @@ Scene::Scene(Input *in)
 	
 
 	// Initialise scene variables
-	
+	model.setVertices({
+		{0, 1, 0},
+		{-1, -1, 0},
+		{1, -1, 0},
+		});
+	model.setIndices({
+			0, 1, 2
+		});
 }
 
 void Scene::handleInput(float dt)
 {
 	// Handle user input
+	if (input->isKeyDown('o'))
+		rotation += 60 * dt;
+	else if (input->isKeyDown('p'))
+		rotation -= 60 * dt;
 }
 
 void Scene::update(float dt)
@@ -37,9 +48,11 @@ void Scene::render() {
 	glLoadIdentity();
 	// Set the camera
 	gluLookAt(0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-	
+
 	// Render geometry/scene here -------------------------------------
 	
+
+	model.transformAndRenderHeirarchy();
 
 
 	// End render geometry --------------------------------------

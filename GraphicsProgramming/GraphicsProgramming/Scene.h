@@ -16,6 +16,8 @@
 #include "SOIL.h"
 #include <vector>
 
+#include "Model.h"
+
 
 class Scene{
 
@@ -53,6 +55,12 @@ protected:
 	int frame = 0, time, timebase = 0;
 	char fps[40];
 	char mouseText[40];
+
+
+private:
+	float rotation;
+
+	Model model;
 
 };
 
