@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 
 #include "Vector3.h"
 
@@ -27,6 +28,10 @@ public:
 	inline void setVertices(std::vector<Vector3> verts) { vertices = verts; }
 	inline void setIndices(std::vector<int> inds) { indices = inds; }
 
+	inline void setRenderFunc(std::function<void(void)> renderFunc) { mRenderFunc = renderFunc; }
+
+	inline void setColour(const Vector3& color) { mColor = color; }
+
 private:
 
 	void render();
@@ -39,10 +44,14 @@ private:
 
 	// scene heirarchy
 	std::vector<Model*> mChildren;
-	Model* mParent;
+	Model* mParent = nullptr;
 
 	// geometry
 	std::vector<Vector3> vertices;
 	std::vector<int> indices;
+
+	// rendering
+	std::function<void(void)> mRenderFunc;
+	Vector3 mColor = { 1, 1, 1 };
 };
 

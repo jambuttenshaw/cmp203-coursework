@@ -23,24 +23,29 @@ void Model::transformAndRenderHeirarchy()
 
 void Model::render()
 {
-	glBegin(GL_TRIANGLES);
+	glColor3f(mColor.x, mColor.y, mColor.z);
 
-	for (auto i : indices)
+	if (mRenderFunc)
 	{
-		const Vector3& vert = vertices[i];
-		glVertex3f(vert.x, vert.y, vert.z);
+		mRenderFunc();
 	}
+	else
+	{
+		glBegin(GL_TRIANGLES);
 
-	glEnd();
+		for (auto i : indices)
+		{
+			const Vector3& vert = vertices[i];
+			glVertex3f(vert.x, vert.y, vert.z);
+		}
+
+		glEnd();
+	}
 }
 
 void Model::setParent(Model* parent)
 {
-	mParent->removeChild(this);
 	mParent = parent;
-
-	if (parent != nullptr)
-		mParent->addChild(this);
 }
 
 void Model::addChild(Model* child)
@@ -59,6 +64,7 @@ void Model::removeChild(Model* child)
 	{
 		if (mChildren[i] == child)
 		{
+			child->setParent(nullptr);
 			mChildren.erase(std::next(mChildren.begin(), i));
 			return;
 		}

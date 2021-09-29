@@ -42,7 +42,8 @@ protected:
 	void calculateFPS();
 
 	// draw primitive functions
-	
+	void drawSphere(float size);
+	void drawSphere(float size, float r, float g, float b);
 
 	// For access to user input.
 	Input* input;
@@ -56,12 +57,8 @@ protected:
 	char fps[40];
 	char mouseText[40];
 
-
 private:
-	float rotation;
-
-	Model model;
-
+	float rotation = 0.0f;
 };
 
 #endif
