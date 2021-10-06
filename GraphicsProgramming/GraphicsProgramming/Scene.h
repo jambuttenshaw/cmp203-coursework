@@ -14,7 +14,9 @@
 #include <stdio.h>
 // Further includes should go here:
 #include "SOIL.h"
-#include <vector>
+
+#include "Color.h"
+#include "Light.h"
 
 #include "SolarSystem.h"
 #include "Mesh.h"
@@ -56,18 +58,15 @@ protected:
 	char mouseText[40];
 
 private:
-	const float globalAmbience[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Color globalAmbience = { 0.0f, 0.0f, 0.0f };
 
 	SolarSystem ss;
 	float rot = 0.0f;
 
-	const float spotPosition[4] = { 0.0f, 4.0f, 0.0f, 1.0f };
-	const float spotDiffuse[4] = { 6.0f, 6.0f, 6.0f, 1.0f };
-	const float spotAmbient[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
-	const float spotDirection[4] = { 0.0f, -1.0f, 0.0f };
-
-
 	Mesh plane;
+
+	Light light1;
+	Light light2;
 
 };
 

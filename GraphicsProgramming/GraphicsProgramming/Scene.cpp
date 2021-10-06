@@ -15,12 +15,26 @@ Scene::Scene(Input *in)
 	// Other OpenGL / render setting should be applied here.
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience.ptr());
 
 	glEnable(GL_LIGHT0);
+	light1.setType(Light::LightType::Spot);
+	light1.setPosition({ -1, 1, 0 });
+	light1.setDiffuseColor({ 2.0f, 1.0f, 0.2f });
+	light1.setAmbientColor({ 0.2f, 0.1f, 0.1f });
+
+	light1.setSpotDirection({ 1, -1, 0 });
+	light1.setSpotCutoff(25.0f);
+	light1.setSpotExponent(50.0f);
+
+	glEnable(GL_LIGHT1);
+	light2.setType(Light::LightType::Point);
+	light2.setPosition({ 0.5f, 0.2f, 1.0f });
+	light2.setDiffuseColor({ 0.8f, 0.2f, 0.8f });
+	light2.setAmbientColor({ 0.1f, 0.1f, 0.1f });
 
 	// Initialise scene variables
-	plane = GeometryHelper::CreatePlane(100, 100);
+	plane = GeometryHelper::CreatePlane(50, 50);
 }
 
 void Scene::handleInput(float dt)
@@ -48,26 +62,16 @@ void Scene::render() {
 	// Set the camera
 	gluLookAt(0.0f, 2.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-
-	// set up lighting
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, spotDiffuse);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, spotAmbient);
-	glLightfv(GL_LIGHT0, GL_POSITION, spotPosition);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spotDirection);
-	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 35.0f);
-	glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 50.0f);
-	
-
-
-
 	// Render geometry/scene here -------------------------------------
-	
+	light1.render(GL_LIGHT0, true);
+	light2.render(GL_LIGHT1, true);
+
 	{
-		Transform t({ 0, 0, 0 }, { 0, 0, 0 }, { 5, 5, 5 });
+		Transform t({ 0, 0, 0 }, { 0, 0, 0 }, { 3, 3, 3 });
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 0, 0.25f, 0 }, { 0, 45, 0 }, { 0.25f, 0.25f, 0.25f });
+		Transform t({ 0, 0.25f, 0 }, { 0, 45, 0 }, { 0.5f, 0.5f, 0.5f });
 		RenderHelper::drawUnitCube();
 	}
 
