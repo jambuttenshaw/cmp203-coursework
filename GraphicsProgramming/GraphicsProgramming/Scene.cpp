@@ -2,6 +2,7 @@
 
 #include "Transform.h"
 #include "RenderHelper.h"
+#include "GeometryHelper.h"
 
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
@@ -17,10 +18,9 @@ Scene::Scene(Input *in)
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience);
 
 	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHT1);
 
 	// Initialise scene variables
-
+	plane = GeometryHelper::CreatePlane(100, 100);
 }
 
 void Scene::handleInput(float dt)
@@ -46,48 +46,30 @@ void Scene::render() {
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	gluLookAt(0.0f, 3.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt(0.0f, 2.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 
 	// set up lighting
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, spotDiffuse);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, spotAmbient);
+	glLightfv(GL_LIGHT0, GL_POSITION, spotPosition);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spotDirection);
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 35.0f);
+	glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 50.0f);
+	
 
 
 
 	// Render geometry/scene here -------------------------------------
 	
 	{
-		glDisable(GL_LIGHTING);
-		Transform t({lightPosition[0], lightPosition[1], lightPosition[2]}, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawSphere(0.2f, 1.0f, 1.0f, 1.0f);
-		glEnable(GL_LIGHTING);
+		Transform t({ 0, 0, 0 }, { 0, 0, 0 }, { 5, 5, 5 });
+		RenderHelper::drawMesh(plane);
 	}
-
 	{
-		Transform t({ 0, 0, 0 }, { 0, -1 * rot, 0 }, { 1, 1, 1 });
-		{
-			Transform t2({ 2, 0, 0 }, { 0, 0, 0 }, { 1, 1, 1 });
-			glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse2);
-			glLightfv(GL_LIGHT1, GL_AMBIENT, lightAmbient);
-			glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
-
-			{
-				glDisable(GL_LIGHTING); 
-				Transform t({ lightPosition2[0], lightPosition2[1], lightPosition2[2] }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-				RenderHelper::drawSphere(0.2f, 1.0f, 1.0f, 1.0f);
-				glEnable(GL_LIGHTING);
-			}
-		}
-	}
-
-	// ss.render();
-	{
-		Transform t({ 0, 0, 0 }, { 0.4f * rot, rot, 1.5f * rot }, { 0.5f, 0.5f, 0.5f });
+		Transform t({ 0, 0.25f, 0 }, { 0, 45, 0 }, { 0.25f, 0.25f, 0.25f });
 		RenderHelper::drawUnitCube();
 	}
-	
 
 	// End render geometry --------------------------------------
 
@@ -102,7 +84,7 @@ void Scene::initialiseOpenGL()
 {
 	//OpenGL settings
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
-	//glClearColor(0.39f, 0.58f, 93.0f, 1.0f);			// Cornflour Blue Background
+	// glClearColor(0.39f, 0.58f, 93.0f, 1.0f);			// Cornflour Blue Background
 	glClearColor(0, 0, 0, 1.0f);						// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glClearStencil(0);									// Clear stencil buffer

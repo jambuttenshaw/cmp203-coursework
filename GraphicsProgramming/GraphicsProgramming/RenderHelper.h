@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include "Mesh.h"
 
 class RenderHelper
 {
@@ -11,6 +12,8 @@ public:
 	static void drawSphere(float size, float r, float g, float b, int slices = 20, int stacks = 20);
 
 	static void drawUnitCube();
+
+	static void drawMesh(const Mesh& mesh);
 
 private:
 	struct Vertex

@@ -94,3 +94,18 @@ void RenderHelper::drawUnitCube()
 	glEnd();
 }
 
+void RenderHelper::drawMesh(const Mesh& mesh)
+{
+	glBegin(GL_TRIANGLES);
+
+	for (auto i : mesh.Indices)
+	{
+		const auto& p = mesh.Vertices[i];
+		const auto& n = mesh.Normals[i];
+		glNormal3f(n.x, n.y, n.z);
+		glVertex3f(p.x, p.y, p.z);
+	}
+
+	glEnd();
+}
+
