@@ -9,8 +9,9 @@
 #include "glut.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+
 #include "Scene.h"
-#include "Input.h"
+#include "Core/Input.h"
 
 // Required variables; pointer to scene and input objects. Initialise variable used in delta time calculation.
 Scene* scene;

@@ -4,8 +4,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#include <iostream>
-
 
 const RenderHelper::Vertex RenderHelper::cubeVertices[24] = {
 	// front face

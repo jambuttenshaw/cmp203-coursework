@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector3.h"
-#include "Color.h"
+#include "Core/Vector3.h"
+#include "Core/Color.h"
 
 
 class Light

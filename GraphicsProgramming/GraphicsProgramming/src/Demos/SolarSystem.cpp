@@ -1,7 +1,7 @@
 #include "SolarSystem.h"
 
-#include "Transform.h"
-#include "RenderHelper.h"
+#include "Rendering/Transform.h"
+#include "Rendering/RenderHelper.h"
 
 void SolarSystem::update(float dt)
 {

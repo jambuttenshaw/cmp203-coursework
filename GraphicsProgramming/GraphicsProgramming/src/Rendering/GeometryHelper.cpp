@@ -15,7 +15,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices)
 	float posX = -0.5f;
 	float posZ = 0.5f;
 
-	for (int i = 0; i < xSlices * ySlices; i++)
+	for (size_t i = 0; i < xSlices * ySlices; i++)
 	{
 		Vector3 v;
 		v.x = posX;
@@ -34,9 +34,9 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices)
 	}
 
 	int currentIndex = 0;
-	for (int y = 0; y < ySlices - 1; y++)
+	for (size_t y = 0; y < ySlices - 1; y++)
 	{
-		for (int x = 0; x < xSlices - 1; x++)
+		for (size_t x = 0; x < xSlices - 1; x++)
 		{
 			indices.push_back(currentIndex);
 			indices.push_back(currentIndex + 1);

@@ -10,16 +10,15 @@
 #include "glut.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "Input.h"
+#include "Core/Input.h"
 #include <stdio.h>
 // Further includes should go here:
 #include "SOIL.h"
 
-#include "Color.h"
-#include "Light.h"
+#include "Core/Color.h"
 
-#include "SolarSystem.h"
-#include "Mesh.h"
+#include "Rendering/Light.h"
+#include "Rendering/Mesh.h"
 
 
 class Scene{
@@ -59,9 +58,6 @@ protected:
 
 private:
 	Color globalAmbience = { 0.0f, 0.0f, 0.0f };
-
-	SolarSystem ss;
-	float rot = 0.0f;
 
 	Mesh plane;
 

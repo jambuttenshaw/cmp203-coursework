@@ -1,8 +1,8 @@
 #include "Scene.h"
 
-#include "Transform.h"
-#include "RenderHelper.h"
-#include "GeometryHelper.h"
+#include "Rendering/Transform.h"
+#include "Rendering/RenderHelper.h"
+#include "Rendering/GeometryHelper.h"
 
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
@@ -45,8 +45,6 @@ void Scene::handleInput(float dt)
 void Scene::update(float dt)
 {
 	// update scene related variables.
-	ss.update(dt);
-	rot += 70 * dt;
 
 	// Calculate FPS for output
 	calculateFPS();
@@ -136,7 +134,7 @@ void Scene::calculateFPS()
 	time = glutGet(GLUT_ELAPSED_TIME);
 
 	if (time - timebase > 1000) {
-		sprintf_s(fps, "FPS: %4.2f", frame*1000.0 / (time - timebase));
+		sprintf_s(fps, "FPS: %4.2f", frame*1000.0f / (time - timebase));
 		timebase = time;
 		frame = 0;
 	}
