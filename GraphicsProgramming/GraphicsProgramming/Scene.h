@@ -55,7 +55,13 @@ protected:
 	char mouseText[40];
 
 private:
+	const float globalAmbience[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
 	SolarSystem ss;
+	float rot = 0.0f;
+
+	const float lightDiffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const float lightDirection[4] = { -1.0f, 0.0f, 0.0f, 0.0f };
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "Transform.h"
+#include "RenderHelper.h"
 
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
@@ -11,7 +12,9 @@ Scene::Scene(Input *in)
 	initialiseOpenGL();
 
 	// Other OpenGL / render setting should be applied here.
-	
+	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_LIGHTING);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience);
 
 	// Initialise scene variables
 
@@ -26,6 +29,7 @@ void Scene::update(float dt)
 {
 	// update scene related variables.
 	ss.update(dt);
+	rot += 70 * dt;
 
 	// Calculate FPS for output
 	calculateFPS();
@@ -41,9 +45,21 @@ void Scene::render() {
 	// Set the camera
 	gluLookAt(0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
+
+	// set up lighting
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
+	glEnable(GL_LIGHT0);
+
+
+
 	// Render geometry/scene here -------------------------------------
 	
-	ss.render();
+	// ss.render();
+	{
+		Transform t({ 0, 0, 0 }, { 0.4f * rot, rot, 1.5f * rot }, { 0.5f, 0.5f, 0.5f });
+		RenderHelper::drawUnitCube();
+	}
 	
 
 	// End render geometry --------------------------------------
@@ -59,7 +75,8 @@ void Scene::initialiseOpenGL()
 {
 	//OpenGL settings
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
-	glClearColor(0.39f, 0.58f, 93.0f, 1.0f);			// Cornflour Blue Background
+	//glClearColor(0.39f, 0.58f, 93.0f, 1.0f);			// Cornflour Blue Background
+	glClearColor(0, 0, 0, 1.0f);						// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glClearStencil(0);									// Clear stencil buffer
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
