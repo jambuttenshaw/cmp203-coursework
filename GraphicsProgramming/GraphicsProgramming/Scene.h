@@ -60,8 +60,12 @@ private:
 	SolarSystem ss;
 	float rot = 0.0f;
 
-	const float lightDiffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	const float lightDirection[4] = { -1.0f, 0.0f, 0.0f, 0.0f };
+	const float lightDiffuse[4] = { 0.5f, 0.3f, 0.9f, 1.0f };
+	const float lightAmbient[4] = { 0.2f, 0.1f, 0.1f, 1.0f };
+	const float lightPosition[4] = { -2.0f, 0.0f, 2.0f, 1.0f };
+	
+	const float lightDiffuse2[4] = { 0.8f, 0.9f, 0.1f, 1.0f };
+	const float lightPosition2[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 };
 
 #endif

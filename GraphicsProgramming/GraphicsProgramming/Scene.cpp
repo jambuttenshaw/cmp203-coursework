@@ -16,6 +16,9 @@ Scene::Scene(Input *in)
 	glEnable(GL_LIGHTING);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience);
 
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+
 	// Initialise scene variables
 
 }
@@ -43,18 +46,42 @@ void Scene::render() {
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	gluLookAt(0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt(0.0f, 3.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 
 	// set up lighting
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
-	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
 
 
 	// Render geometry/scene here -------------------------------------
 	
+	{
+		glDisable(GL_LIGHTING);
+		Transform t({lightPosition[0], lightPosition[1], lightPosition[2]}, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+		RenderHelper::drawSphere(0.2f, 1.0f, 1.0f, 1.0f);
+		glEnable(GL_LIGHTING);
+	}
+
+	{
+		Transform t({ 0, 0, 0 }, { 0, -1 * rot, 0 }, { 1, 1, 1 });
+		{
+			Transform t2({ 2, 0, 0 }, { 0, 0, 0 }, { 1, 1, 1 });
+			glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse2);
+			glLightfv(GL_LIGHT1, GL_AMBIENT, lightAmbient);
+			glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
+
+			{
+				glDisable(GL_LIGHTING); 
+				Transform t({ lightPosition2[0], lightPosition2[1], lightPosition2[2] }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+				RenderHelper::drawSphere(0.2f, 1.0f, 1.0f, 1.0f);
+				glEnable(GL_LIGHTING);
+			}
+		}
+	}
+
 	// ss.render();
 	{
 		Transform t({ 0, 0, 0 }, { 0.4f * rot, rot, 1.5f * rot }, { 0.5f, 0.5f, 0.5f });
