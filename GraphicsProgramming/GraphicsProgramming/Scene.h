@@ -16,7 +16,7 @@
 #include "SOIL.h"
 #include <vector>
 
-#include "Model.h"
+#include "SolarSystem.h"
 
 
 class Scene{
@@ -41,9 +41,6 @@ protected:
 	void renderTextOutput();
 	void calculateFPS();
 
-	// draw primitive functions
-	void drawSphere(float size);
-	void drawSphere(float size, float r, float g, float b);
 
 	// For access to user input.
 	Input* input;
@@ -58,7 +55,7 @@ protected:
 	char mouseText[40];
 
 private:
-	float rotation = 0.0f;
+	SolarSystem ss;
 };
 
 #endif
