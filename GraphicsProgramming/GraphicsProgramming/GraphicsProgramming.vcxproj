@@ -94,6 +94,7 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Rendering\Transform.cpp" />
     <ClCompile Include="src\Core\Vector3.cpp" />
+    <ClCompile Include="vendor\PerlinNoise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Color.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Core\Vector3.h" />
+    <ClInclude Include="vendor\PerlinNoise.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

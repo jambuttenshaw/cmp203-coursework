@@ -4,6 +4,8 @@
 #include "Rendering/RenderHelper.h"
 #include "Rendering/GeometryHelper.h"
 
+#include "PerlinNoise.h"
+
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
 Scene::Scene(Input *in)
@@ -18,10 +20,9 @@ Scene::Scene(Input *in)
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience.ptr());
 
 	glEnable(GL_LIGHT0);
-	light1.setType(Light::LightType::Spot);
-	light1.setPosition({ -1, 1, 0 });
-	light1.setDiffuseColor({ 2.0f, 1.0f, 0.2f });
-	light1.setAmbientColor({ 0.2f, 0.1f, 0.1f });
+	light1.setType(Light::LightType::Directional);
+	light1.setPosition({ 1, 0.7f, 0 });
+	light1.setDiffuseColor({ 1.0f, 1.0f, 1.0f });
 
 	light1.setSpotDirection({ 1, -1, 0 });
 	light1.setSpotCutoff(25.0f);
@@ -29,14 +30,26 @@ Scene::Scene(Input *in)
 
 	glEnable(GL_LIGHT1);
 	light2.setType(Light::LightType::Point);
-	light2.setPosition({ 0.5f, 1.2f, 1.0f });
+	light2.setPosition({ 1.5f, 1.2f, 0.0f });
 	light2.setDiffuseColor({ 0.8f, 0.2f, 0.8f });
 	light2.setAmbientColor({ 0.1f, 0.1f, 0.1f });
 
 	// Initialise scene variables
-	plane = GeometryHelper::CreatePlane(50, 50,
-		[](float x, float z) -> float {
-			return 2 * x * x - 3 * z * z + x * z;
+	PerlinNoise noise;
+	plane = GeometryHelper::CreatePlane(100, 100,
+		[&noise](float x, float z) -> float {
+
+			float value = 0.0f;
+			float s = 1.2f;
+			float f = 4;
+			for (int i = 0; i < 4; i++)
+			{
+				value += s * (float)noise.noise(f * (double)x, 0, f * (double)z);
+				f *= 1.7f;
+				s *= 0.5f;
+			}
+
+			return 0.7f * value - 1.0f;
 		});
 }
 
@@ -74,14 +87,14 @@ void Scene::render() {
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	gluLookAt(2.0f, 1.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt(2.0f, 2.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 	// Render geometry/scene here -------------------------------------
 	light1.render(GL_LIGHT0, true);
 	light2.render(GL_LIGHT1, true);
 
 	{
-		Transform t({ 0, 0, 0 }, { 0, rot, 0 }, { 3, 1, 3 });
+		Transform t({ 0, 0, 0 }, { 0, rot, 0 }, { 4, 1, 4 });
 		RenderHelper::drawMesh(plane);
 	}
 	/*{

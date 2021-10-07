@@ -1,5 +1,7 @@
 #include "GeometryHelper.h"
 
+#include <cassert>
+
 Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<float(float, float)> heightFunc)
 {
 	Mesh newMesh;
@@ -23,7 +25,6 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 		v.z = posZ;
 
 		vertices.push_back(v);
-		normals.push_back({ 0, 1, 0 });
 
 		posX += xStep;
 		if ((i + 1) % xSlices == 0)
@@ -31,6 +32,46 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 			posZ -= yStep;
 			posX = -0.5f;
 		}
+	}
+
+	for (size_t i = 0; i < xSlices * ySlices; i++)
+	{
+		// tangent calculation
+		Vector3 tangent;
+		float factor = 0;
+		if (i % xSlices != 0)
+		{
+			tangent += (vertices[i - 1] - vertices[i]);
+			factor++;
+		}
+		if ((i + 1) % xSlices != 0)
+		{
+			tangent += (vertices[i] - vertices[i + 1]);
+			factor++;
+		}
+		assert(factor != 0);
+		tangent = { tangent.x / factor, tangent.y / factor, tangent.z / factor };
+
+
+		// bi-tangent calculation
+		Vector3 bitangent;
+		factor = 0;
+		if (i >= xSlices)
+		{
+			bitangent += (vertices[i - xSlices] - vertices[i]);
+			factor++;
+		}
+		if (i + xSlices < xSlices * ySlices)
+		{
+			bitangent += (vertices[i] - vertices[i + xSlices]);
+			factor++;
+		}
+		assert(factor != 0);
+		bitangent = { bitangent.x / factor, bitangent.y / factor, bitangent.z / factor };
+
+		// normal calculation
+		Vector3 normal = tangent.cross(bitangent).normalised();
+		normals.push_back(normal);
 	}
 
 	int currentIndex = 0;
