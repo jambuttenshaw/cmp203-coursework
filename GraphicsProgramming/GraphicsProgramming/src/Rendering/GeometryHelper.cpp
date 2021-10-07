@@ -1,6 +1,6 @@
 #include "GeometryHelper.h"
 
-Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices)
+Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<float(float, float)> heightFunc)
 {
 	Mesh newMesh;
 
@@ -19,7 +19,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices)
 	{
 		Vector3 v;
 		v.x = posX;
-		v.y = 0;
+		v.y = heightFunc(posX, posZ);
 		v.z = posZ;
 
 		vertices.push_back(v);

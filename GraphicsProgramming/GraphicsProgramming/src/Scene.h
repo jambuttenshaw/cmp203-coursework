@@ -64,6 +64,10 @@ private:
 	Light light1;
 	Light light2;
 
+	float rot = 0.0f;
+
+	bool wireframe = false;
+	bool wireframeKeyHeld = false;
 };
 
 #endif

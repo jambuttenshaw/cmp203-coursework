@@ -92,7 +92,6 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Rendering\RenderHelper.cpp" />
     <ClCompile Include="src\Scene.cpp" />
-    <ClCompile Include="src\Demos\SolarSystem.cpp" />
     <ClCompile Include="src\Rendering\Transform.cpp" />
     <ClCompile Include="src\Core\Vector3.cpp" />
   </ItemGroup>
@@ -104,7 +103,6 @@
     <ClInclude Include="src\Rendering\Mesh.h" />
     <ClInclude Include="src\Rendering\RenderHelper.h" />
     <ClInclude Include="src\Scene.h" />
-    <ClInclude Include="src\Demos\SolarSystem.h" />
     <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Core\Vector3.h" />
   </ItemGroup>

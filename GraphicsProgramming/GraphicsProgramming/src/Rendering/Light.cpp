@@ -33,7 +33,7 @@ void Light::render(unsigned int lightID, bool debugSphere)
 			Transform t(homogeneousPos.xyz, { 0, 0, 0 }, { 1, 1, 1 });
 
 			glColor3f(1.0f, 1.0f, 1.0f);
-			RenderHelper::drawSphere(0.1f);
+			RenderHelper::drawSphere(0.05f);
 		}
 
 		glColor3fv(currentColor);

@@ -29,17 +29,33 @@ Scene::Scene(Input *in)
 
 	glEnable(GL_LIGHT1);
 	light2.setType(Light::LightType::Point);
-	light2.setPosition({ 0.5f, 0.2f, 1.0f });
+	light2.setPosition({ 0.5f, 1.2f, 1.0f });
 	light2.setDiffuseColor({ 0.8f, 0.2f, 0.8f });
 	light2.setAmbientColor({ 0.1f, 0.1f, 0.1f });
 
 	// Initialise scene variables
-	plane = GeometryHelper::CreatePlane(50, 50);
+	plane = GeometryHelper::CreatePlane(50, 50,
+		[](float x, float z) -> float {
+			return 2 * x * x - 3 * z * z + x * z;
+		});
 }
 
 void Scene::handleInput(float dt)
 {
 	// Handle user input
+	if (input->isKeyDown('r') && !wireframeKeyHeld)
+	{
+		wireframeKeyHeld = true;
+		wireframe = !wireframe;
+		glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
+	}
+	else if (!input->isKeyDown('r') && wireframeKeyHeld)
+	{
+		wireframeKeyHeld = false;
+	}
+
+	if (input->isKeyDown('a')) rot -= 40 * dt;
+	if (input->isKeyDown('d')) rot += 40 * dt;
 }
 
 void Scene::update(float dt)
@@ -58,20 +74,20 @@ void Scene::render() {
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	gluLookAt(0.0f, 2.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt(2.0f, 1.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 	// Render geometry/scene here -------------------------------------
 	light1.render(GL_LIGHT0, true);
 	light2.render(GL_LIGHT1, true);
 
 	{
-		Transform t({ 0, 0, 0 }, { 0, 0, 0 }, { 3, 3, 3 });
+		Transform t({ 0, 0, 0 }, { 0, rot, 0 }, { 3, 1, 3 });
 		RenderHelper::drawMesh(plane);
 	}
-	{
+	/*{
 		Transform t({ 0, 0.25f, 0 }, { 0, 45, 0 }, { 0.5f, 0.5f, 0.5f });
 		RenderHelper::drawUnitCube();
-	}
+	}*/
 
 	// End render geometry --------------------------------------
 
