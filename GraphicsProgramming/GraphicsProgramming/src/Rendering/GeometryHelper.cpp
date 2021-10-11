@@ -1,5 +1,7 @@
 #include "GeometryHelper.h"
 
+#include "PerlinNoise.h"
+
 #include <cassert>
 
 Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<float(float, float)> heightFunc)
@@ -97,4 +99,21 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 	newMesh.setIndices(indices);
 
 	return newMesh;
+}
+
+float GeometryHelper::PerlinNoiseTerrainHeightFunc(float x, float z)
+{
+	static PerlinNoise noise;
+
+	float value = 0.0f;
+	float s = 1.2f;
+	float f = 4;
+	for (int i = 0; i < 4; i++)
+	{
+		value += s * (float)noise.noise(f * (double)x, 0, f * (double)z);
+		f *= 1.7f;
+		s *= 0.5f;
+	}
+
+	return 0.7f * value - 1.0f;
 }

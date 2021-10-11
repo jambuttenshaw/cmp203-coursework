@@ -35,22 +35,7 @@ Scene::Scene(Input *in)
 	light2.setAmbientColor({ 0.1f, 0.1f, 0.1f });
 
 	// Initialise scene variables
-	PerlinNoise noise;
-	plane = GeometryHelper::CreatePlane(100, 100,
-		[&noise](float x, float z) -> float {
-
-			float value = 0.0f;
-			float s = 1.2f;
-			float f = 4;
-			for (int i = 0; i < 4; i++)
-			{
-				value += s * (float)noise.noise(f * (double)x, 0, f * (double)z);
-				f *= 1.7f;
-				s *= 0.5f;
-			}
-
-			return 0.7f * value - 1.0f;
-		});
+	plane = GeometryHelper::CreatePlane(100, 100, GeometryHelper::PerlinNoiseTerrainHeightFunc);
 }
 
 void Scene::handleInput(float dt)
