@@ -44,7 +44,7 @@ public:
 	Vector3& operator+=(const Vector3& v2);
 	Vector3& operator-=(const Vector3& v2);
 
-	inline float* ptr() { return reinterpret_cast<float*>(this); }
+	inline float const* ptr() const { return reinterpret_cast<float const*>(this); }
 
 	float x;
 	float y;

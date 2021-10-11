@@ -58,7 +58,7 @@ private:
 		Vector3 xyz;
 		float w = 1.0f;
 
-		float* ptr() { return reinterpret_cast<float*>(this); }
+		float const* ptr() const { return reinterpret_cast<float const*>(this); }
 	} homogeneousPos;
 
 	// color
