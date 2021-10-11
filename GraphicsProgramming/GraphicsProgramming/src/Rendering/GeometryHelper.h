@@ -12,7 +12,12 @@ public:
 
 	static Mesh CreatePlane(size_t xSlices, size_t ySlices, std::function<float(float, float)> heightFunc = [](float, float) -> float {return 0; });
 
-	// default height funcs
-	static float PerlinNoiseTerrainHeightFunc(float x, float z);
+	class HeightFuncs
+	{
+	public:
+		// default height funcs
+		static float Flat(float x, float y) { return 0; }
+		static float PerlinNoiseTerrain(float x, float z);
+	};
 };
 

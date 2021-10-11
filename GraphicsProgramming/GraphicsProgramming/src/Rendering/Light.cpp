@@ -11,9 +11,11 @@ void Light::render(unsigned int lightID, bool debugSphere)
 {
 	if (type == LightType::Invalid) return;
 
+	glEnable(lightID);
 
 	glLightfv(lightID, GL_DIFFUSE, diffuseColor.ptr());
 	glLightfv(lightID, GL_AMBIENT, ambientColor.ptr());
+	glLightfv(lightID, GL_SPECULAR, specularColor.ptr());
 	glLightfv(lightID, GL_POSITION, homogeneousPos.ptr());
 
 	if (type == LightType::Spot)

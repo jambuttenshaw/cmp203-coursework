@@ -8,10 +8,22 @@ struct Color
 	Color(float red, float green, float blue, float alpha)
 		: r(red), g(green), b(blue), a(alpha) {}
 
-	float* ptr() { return reinterpret_cast<float*>(this); }
+	float const* ptr() const { return reinterpret_cast<float const*>(this); }
 
 	float r = 0.0f;
 	float g = 0.0f;
 	float b = 0.0f;
 	float a = 1.0f;
+
+
+	// default colors
+	static const Color white;
+	static const Color black;
+	static const Color red;
+	static const Color green;
+	static const Color blue;
+	static const Color yellow;
+	static const Color cyan;
+	static const Color magenta;
+
 };

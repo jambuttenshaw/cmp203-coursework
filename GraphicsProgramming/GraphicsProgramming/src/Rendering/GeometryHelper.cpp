@@ -101,7 +101,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 	return newMesh;
 }
 
-float GeometryHelper::PerlinNoiseTerrainHeightFunc(float x, float z)
+float GeometryHelper::HeightFuncs::PerlinNoiseTerrain(float x, float z)
 {
 	static PerlinNoise noise;
 

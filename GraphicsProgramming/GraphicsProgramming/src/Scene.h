@@ -19,6 +19,7 @@
 
 #include "Rendering/Light.h"
 #include "Rendering/Mesh.h"
+#include "Rendering/Material.h"
 
 
 class Scene{
@@ -57,14 +58,16 @@ protected:
 	char mouseText[40];
 
 private:
-	Color globalAmbience = { 0.0f, 0.0f, 0.0f };
+	Color globalAmbience = Color::black;
 
 	Mesh plane;
 
-	Light light1;
-	Light light2;
+	Light light;
 
 	float rot = 0.0f;
+
+	Material mat;
+	float shiny = 0.0f;
 
 	bool wireframe = false;
 	bool wireframeKeyHeld = false;

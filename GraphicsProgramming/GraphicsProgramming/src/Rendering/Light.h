@@ -33,6 +33,9 @@ public:
 	inline void setAmbientColor(const Color& color) { ambientColor = color; }
 	inline const Color& getAmbientColor() { return ambientColor; }
 
+	inline void setSpecularColor(const Color& color) { specularColor = color; }
+	inline const Color& getSpecularColor() { return specularColor; }
+
 	inline void setSpotDirection(const Vector3& dir) { spotDirection = dir; }
 	inline const Vector3& getSpotDirection() { return spotDirection; }
 
@@ -61,6 +64,7 @@ private:
 	// color
 	Color diffuseColor;
 	Color ambientColor;
+	Color specularColor;
 
 	// spotlight
 	Vector3 spotDirection;

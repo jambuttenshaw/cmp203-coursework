@@ -86,6 +86,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Color.cpp" />
+    <ClCompile Include="src\Rendering\Material.cpp" />
     <ClCompile Include="src\Rendering\GeometryHelper.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Rendering\Light.cpp" />
@@ -97,6 +99,7 @@
     <ClCompile Include="vendor\PerlinNoise.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Rendering\Material.h" />
     <ClInclude Include="src\Core\Color.h" />
     <ClInclude Include="src\Rendering\GeometryHelper.h" />
     <ClInclude Include="src\Core\Input.h" />

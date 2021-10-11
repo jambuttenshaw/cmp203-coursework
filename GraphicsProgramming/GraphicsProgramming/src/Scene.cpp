@@ -6,6 +6,7 @@
 
 #include "PerlinNoise.h"
 
+
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
 Scene::Scene(Input *in)
@@ -15,27 +16,25 @@ Scene::Scene(Input *in)
 	initialiseOpenGL();
 
 	// Other OpenGL / render setting should be applied here.
-	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience.ptr());
 
-	glEnable(GL_LIGHT0);
-	light1.setType(Light::LightType::Directional);
-	light1.setPosition({ 1, 0.7f, 0 });
-	light1.setDiffuseColor({ 1.0f, 1.0f, 1.0f });
-
-	light1.setSpotDirection({ 1, -1, 0 });
-	light1.setSpotCutoff(25.0f);
-	light1.setSpotExponent(50.0f);
-
-	glEnable(GL_LIGHT1);
-	light2.setType(Light::LightType::Point);
-	light2.setPosition({ 1.5f, 1.2f, 0.0f });
-	light2.setDiffuseColor({ 0.8f, 0.2f, 0.8f });
-	light2.setAmbientColor({ 0.1f, 0.1f, 0.1f });
+	light.setType(Light::LightType::Point);
+	light.setPosition({ 2.2f, 0.5f, 0.0f });
+	light.setDiffuseColor(Color::white);
+	light.setSpecularColor(Color::white);
+	light.setAmbientColor({ 0.3f, 0.3f, 0.3f });
 
 	// Initialise scene variables
-	plane = GeometryHelper::CreatePlane(100, 100, GeometryHelper::PerlinNoiseTerrainHeightFunc);
+	plane = GeometryHelper::CreatePlane(100, 100, GeometryHelper::HeightFuncs::Flat);
+
+
+	// create a default material
+	mat.setDiffuse(Color::red);
+	mat.setAmbient({ 0.2f, 0.1f, 0.1f, 1 });
+	mat.setSpecular(Color::white);
+	mat.setShininess(30);
+	mat.apply();
 }
 
 void Scene::handleInput(float dt)
@@ -54,6 +53,10 @@ void Scene::handleInput(float dt)
 
 	if (input->isKeyDown('a')) rot -= 40 * dt;
 	if (input->isKeyDown('d')) rot += 40 * dt;
+
+	if (input->isKeyDown('w')) shiny = std::min(128.0f, shiny + 30 * dt);
+	if (input->isKeyDown('s')) shiny = std::max(0.0f,   shiny - 30 * dt);
+	mat.setShininess(shiny);
 }
 
 void Scene::update(float dt)
@@ -72,20 +75,27 @@ void Scene::render() {
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	gluLookAt(2.0f, 2.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt(0.0f, 2.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 	// Render geometry/scene here -------------------------------------
-	light1.render(GL_LIGHT0, true);
-	light2.render(GL_LIGHT1, true);
 
 	{
-		Transform t({ 0, 0, 0 }, { 0, rot, 0 }, { 4, 1, 4 });
-		RenderHelper::drawMesh(plane);
+		Transform t({ 0, 0, 0 }, { 0, rot, 0 }, { 1, 1, 1 });
+		light.render(GL_LIGHT1, true);
 	}
-	/*{
-		Transform t({ 0, 0.25f, 0 }, { 0, 45, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawUnitCube();
-	}*/
+
+	mat.apply();
+	{
+		Transform t({ -1.5f, 0, 0 }, { 0, rot, 0 }, { 1, 1, 1 });
+		glutSolidSphere(0.5f, 50, 50);
+	}
+
+	glutSolidSphere(0.5f, 50, 50);
+
+	{
+		Transform t({ 1.5f, 0, 0 }, { 0, rot, 0 }, { 1, 1, 1 });
+		glutSolidSphere(0.5f, 50, 50);
+	}
 
 	// End render geometry --------------------------------------
 
