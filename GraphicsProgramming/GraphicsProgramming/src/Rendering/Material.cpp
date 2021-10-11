@@ -9,5 +9,5 @@ void Material::apply()
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse.ptr());
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specular.ptr());
 	glMaterialfv(GL_FRONT, GL_EMISSION, emmission.ptr());
-	glMateriali(GL_FRONT, GL_SHININESS, shininess);
+	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 }

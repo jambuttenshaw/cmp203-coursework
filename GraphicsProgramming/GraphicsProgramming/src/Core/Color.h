@@ -7,6 +7,8 @@ struct Color
 		: r(red), g(green), b(blue) {}
 	Color(float red, float green, float blue, float alpha)
 		: r(red), g(green), b(blue), a(alpha) {}
+	Color(float v)
+		: r(v), g(v), b(v) {}
 
 	float const* ptr() const { return reinterpret_cast<float const*>(this); }
 

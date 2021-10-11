@@ -64,10 +64,12 @@ private:
 
 	Light light;
 
-	float rot = 0.0f;
+	float lightY = 0.5f;
 
 	Material mat;
-	float shiny = 0.0f;
+	float shiny = 30.0f;
+	
+	Material emissiveMat;
 
 	bool wireframe = false;
 	bool wireframeKeyHeld = false;

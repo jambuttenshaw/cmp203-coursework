@@ -64,15 +64,9 @@ const size_t RenderHelper::cubeIndices[36] = {
 };
 
 
-void RenderHelper::drawSphere(float size, int slices, int stacks)
+void RenderHelper::drawSphere(float radius, int slices, int stacks)
 {
-	gluSphere(gluNewQuadric(), size, slices, stacks);
-}
-
-void RenderHelper::drawSphere(float size, float r, float g, float b, int slices, int stacks)
-{
-	glColor3f(r, g, b);
-	drawSphere(size, slices, stacks);
+	glutSolidSphere(radius, slices, stacks);
 }
 
 void RenderHelper::drawUnitCube()

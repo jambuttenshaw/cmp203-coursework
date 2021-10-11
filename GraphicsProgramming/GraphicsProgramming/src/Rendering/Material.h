@@ -19,8 +19,8 @@ public:
 	inline const Color& getSpecular() { return specular; }
 	inline void setEmission(const Color& c) { emmission = c; }
 	inline const Color& getEmission() { return emmission; }
-	inline void setShininess(int s) { shininess = s; }
-	inline int getShininess() { return shininess; }
+	inline void setShininess(float s) { shininess = s; }
+	inline float getShininess() { return shininess; }
 
 private:
 	Color ambient = Color::black;
@@ -29,6 +29,6 @@ private:
 
 	Color emmission = Color::black;
 
-	int shininess = 0.0f;
+	float shininess = 0.0f;
 };
 

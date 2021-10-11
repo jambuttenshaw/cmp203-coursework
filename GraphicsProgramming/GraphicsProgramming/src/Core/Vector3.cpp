@@ -1,5 +1,16 @@
 #include "Vector3.h"
 
+
+const Vector3 Vector3::zero    = {  0,  0,  0 };
+const Vector3 Vector3::one     = {  1,  1,  1 };
+const Vector3 Vector3::forward = {  0,  0, -1 };
+const Vector3 Vector3::back    = {  0,  0,  1 };
+const Vector3 Vector3::up      = {  0,  1,  0 };
+const Vector3 Vector3::down    = {  0, -1,  0 };
+const Vector3 Vector3::left    = { -1,  0,  0 };
+const Vector3 Vector3::right   = {  1,  0,  0 };
+
+
 Vector3::Vector3(float x, float y, float z) {
 	this->x = x;
 	this->y = y;
@@ -127,6 +138,13 @@ Vector3 Vector3::operator-(const Vector3& v2) {
 	return Vector3(this->x - v2.x, this->y - v2.y, this->z - v2.z);
 }
 
+Vector3 Vector3::operator*(float s) {
+	return Vector3(this->x * s, this->y * s, this->z * s);
+}
+Vector3 Vector3::operator/(float s) {
+	return Vector3(this->x / s, this->y / s, this->z / s);
+}
+
 Vector3& Vector3::operator+=(const Vector3& v2) {
 	this->x += v2.x;
 	this->y += v2.y;
@@ -138,5 +156,19 @@ Vector3& Vector3::operator-=(const Vector3& v2) {
 	this->x -= v2.x;
 	this->y -= v2.y;
 	this->z -= v2.z;
+	return *this;
+}
+
+Vector3& Vector3::operator*=(float s) {
+	this->x *= s;
+	this->y *= s;
+	this->z *= s;
+	return *this;
+}
+
+Vector3& Vector3::operator/=(float s) {
+	this->x *= s;
+	this->y *= s;
+	this->z *= s;
 	return *this;
 }
