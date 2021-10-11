@@ -42,6 +42,9 @@ public:
 	inline void setSpotCutoff(float cutoff) { spotCutoff = cutoff; }
 	inline float getSpotCutoff() { return spotCutoff; }
 
+	inline void setAttenuation(const Vector3& a) { attentuation = a; }
+	inline const Vector3& getAttenuation() { return attentuation; }
+
 private:
 	// type
 	LightType type = LightType::Point;
@@ -63,5 +66,8 @@ private:
 	Vector3 spotDirection;
 	float spotExponent = 0.0f;
 	float spotCutoff = 0.0f;
+
+	// attenuation
+	Vector3 attentuation = { 1, 0, 0 };
 };
 

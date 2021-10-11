@@ -23,9 +23,17 @@ void Light::render(unsigned int lightID, bool debugSphere)
 		glLightf(lightID, GL_SPOT_CUTOFF, spotCutoff);
 	}
 
+	glLightf(lightID, GL_CONSTANT_ATTENUATION, attentuation.x);
+	glLightf(lightID, GL_LINEAR_ATTENUATION, attentuation.y);
+	glLightf(lightID, GL_QUADRATIC_ATTENUATION, attentuation.z);
+
+
+	// debug sphere
+
 	if (debugSphere && type != LightType::Directional)
 	{
 		glDisable(GL_LIGHTING);
+		glEnable(GL_COLOR_MATERIAL);
 		float currentColor[4];
 		glGetFloatv(GL_CURRENT_COLOR, currentColor);
 
@@ -37,6 +45,7 @@ void Light::render(unsigned int lightID, bool debugSphere)
 		}
 
 		glColor3fv(currentColor);
+		glDisable(GL_COLOR_MATERIAL);
 		glEnable(GL_LIGHTING);
 	}
 }
