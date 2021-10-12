@@ -20,6 +20,7 @@ class Scene
 {
 public:
 	Scene() = default;
+	virtual ~Scene() = default;
 
 	void init(Input *in);
 	// Main render function

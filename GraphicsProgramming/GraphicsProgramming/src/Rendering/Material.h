@@ -23,11 +23,11 @@ public:
 	inline float getShininess() { return shininess; }
 
 private:
-	Color ambient = Color::black;
-	Color diffuse = Color::white;
-	Color specular = Color::black;
+	Color ambient = Color::Black;
+	Color diffuse = Color::White;
+	Color specular = Color::Black;
 
-	Color emmission = Color::black;
+	Color emmission = Color::Black;
 
 	float shininess = 0.0f;
 };

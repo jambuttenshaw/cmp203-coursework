@@ -14,10 +14,10 @@ void TestScene::OnSetup()
 
 	light.setType(Light::LightType::Point);
 	light.setPosition({ 0.0f, 0.0f, 0.0f });
-	light.setDiffuseColor(Color::white);
-	light.setSpecularColor(Color::white);
+	light.setDiffuseColor(Color::White);
+	light.setSpecularColor(Color::White);
 	light.setAmbientColor({ 0.3f, 0.3f, 0.3f });
-	// light.setAttenuation({ 1.0f, 0.0f, 0.0f });
+	light.setAttenuation({ 1.0f, 0.0f, 0.0f });
 
 
 
@@ -27,7 +27,7 @@ void TestScene::OnSetup()
 	// create a default material
 	mat.setDiffuse({ 0.75f, 0.75f, 0, 1 });
 	mat.setAmbient({ 0.75f, 0.75f, 0, 1 });
-	mat.setSpecular(Color::white);
+	mat.setSpecular(Color::White);
 }
 
 void TestScene::OnHandleInput(float dt)

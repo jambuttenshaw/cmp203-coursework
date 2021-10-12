@@ -19,7 +19,7 @@ public:
 	virtual void OnRender() override;
 
 private:
-	Color globalAmbience = Color::black;
+	Color globalAmbience = Color::Black;
 
 	Mesh plane;
 

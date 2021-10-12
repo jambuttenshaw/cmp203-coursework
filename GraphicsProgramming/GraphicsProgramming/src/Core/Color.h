@@ -19,13 +19,13 @@ struct Color
 
 
 	// default colors
-	static const Color white;
-	static const Color black;
-	static const Color red;
-	static const Color green;
-	static const Color blue;
-	static const Color yellow;
-	static const Color cyan;
-	static const Color magenta;
+	static const Color White;
+	static const Color Black;
+	static const Color Red;
+	static const Color Green;
+	static const Color Blue;
+	static const Color Yellow;
+	static const Color Cyan;
+	static const Color Magenta;
 
 };
