@@ -16,6 +16,7 @@ public:
 	virtual void OnSetup() override;
 	virtual void OnHandleInput(float dt) override;
 	virtual void OnUpdate(float dt) override;
+	virtual void OnPositionCamera() override;
 	virtual void OnRender() override;
 
 private:
@@ -25,8 +26,10 @@ private:
 
 	Light light;
 
-	float lightY = 0.5f;
+	float lightY = 1.5f;
 
 	Material mat;
 	float shiny = 30.0f;
+	
+	Material metallic;
 };

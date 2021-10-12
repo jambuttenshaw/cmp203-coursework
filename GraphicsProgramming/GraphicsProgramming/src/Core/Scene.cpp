@@ -49,7 +49,7 @@ void Scene::render()
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	gluLookAt(0.0f, 2.5f, 7.0f, 0.0f, 2.5f, 0.0f, 0.0f, 1.0f, 0.0f);
+	OnPositionCamera();
 
 	// Render geometry/scene here -------------------------------------
 	OnRender();

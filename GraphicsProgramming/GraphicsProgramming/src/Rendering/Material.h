@@ -13,12 +13,18 @@ public:
 
 	inline void setAmbient(const Color& c) { ambient = c; }
 	inline const Color& getAmbient() { return ambient; }
+
 	inline void setDiffuse(const Color& c) { diffuse = c; }
 	inline const Color& getDiffuse() { return diffuse; }
+
+	inline void setAmbientAndDiffuse(const Color& c) { ambient = c; diffuse = c; }
+
 	inline void setSpecular(const Color& c) { specular = c; }
 	inline const Color& getSpecular() { return specular; }
+
 	inline void setEmission(const Color& c) { emmission = c; }
 	inline const Color& getEmission() { return emmission; }
+
 	inline void setShininess(float s) { shininess = s; }
 	inline float getShininess() { return shininess; }
 

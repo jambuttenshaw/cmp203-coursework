@@ -47,6 +47,7 @@ private:
 	virtual void OnSetup() = 0;
 	virtual void OnHandleInput(float dt) = 0;
 	virtual void OnUpdate(float dt) = 0;
+	virtual void OnPositionCamera() = 0;
 	virtual void OnRender() = 0;
 
 protected:

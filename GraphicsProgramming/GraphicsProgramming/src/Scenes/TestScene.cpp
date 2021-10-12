@@ -20,14 +20,17 @@ void TestScene::OnSetup()
 	light.setAttenuation({ 1.0f, 0.0f, 0.0f });
 
 
-
 	plane = GeometryHelper::CreatePlane(100, 100, GeometryHelper::HeightFuncs::Flat);
 
 
 	// create a default material
-	mat.setDiffuse({ 0.75f, 0.75f, 0, 1 });
-	mat.setAmbient({ 0.75f, 0.75f, 0, 1 });
-	mat.setSpecular(Color::White);
+	mat.setAmbientAndDiffuse({ 0.35f, 0.35f, 0, 1 });
+	mat.setSpecular(0.5f);
+
+
+	metallic.setAmbientAndDiffuse({ 0.8f });
+	metallic.setSpecular(Color::White);
+	metallic.setShininess(128.0f);
 }
 
 void TestScene::OnHandleInput(float dt)
@@ -46,12 +49,17 @@ void TestScene::OnUpdate(float dt)
 {
 }
 
+void TestScene::OnPositionCamera()
+{
+	gluLookAt(0.0f, 3.0f, 9.0f, 0.0f, 2.5f, 0.0f, 0.0f, 1.0f, 0.0f);
+}
+
 void TestScene::OnRender()
 {
 
 	{
 		Transform t({ 0, lightY, 2.5f }, { 0, 0, 0 }, { 1, 1, 1 });
-		light.render(GL_LIGHT1, true);
+		light.render(GL_LIGHT0);
 	}
 
 	mat.apply();
@@ -70,6 +78,11 @@ void TestScene::OnRender()
 	{
 		Transform t({ 2.5f, 2.5f, 0 }, { 0, 0, 90 }, { 5, 1, 5 });
 		RenderHelper::drawMesh(plane);
+	}
+	metallic.apply();
+	{
+		Transform t({0, 0.5f, 0}, Vector3::zero, Vector3::one);
+		RenderHelper::drawSphere(0.5f);
 	}
 
 }
