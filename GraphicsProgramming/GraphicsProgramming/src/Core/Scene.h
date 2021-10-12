@@ -54,11 +54,11 @@ protected:
 		
 private:
 	// For Window and frustum calculation.
-	int width, height;
-	float fov, nearPlane, farPlane;
+	int width = 0, height = 0;
+	float fov = 0, nearPlane = 0, farPlane = 0;
 
 	// For FPS counter and mouse coordinate output.
-	int frame = 0, time, timebase = 0;
+	int frame = 0, time = 0, timebase = 0;
 	char fps[40];
 	char mouseText[40];
 

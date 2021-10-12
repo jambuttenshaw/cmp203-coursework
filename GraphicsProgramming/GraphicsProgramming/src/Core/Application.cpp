@@ -10,7 +10,7 @@ Application* Application::instance = nullptr;
 
 Application::Application(int argc, char** argv)
 {
-	assert(instance == nullptr, "Cannot have more than one application in existence!");
+	assert(instance == nullptr && "Cannot have more than one application in existence!");
 	instance = this;
 
 	// Init GLUT and create window
