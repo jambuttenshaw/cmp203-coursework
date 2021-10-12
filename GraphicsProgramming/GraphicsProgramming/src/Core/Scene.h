@@ -15,15 +15,9 @@
 // Further includes should go here:
 #include "SOIL.h"
 
-#include "Core/Color.h"
 
-#include "Rendering/Light.h"
-#include "Rendering/Mesh.h"
-#include "Rendering/Material.h"
-
-
-class Scene{
-
+class Scene
+{
 public:
 	Scene() = default;
 
@@ -37,7 +31,7 @@ public:
 	// Resizes the OpenGL output based on new window size.
 	void resize(int w, int h);
 
-protected:
+private:
 	// configure opengl render pipeline
 	void initialiseOpenGL();
 	// Renders text (x, y positions, RGB colour of text, string of text to be rendered)
@@ -47,9 +41,18 @@ protected:
 	void calculateFPS();
 
 
+private:
+	// to be implemented by client scenes
+	virtual void OnSetup() = 0;
+	virtual void OnHandleInput(float dt) = 0;
+	virtual void OnUpdate(float dt) = 0;
+	virtual void OnRender() = 0;
+
+protected:
 	// For access to user input.
 	Input* input;
 		
+private:
 	// For Window and frustum calculation.
 	int width, height;
 	float fov, nearPlane, farPlane;
@@ -59,18 +62,6 @@ protected:
 	char fps[40];
 	char mouseText[40];
 
-private:
-	Color globalAmbience = Color::black;
-
-	Mesh plane;
-
-	Light light;
-
-	float lightY = 0.5f;
-
-	Material mat;
-	float shiny = 30.0f;
-	
 	bool wireframe = false;
 	bool wireframeKeyHeld = false;
 };

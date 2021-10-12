@@ -86,7 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Color.cpp" />
     <ClCompile Include="src\Rendering\Material.cpp" />
     <ClCompile Include="src\Rendering\GeometryHelper.cpp" />
@@ -94,13 +94,14 @@
     <ClCompile Include="src\Rendering\Light.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Rendering\RenderHelper.cpp" />
-    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Rendering\Transform.cpp" />
     <ClCompile Include="src\Core\Vector3.cpp" />
+    <ClCompile Include="src\Scenes\TestScene.cpp" />
     <ClCompile Include="vendor\PerlinNoise.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Rendering\Material.h" />
     <ClInclude Include="src\Core\Color.h" />
     <ClInclude Include="src\Rendering\GeometryHelper.h" />
@@ -108,9 +109,10 @@
     <ClInclude Include="src\Rendering\Light.h" />
     <ClInclude Include="src\Rendering\Mesh.h" />
     <ClInclude Include="src\Rendering\RenderHelper.h" />
-    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Core\Vector3.h" />
+    <ClInclude Include="src\Scenes\TestScene.h" />
     <ClInclude Include="vendor\PerlinNoise.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
