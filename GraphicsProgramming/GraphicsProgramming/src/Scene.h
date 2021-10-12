@@ -25,7 +25,9 @@
 class Scene{
 
 public:
-	Scene(Input *in);
+	Scene() = default;
+
+	void init(Input *in);
 	// Main render function
 	void render();
 	// Handle input function that receives delta time from parent.
@@ -69,8 +71,6 @@ private:
 	Material mat;
 	float shiny = 30.0f;
 	
-	Material emissiveMat;
-
 	bool wireframe = false;
 	bool wireframeKeyHeld = false;
 };

@@ -9,7 +9,7 @@
 
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
-Scene::Scene(Input *in)
+void Scene::init(Input *in)
 {
 	// Store pointer for input class
 	input = in;
@@ -37,12 +37,6 @@ Scene::Scene(Input *in)
 	mat.setDiffuse({ 0.75f, 0.75f, 0, 1 });
 	mat.setAmbient({ 0.75f, 0.75f, 0, 1 });
 	mat.setSpecular(Color::white);
-
-	emissiveMat.setDiffuse(Color::yellow);
-	emissiveMat.setAmbient(Color::yellow);
-	emissiveMat.setSpecular(Color::white);
-	emissiveMat.setEmission(Color::yellow);
-	emissiveMat.setShininess(40);
 }
 
 void Scene::handleInput(float dt)
@@ -59,8 +53,10 @@ void Scene::handleInput(float dt)
 		wireframeKeyHeld = false;
 	}
 
+
 	if (input->isKeyDown('w')) lightY += 0.3f * dt;
 	if (input->isKeyDown('s')) lightY -= 0.3f * dt;
+
 
 	if (input->isKeyDown('e')) shiny = std::min(128.0f, shiny + 30 * dt);
 	if (input->isKeyDown('q')) shiny = std::max(0.0f,   shiny - 30 * dt);
@@ -92,12 +88,6 @@ void Scene::render() {
 		Transform t({ 0, lightY, 2.5f }, { 0, 0, 0 }, { 1, 1, 1 });
 		light.render(GL_LIGHT1, true);
 	}
-
-	//emissiveMat.apply();
-	//{
-	//	Transform t({ 0, 0.5f, 0 }, { 0, 0, 0 }, { 1, 1, 1 });
-	//	RenderHelper::drawSphere(0.5f);
-	//}
 
 	mat.apply();
 	{
