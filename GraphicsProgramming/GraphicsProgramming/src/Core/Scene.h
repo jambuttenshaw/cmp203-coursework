@@ -15,6 +15,8 @@
 // Further includes should go here:
 #include "SOIL.h"
 
+#include "Core/Color.h"
+
 
 class Scene
 {
@@ -31,6 +33,11 @@ public:
 	void update(float dt);
 	// Resizes the OpenGL output based on new window size.
 	void resize(int w, int h);
+
+protected:
+
+	// for use by the client scene
+	void setGlobalAmbientLighting(const Color& c);
 
 private:
 	// configure opengl render pipeline

@@ -10,22 +10,22 @@
 
 void TestScene::OnSetup()
 {
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbience.ptr());
+	setGlobalAmbientLighting(globalAmbience);
 
 	light.setType(Light::LightType::Point);
 	light.setPosition({ 0.0f, 0.0f, 0.0f });
 	light.setDiffuseColor(Color::White);
 	light.setSpecularColor(Color::White);
 	light.setAmbientColor({ 0.3f, 0.3f, 0.3f });
-	light.setAttenuation({ 1.0f, 0.0f, 0.0f });
+	light.setAttenuation({ 1.0f, 0.125f, 0.05f });
 
 
-	plane = GeometryHelper::CreatePlane(100, 100, GeometryHelper::HeightFuncs::Flat);
+	plane = GeometryHelper::CreatePlane(20, 20, GeometryHelper::HeightFuncs::Flat);
 
 
 	// create a default material
-	mat.setAmbientAndDiffuse({ 0.35f, 0.35f, 0, 1 });
-	mat.setSpecular(0.5f);
+	yellowMat.setAmbientAndDiffuse({ 0.35f, 0.35f, 0, 1 });
+	yellowMat.setSpecular(0.5f);
 
 
 	metallic.setAmbientAndDiffuse({ 0.8f });
@@ -35,14 +35,8 @@ void TestScene::OnSetup()
 
 void TestScene::OnHandleInput(float dt)
 {
-	if (input->isKeyDown('w')) lightY += 0.3f * dt;
-	if (input->isKeyDown('s')) lightY -= 0.3f * dt;
-
-
-	if (input->isKeyDown('e')) shiny = std::min(128.0f, shiny + 30 * dt);
-	if (input->isKeyDown('q')) shiny = std::max(0.0f, shiny - 30 * dt);
-	mat.setShininess(shiny);
-	mat.setSpecular(shiny / 128.0f);
+	if (input->isKeyDown('w')) lightY += 0.6f * dt;
+	if (input->isKeyDown('s')) lightY -= 0.6f * dt;
 }
 
 void TestScene::OnUpdate(float dt)
@@ -59,10 +53,10 @@ void TestScene::OnRender()
 
 	{
 		Transform t({ 0, lightY, 2.5f }, { 0, 0, 0 }, { 1, 1, 1 });
-		light.render(GL_LIGHT0);
+		light.render(GL_LIGHT0, true);
 	}
 
-	mat.apply();
+	yellowMat.apply();
 	{
 		Transform t({ 0, 0, 0 }, { 0, 0, 0 }, { 5, 1, 5 });
 		RenderHelper::drawMesh(plane);
@@ -82,7 +76,7 @@ void TestScene::OnRender()
 	metallic.apply();
 	{
 		Transform t({0, 0.5f, 0}, Vector3::zero, Vector3::one);
-		RenderHelper::drawSphere(0.5f);
+		RenderHelper::drawSphere(0.5f, 30, 30);
 	}
 
 }

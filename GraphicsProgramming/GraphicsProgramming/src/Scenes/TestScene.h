@@ -28,8 +28,6 @@ private:
 
 	float lightY = 1.5f;
 
-	Material mat;
-	float shiny = 30.0f;
-	
+	Material yellowMat;	
 	Material metallic;
 };

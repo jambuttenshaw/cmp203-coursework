@@ -63,6 +63,11 @@ void Scene::render()
 	glutSwapBuffers();
 }
 
+void Scene::setGlobalAmbientLighting(const Color& c)
+{
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, c.ptr());
+}
+
 void Scene::initialiseOpenGL()
 {
 	//OpenGL settings
