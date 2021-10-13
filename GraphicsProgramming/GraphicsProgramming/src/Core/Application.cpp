@@ -60,7 +60,7 @@ void Application::enterMainLoop()
 
 void Application::setCursorDisabled(bool value)
 {
-	mouseDisabled = value;
+	cursorDisabled = value;
 	if (value)
 	{
 		glutSetCursor(GLUT_CURSOR_NONE);
@@ -74,7 +74,7 @@ void Application::setCursorDisabled(bool value)
 void Application::processMouseMove(int x, int y)
 {
 	mInput->setMousePos(x, y);
-	if (mouseDisabled)
+	if (cursorDisabled)
 	{
 		glutWarpPointer(windowX / 2, windowY / 2);
 		mInput->setMouseOldPos(windowX / 2, windowY / 2);
@@ -108,9 +108,6 @@ void Application::renderScene()
 
 void Application::processNormalKeys(unsigned char key, int x, int y)
 {
-	// If the ESCAPE key was pressed, exit application.
-	if (key == VK_ESCAPE)	// Escape key (in non-windows you can use 27, the ASCII value for escape)
-		exit(0);
 	// Send key down to mInput class.
 	instance->mInput->setKeyDown(key);
 }

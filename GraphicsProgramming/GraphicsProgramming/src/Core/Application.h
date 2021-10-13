@@ -38,7 +38,7 @@ private:
 
 	size_t windowX = 1280, windowY = 720;
 
-	bool mouseDisabled = false;
+	bool cursorDisabled = false;
 
 
 public:
@@ -46,6 +46,7 @@ public:
 	static size_t GetWindowY() { return instance->windowY; }
 
 	static void SetCursorDisabled(bool value) { instance->setCursorDisabled(value); }
+	static bool IsCursorDisabled() { return instance->cursorDisabled; }
 
 private:
 	static Application* instance;

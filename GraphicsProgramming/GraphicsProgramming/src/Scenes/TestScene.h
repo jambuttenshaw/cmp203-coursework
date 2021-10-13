@@ -19,12 +19,15 @@ public:
 	virtual void OnRender() override;
 
 private:
+	bool escapePressed = false;
+
 	Color globalAmbience = Color::Black;
 
 	Mesh plane;
 
 	Light redLight;
 	Light blueLight;
+	Light whiteLight;
 
 	Material planeMat;	
 	Material metallic;
