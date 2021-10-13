@@ -3,8 +3,8 @@
 // @author Paul Robertson
 
 #include "Input.h"
-#include <windows.h>
-#include <sstream>
+
+#include "glut.h"
 
 Input::Input()
 {
@@ -21,6 +21,7 @@ void Input::setKeyDown(unsigned char key)
 	{
 		keys[key] = true;
 	}
+	updateModifiers();
 }
 
 void Input::setKeyUp(unsigned char key)
@@ -29,6 +30,7 @@ void Input::setKeyUp(unsigned char key)
 	{
 		keys[key] = false;
 	}
+	updateModifiers();
 }
 
 bool Input::isKeyDown(int key)
@@ -82,6 +84,12 @@ int Input::getMouseDeltaY()
 	return mouse.dy;
 }
 
+void Input::calculateMouseDelta()
+{
+	mouse.dx = mouse.x - mouse.oldX;
+	mouse.dy = mouse.y - mouse.oldY;
+}
+
 void Input::setMouseLDown(bool b)
 {
 	mouse.left = b;
@@ -99,4 +107,12 @@ void Input::setMouseRDown(bool down)
 bool Input::isMouseRDown()
 {
 	return mouse.right;
+}
+
+void Input::updateModifiers()
+{
+	int mods = glutGetModifiers();
+	shift = mods & GLUT_ACTIVE_SHIFT;
+	ctrl = mods & GLUT_ACTIVE_CTRL;
+	alt = mods & GLUT_ACTIVE_ALT;
 }

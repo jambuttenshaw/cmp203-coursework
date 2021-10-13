@@ -23,6 +23,10 @@ public:
 	void setKeyUp(unsigned char key);
 	bool isKeyDown(int key);
 
+	bool isShiftDown() { return shift; }
+	bool isCtrlDown() { return ctrl; }
+	bool isAltDown() { return alt; }
+
 	// getters and setters for mouse buttons and position.
 	void setMouseX(int lx);
 	void setMouseY(int ly);
@@ -34,13 +38,7 @@ public:
 	int getMouseDeltaX();
 	int getMouseDeltaY();
 
-	void calculateMouseDelta()
-	{ 
-		mouse.dx = mouse.x - mouse.oldX;
-		mouse.dy = mouse.y - mouse.oldY;
-		// mouse.oldX = mouse.x;
-		// mouse.oldY = mouse.y;
-	}
+	void calculateMouseDelta();
 
 	void setMouseLDown(bool b);
 	bool isMouseLDown();
@@ -48,9 +46,13 @@ public:
 	bool isMouseRDown();
 
 private:
+	void updateModifiers();
+
+private:
 	// Boolean array, element per key
 	// Mouse struct object.
 	bool keys[256]{ false };
+	bool shift = false, ctrl = false, alt = false;
 	Mouse mouse;
 
 };

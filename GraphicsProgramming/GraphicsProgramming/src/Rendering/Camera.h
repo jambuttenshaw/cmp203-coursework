@@ -6,26 +6,32 @@
 
 class Camera
 {
+	friend class Scene;
 public:
 	Camera(Input* in) : input(in) {}
 
-	void setPosition(const Vector3& pos) { position = pos; }
-	void translate(const Vector3& translation) { position += translation; }
-	const Vector3& getPosition() { return position; };
+	inline void setPosition(const Vector3& pos) { position = pos; }
+	inline void translate(const Vector3& translation) { position += translation; }
+	inline const Vector3& getPosition() { return position; };
 
-	void setPitch(float p) { pitch = p; }
-	void changePitch(float deltaP) { pitch += deltaP; }
-	float getPitch() { return pitch; }
+	inline void setPitch(float p) { pitch = p; }
+	inline void changePitch(float deltaP) { pitch += deltaP; }
+	inline float getPitch() { return pitch; }
 
-	void setYaw(float y) { yaw = y; }
-	void changeYaw(float deltaY) { yaw += deltaY; }
-	float getYaw() { return yaw; }
+	inline void setYaw(float y) { yaw = y; }
+	inline void changeYaw(float deltaY) { yaw += deltaY; }
+	inline float getYaw() { return yaw; }
+
+	inline void setSpeed(float s) { speed = s; }
+	inline float getSpeed() { return speed; }
+	inline void setSensitivity(float s) { sensitivity = s; }
+	inline float getSensitivity() { return sensitivity; }
 
 	void Process3DControllerInputs(float dt);
 
-	void ApplyLookAt();
 
 private:
+	void ApplyLookAt();
 	void RecalculateForward();
 
 private:
@@ -42,5 +48,6 @@ private:
 
 
 	// camera controller
-	float lastX = 0, lastY = 0;
+	float speed = 5.0f;
+	float sensitivity = 10.0f;
 };

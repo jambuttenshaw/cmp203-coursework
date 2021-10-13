@@ -4,10 +4,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#include <sstream>
-#include <Windows.h>
-
-
 Application* Application::instance = nullptr;
 
 
@@ -134,21 +130,11 @@ void Application::processSpecialKeysUp(int key, int x, int y)
 
 void Application::processActiveMouseMove(int x, int y)
 {
-	std::stringstream s;
-	s << "active mouse move:";
-	s << x;
-	s << '\n';
-	OutputDebugString(s.str().c_str());
 	instance->processMouseMove(x, y);
 }
 
 void Application::processPassiveMouseMove(int x, int y)
 {
-	std::stringstream s;
-	s << "passive mouse move:";
-	s << x;
-	s << '\n';
-	OutputDebugString(s.str().c_str());
 	instance->processMouseMove(x, y);
 }
 

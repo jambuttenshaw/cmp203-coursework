@@ -8,20 +8,28 @@
 
 void Camera::Process3DControllerInputs(float dt)
 {
-	float cameraSpeed = 8.5f * dt;
+	Vector3 walkDir{ forward.x, 0.0f, forward.z };
+	walkDir.normalise();
 	if (input->isKeyDown('w'))
-		position += forward * cameraSpeed;
+		position += walkDir * speed * dt;
 	if (input->isKeyDown('s'))
-		position -= forward * cameraSpeed;
+		position -= walkDir * speed * dt;
 	if (input->isKeyDown('a'))
-		position -= forward.cross(up).normalised() * cameraSpeed;
+		position -= walkDir.cross(up).normalised() * speed * dt;
 	if (input->isKeyDown('d'))
-		position += forward.cross(up).normalised() * cameraSpeed;
+		position += walkDir.cross(up).normalised() * speed * dt;
+	
+	if (input->isKeyDown(' '))
+	{
+		if (input->isShiftDown())
+			position -= up * speed * dt;
+		else
+			position += up * speed * dt;
+	}
 
 	float xoffset =  static_cast<float>(input->getMouseDeltaX());
 	float yoffset = -static_cast<float>(input->getMouseDeltaY());
 
-	float sensitivity = 15.0f;
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 

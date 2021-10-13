@@ -67,7 +67,8 @@ void TestScene::OnRender()
 		blueLight.render(GL_LIGHT1);
 	}
 
-	Vector3 planeScale{ 5, 1, 5 };
+	float planeScaleEdge = 10.0f;
+	Vector3 planeScale{ planeScaleEdge, 1, planeScaleEdge };
 
 	planeMat.apply();
 	{
@@ -75,15 +76,15 @@ void TestScene::OnRender()
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 0, 2.5f, -2.5f }, { 90, 0, 0 }, planeScale);
+		Transform t({ 0, 0.5f * planeScaleEdge, -0.5f * planeScaleEdge }, { 90, 0, 0 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ -2.5f, 2.5f, 0 }, { 0, 0, -90 }, planeScale);
+		Transform t({ -0.5f * planeScaleEdge, 0.5f * planeScaleEdge, 0 }, { 0, 0, -90 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 2.5f, 2.5f, 0 }, { 0, 0, 90 }, planeScale);
+		Transform t({ 0.5f * planeScaleEdge, 0.5f * planeScaleEdge, 0 }, { 0, 0, 90 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 
@@ -93,9 +94,4 @@ void TestScene::OnRender()
 		Transform t({0, 0.5f, 0}, Vector3::zero, Vector3::one);
 		RenderHelper::drawSphere(0.5f, 30, 30);
 	}
-	{
-		Transform t({ 0, 0.5f, 10 }, Vector3::zero, Vector3::one);
-		RenderHelper::drawSphere(0.5f, 30, 30);
-	}
-
 }
