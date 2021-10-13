@@ -24,10 +24,9 @@ private:
 
 	Mesh plane;
 
-	Light light;
+	Light redLight;
+	Light blueLight;
 
-	float lightY = 1.5f;
-
-	Material yellowMat;	
+	Material planeMat;	
 	Material metallic;
 };

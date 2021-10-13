@@ -51,15 +51,15 @@ private:
 
 private:
 	// to be implemented by client scenes
-	virtual void OnSetup() = 0;
-	virtual void OnHandleInput(float dt) = 0;
-	virtual void OnUpdate(float dt) = 0;
-	virtual void OnPositionCamera() = 0;
-	virtual void OnRender() = 0;
+	virtual void OnSetup() {};
+	virtual void OnHandleInput(float dt) {};
+	virtual void OnUpdate(float dt) {};
+	virtual void OnPositionCamera() {};
+	virtual void OnRender() {};
 
 protected:
 	// For access to user input.
-	Input* input;
+	Input* input = nullptr;
 		
 private:
 	// For Window and frustum calculation.

@@ -48,6 +48,10 @@ public:
 	inline void setAttenuation(const Vector3& a) { attentuation = a; }
 	inline const Vector3& getAttenuation() { return attentuation; }
 
+public:
+
+	static void DisplayDebugSpheresForAllLights(bool value) { debugSpheresOnAllLights = value; }
+
 private:
 	// type
 	LightType type = LightType::Point;
@@ -73,5 +77,9 @@ private:
 
 	// attenuation
 	Vector3 attentuation = { 1, 0, 0 };
+
+private:
+
+	static bool debugSpheresOnAllLights;
 };
 

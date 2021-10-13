@@ -12,20 +12,28 @@ void TestScene::OnSetup()
 {
 	setGlobalAmbientLighting(globalAmbience);
 
-	light.setType(Light::LightType::Point);
-	light.setPosition({ 0.0f, 0.0f, 0.0f });
-	light.setDiffuseColor(Color::White);
-	light.setSpecularColor(Color::White);
-	light.setAmbientColor({ 0.3f, 0.3f, 0.3f });
-	light.setAttenuation({ 1.0f, 0.125f, 0.05f });
+	redLight.setType(Light::LightType::Point);
+	redLight.setPosition(Vector3::zero);
+	redLight.setDiffuseColor(Color::Red);
+	redLight.setSpecularColor(0.7f);
+	redLight.setAmbientColor(0.3f);
+	redLight.setAttenuation({ 1.0f, 0.125f, 0.05f });
+
+	blueLight.setType(Light::LightType::Point);
+	blueLight.setPosition(Vector3::zero);
+	blueLight.setDiffuseColor(Color::Blue);
+	blueLight.setSpecularColor(0.7f);
+	blueLight.setAmbientColor(0.3f);
+	blueLight.setAttenuation({ 1.0f, 0.125f, 0.05f });
 
 
 	plane = GeometryHelper::CreatePlane(20, 20, GeometryHelper::HeightFuncs::Flat);
 
 
 	// create a default material
-	yellowMat.setAmbientAndDiffuse({ 0.35f, 0.35f, 0, 1 });
-	yellowMat.setSpecular(0.5f);
+	planeMat.setAmbientAndDiffuse(0.9f);
+	planeMat.setSpecular(0.2f);
+	planeMat.setShininess(5);
 
 
 	metallic.setAmbientAndDiffuse({ 0.8f });
@@ -35,8 +43,6 @@ void TestScene::OnSetup()
 
 void TestScene::OnHandleInput(float dt)
 {
-	if (input->isKeyDown('w')) lightY += 0.6f * dt;
-	if (input->isKeyDown('s')) lightY -= 0.6f * dt;
 }
 
 void TestScene::OnUpdate(float dt)
@@ -52,27 +58,35 @@ void TestScene::OnRender()
 {
 
 	{
-		Transform t({ 0, lightY, 2.5f }, { 0, 0, 0 }, { 1, 1, 1 });
-		light.render(GL_LIGHT0, true);
+		Transform t({ -2, 3, -2 }, Vector3::zero, Vector3::one);
+		redLight.render(GL_LIGHT0);
+	}
+	{
+		Transform t({ 2, 3, -2 }, Vector3::zero, Vector3::one);
+		blueLight.render(GL_LIGHT1);
 	}
 
-	yellowMat.apply();
+	Vector3 planeScale{ 5, 1, 5 };
+
+	planeMat.apply();
 	{
-		Transform t({ 0, 0, 0 }, { 0, 0, 0 }, { 5, 1, 5 });
+		Transform t(Vector3::zero, Vector3::zero, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 0, 2.5f, -2.5f }, { 90, 0, 0 }, { 5, 1, 5 });
+		Transform t({ 0, 2.5f, -2.5f }, { 90, 0, 0 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ -2.5f, 2.5f, 0 }, { 0, 0, -90 }, { 5, 1, 5 });
+		Transform t({ -2.5f, 2.5f, 0 }, { 0, 0, -90 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 2.5f, 2.5f, 0 }, { 0, 0, 90 }, { 5, 1, 5 });
+		Transform t({ 2.5f, 2.5f, 0 }, { 0, 0, 90 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
+
+
 	metallic.apply();
 	{
 		Transform t({0, 0.5f, 0}, Vector3::zero, Vector3::one);

@@ -7,6 +7,9 @@
 #include "RenderHelper.h"
 #include "Transform.h"
 
+bool Light::debugSpheresOnAllLights = false;
+
+
 void Light::render(unsigned int lightID, bool debugSphere)
 {
 	if (type == LightType::Invalid) return;
@@ -32,7 +35,7 @@ void Light::render(unsigned int lightID, bool debugSphere)
 
 	// debug sphere
 
-	if (debugSphere && type != LightType::Directional)
+	if ((debugSphere || debugSpheresOnAllLights) && type != LightType::Directional)
 	{
 		glDisable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
