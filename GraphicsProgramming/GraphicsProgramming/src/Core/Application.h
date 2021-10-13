@@ -26,12 +26,26 @@ public:
 private:
 	void enterMainLoop();
 
+	void setCursorDisabled(bool value);
+
+	void processMouseMove(int x, int y);
+
 private:
 	Scene* mScene = nullptr;
 	Input* mInput = nullptr;
 
 	size_t oldTimeSinceStart = 0;
 
+	size_t windowX = 1280, windowY = 720;
+
+	bool mouseDisabled = false;
+
+
+public:
+	static size_t GetWindowX() { return instance->windowX; }
+	static size_t GetWindowY() { return instance->windowY; }
+
+	static void SetCursorDisabled(bool value) { instance->setCursorDisabled(value); }
 
 private:
 	static Application* instance;

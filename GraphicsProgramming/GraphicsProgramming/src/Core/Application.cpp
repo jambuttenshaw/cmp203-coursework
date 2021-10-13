@@ -4,6 +4,9 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include <sstream>
+#include <Windows.h>
+
 
 Application* Application::instance = nullptr;
 
@@ -17,7 +20,7 @@ Application::Application(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 	//glutInitWindowPosition(100, 100);
-	glutInitWindowSize(1280, 720);
+	glutInitWindowSize(windowX, windowY);
 	glutCreateWindow("My first triangle");
 
 	// Register callback functions for change in size and rendering.
@@ -59,8 +62,37 @@ void Application::enterMainLoop()
 	glutMainLoop();
 }
 
+void Application::setCursorDisabled(bool value)
+{
+	mouseDisabled = value;
+	if (value)
+	{
+		glutSetCursor(GLUT_CURSOR_NONE);
+	}
+	else
+	{
+		glutSetCursor(GLUT_CURSOR_INHERIT);
+	}
+}
+
+void Application::processMouseMove(int x, int y)
+{
+	mInput->setMousePos(x, y);
+	if (mouseDisabled)
+	{
+		glutWarpPointer(windowX / 2, windowY / 2);
+		mInput->setMouseOldPos(windowX / 2, windowY / 2);
+	}
+	else
+	{
+		mInput->setMouseOldPos(x, y);
+	}
+}
+
 void Application::changeSize(int w, int h)
 {
+	instance->windowX = static_cast<size_t>(w);
+	instance->windowY = static_cast<size_t>(h);
 	instance->mScene->resize(w, h);
 }
 
@@ -102,12 +134,22 @@ void Application::processSpecialKeysUp(int key, int x, int y)
 
 void Application::processActiveMouseMove(int x, int y)
 {
-	instance->mInput->setMousePos(x, y);
+	std::stringstream s;
+	s << "active mouse move:";
+	s << x;
+	s << '\n';
+	OutputDebugString(s.str().c_str());
+	instance->processMouseMove(x, y);
 }
 
 void Application::processPassiveMouseMove(int x, int y)
 {
-	instance->mInput->setMousePos(x, y);
+	std::stringstream s;
+	s << "passive mouse move:";
+	s << x;
+	s << '\n';
+	OutputDebugString(s.str().c_str());
+	instance->processMouseMove(x, y);
 }
 
 void Application::processMouseButtons(int button, int state, int x, int y)

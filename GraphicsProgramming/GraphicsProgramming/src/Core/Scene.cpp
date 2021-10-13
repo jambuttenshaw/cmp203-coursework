@@ -1,5 +1,10 @@
 #include "Scene.h"
 
+Scene::~Scene()
+{
+	if (sceneCamera != nullptr) delete sceneCamera;
+}
+
 // Scene constructor, initilises OpenGL
 // You should add further variables to need initilised.
 void Scene::init(Input *in)
@@ -11,12 +16,16 @@ void Scene::init(Input *in)
 	// Other OpenGL / render setting should be applied here.
 	glEnable(GL_LIGHTING);
 
+	sceneCamera = new Camera{ input };
+
 	// Initialise scene variables
 	OnSetup();
 }
 
 void Scene::handleInput(float dt)
 {
+	input->calculateMouseDelta();
+
 	// Handle user input
 	OnHandleInput(dt);
 
@@ -49,7 +58,7 @@ void Scene::render()
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	OnPositionCamera();
+	sceneCamera->ApplyLookAt();
 
 	// Render geometry/scene here -------------------------------------
 	OnRender();

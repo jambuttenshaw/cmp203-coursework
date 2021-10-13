@@ -10,8 +10,10 @@ class Input
 	// x, y coordinates and left/right button pressed state.
 	struct Mouse
 	{
-		int x,y;
-		bool left, right;
+		int x = 0, y = 0;
+		int oldX = 0, oldY = 0;
+		int dx = 0, dy = 0;
+		bool left = false, right = false;
 	};
 
 public:
@@ -25,8 +27,21 @@ public:
 	void setMouseX(int lx);
 	void setMouseY(int ly);
 	void setMousePos(int x, int y);
+	void setMouseOldPos(int x, int y);
+
 	int getMouseX();
 	int getMouseY();
+	int getMouseDeltaX();
+	int getMouseDeltaY();
+
+	void calculateMouseDelta()
+	{ 
+		mouse.dx = mouse.x - mouse.oldX;
+		mouse.dy = mouse.y - mouse.oldY;
+		// mouse.oldX = mouse.x;
+		// mouse.oldY = mouse.y;
+	}
+
 	void setMouseLDown(bool b);
 	bool isMouseLDown();
 	void setMouseRDown(bool down);

@@ -3,6 +3,8 @@
 // @author Paul Robertson
 
 #include "Input.h"
+#include <windows.h>
+#include <sstream>
 
 Input::Input()
 {
@@ -38,20 +40,26 @@ bool Input::isKeyDown(int key)
 	return false;
 }
 
-void Input::setMouseX(int pos)
+void Input::setMouseX(int x)
 {
-	mouse.x = pos;
+	mouse.x = x;
 }
 
-void Input::setMouseY(int pos)
+void Input::setMouseY(int y)
 {
-	mouse.y = pos;
+	mouse.y = y;
 }
 
 void Input::setMousePos(int ix, int iy)
 {
-	mouse.x = ix;
-	mouse.y = iy;
+	setMouseX(ix);
+	setMouseY(iy);
+}
+
+void Input::setMouseOldPos(int ix, int iy)
+{
+	mouse.oldX = ix;
+	mouse.oldY = iy;
 }
 
 int Input::getMouseX()
@@ -59,9 +67,19 @@ int Input::getMouseX()
 	return mouse.x;
 }
 
-int Input:: getMouseY()
+int Input::getMouseY()
 {
 	return mouse.y;
+}
+
+int Input::getMouseDeltaX()
+{
+	return mouse.dx;
+}
+
+int Input::getMouseDeltaY()
+{
+	return mouse.dy;
 }
 
 void Input::setMouseLDown(bool b)

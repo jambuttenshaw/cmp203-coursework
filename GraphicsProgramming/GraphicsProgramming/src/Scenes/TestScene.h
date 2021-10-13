@@ -16,7 +16,6 @@ public:
 	virtual void OnSetup() override;
 	virtual void OnHandleInput(float dt) override;
 	virtual void OnUpdate(float dt) override;
-	virtual void OnPositionCamera() override;
 	virtual void OnRender() override;
 
 private:

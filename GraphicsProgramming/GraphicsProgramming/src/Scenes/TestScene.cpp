@@ -4,6 +4,8 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "Core/Application.h"
+
 #include "Rendering/Transform.h"
 #include "Rendering/RenderHelper.h"
 #include "Rendering/GeometryHelper.h"
@@ -39,19 +41,18 @@ void TestScene::OnSetup()
 	metallic.setAmbientAndDiffuse({ 0.8f });
 	metallic.setSpecular(Color::White);
 	metallic.setShininess(128.0f);
+		
+	Application::SetCursorDisabled(true);
+	sceneCamera->setPosition({ 0, 3, 6 });
 }
 
 void TestScene::OnHandleInput(float dt)
 {
+	sceneCamera->Process3DControllerInputs(dt);
 }
 
 void TestScene::OnUpdate(float dt)
 {
-}
-
-void TestScene::OnPositionCamera()
-{
-	gluLookAt(0.0f, 3.0f, 9.0f, 0.0f, 2.5f, 0.0f, 0.0f, 1.0f, 0.0f);
 }
 
 void TestScene::OnRender()
@@ -90,6 +91,10 @@ void TestScene::OnRender()
 	metallic.apply();
 	{
 		Transform t({0, 0.5f, 0}, Vector3::zero, Vector3::one);
+		RenderHelper::drawSphere(0.5f, 30, 30);
+	}
+	{
+		Transform t({ 0, 0.5f, 10 }, Vector3::zero, Vector3::one);
 		RenderHelper::drawSphere(0.5f, 30, 30);
 	}
 

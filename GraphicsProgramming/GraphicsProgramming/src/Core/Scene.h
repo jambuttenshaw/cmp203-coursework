@@ -16,13 +16,14 @@
 #include "SOIL.h"
 
 #include "Core/Color.h"
+#include "Rendering/Camera.h"
 
 
 class Scene
 {
 public:
 	Scene() = default;
-	virtual ~Scene() = default;
+	virtual ~Scene();
 
 	void init(Input *in);
 	// Main render function
@@ -54,12 +55,12 @@ private:
 	virtual void OnSetup() {};
 	virtual void OnHandleInput(float dt) {};
 	virtual void OnUpdate(float dt) {};
-	virtual void OnPositionCamera() {};
 	virtual void OnRender() {};
 
 protected:
 	// For access to user input.
 	Input* input = nullptr;
+	Camera* sceneCamera = nullptr;
 		
 private:
 	// For Window and frustum calculation.
