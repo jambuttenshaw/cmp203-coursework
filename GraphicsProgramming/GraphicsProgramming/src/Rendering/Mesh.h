@@ -13,11 +13,6 @@ struct Mesh
 	std::vector<Vector2> TexCoords;
 	std::vector<int> Indices;
 
-
-	inline void setVertices(std::vector<Vector3> v) { Vertices = v; }
-	inline void setNormals(std::vector<Vector3> n) { Normals = n; }
-	inline void setIndices(std::vector<int> i) { Indices = i; }
-
 	// defined in DefaultMeshes.cpp
 	static const Mesh Quad;
 	static const Mesh Cube;

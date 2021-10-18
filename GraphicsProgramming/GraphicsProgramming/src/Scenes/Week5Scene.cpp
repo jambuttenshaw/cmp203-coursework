@@ -4,6 +4,7 @@
 
 Week5Scene::~Week5Scene()
 {
+	delete checkerTexture;
 	delete quadTexture;
 }
 
@@ -12,9 +13,16 @@ void Week5Scene::OnSetup()
 	sceneCamera->setPosition({ 0, 1, 4 });
 	glDisable(GL_LIGHTING);
 
+	const float uvScale = 50.0f;
+	plane = GeometryHelper::CreatePlane(2, 2, uvScale, uvScale);
+
 	Texture::EnableTextures();
 	quadTexture = new Texture("gfx/crate.png", true);
 	quadTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+	checkerTexture = new Texture("gfx/checked.png", true);
+	checkerTexture->SetSampleMode(Texture::SampleMode::Repeat);
+	checkerTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
 	Application::SetCursorDisabled(true);
 }
@@ -37,8 +45,11 @@ void Week5Scene::OnRender()
 {
 
 	{
-		Transform t{ Vector3::zero, Vector3::zero, {5, 1, 5} };
-		RenderHelper::drawQuad();
+		Transform t{ Vector3::zero, Vector3::zero, {50, 1, 50} };
+		
+		checkerTexture->Bind();
+		RenderHelper::drawMesh(plane);
+		checkerTexture->Unbind();
 	}
 
 	{

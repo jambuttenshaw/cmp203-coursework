@@ -18,5 +18,8 @@ private:
 	bool escapePressed = false;
 
 	Texture* quadTexture;
+	Texture* checkerTexture;
+
+	Mesh plane;
 };
 

@@ -8,10 +8,6 @@
 class GeometryHelper
 {
 public:
-	GeometryHelper() = delete;
-
-	static Mesh CreatePlane(size_t xSlices, size_t ySlices, std::function<float(float, float)> heightFunc = [](float, float) -> float {return 0; });
-
 	class HeightFuncs
 	{
 	public:
@@ -19,5 +15,11 @@ public:
 		static float Flat(float x, float y) { return 0; }
 		static float PerlinNoiseTerrain(float x, float z);
 	};
-};
 
+public:
+	GeometryHelper() = delete;
+
+	static Mesh CreatePlane(size_t xSlices, size_t ySlices,
+							float uScale = 1.0f, float vScale = 1.0f,
+							std::function<float(float, float)> heightFunc = HeightFuncs::Flat);
+};

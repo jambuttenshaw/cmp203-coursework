@@ -4,12 +4,13 @@
 
 #include <cassert>
 
-Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<float(float, float)> heightFunc)
+Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, float vScale, std::function<float(float, float)> heightFunc)
 {
 	Mesh newMesh;
 
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normals;
+	std::vector<Vector2> texCoords;
 	std::vector<int> indices;
 
 
@@ -19,7 +20,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 	float posX = -0.5f;
 	float posZ = 0.5f;
 
-	for (size_t i = 0; i < xSlices * ySlices; i++)
+	/*for (size_t i = 0; i < xSlices * ySlices; i++)
 	{
 		Vector3 v;
 		v.x = posX;
@@ -27,6 +28,10 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 		v.z = posZ;
 
 		vertices.push_back(v);
+		texCoords.push_back({
+				i * xStep * uScale,
+				i * yStep * vScale
+			});
 
 		posX += xStep;
 		if ((i + 1) % xSlices == 0)
@@ -34,6 +39,27 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 			posZ -= yStep;
 			posX = -0.5f;
 		}
+	}*/
+
+	for (size_t y = 0; y < ySlices; y++)
+	{
+		for (size_t x = 0; x < xSlices; x++)
+		{
+			Vector3 v;
+			v.x = posX;
+			v.y = heightFunc(posX, posZ);
+			v.z = posZ;
+
+			vertices.push_back(v);
+			texCoords.push_back({
+					x * xStep * uScale,
+					y * yStep * vScale
+				});
+
+			posX += xStep;
+		}
+		posZ -= yStep;
+		posX = -0.5f;
 	}
 
 	for (size_t i = 0; i < xSlices * ySlices; i++)
@@ -94,9 +120,10 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, std::function<f
 		currentIndex++;
 	}
 
-	newMesh.setVertices(vertices);
-	newMesh.setNormals(normals);
-	newMesh.setIndices(indices);
+	newMesh.Vertices = vertices;
+	newMesh.Normals = normals;
+	newMesh.TexCoords = texCoords;
+	newMesh.Indices = indices;
 
 	return newMesh;
 }

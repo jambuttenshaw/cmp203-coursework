@@ -36,7 +36,7 @@ void TestScene::OnSetup()
 	whiteLight.setAttenuation({ 1.0f, 0.12f, 0.01f });
 
 
-	plane = GeometryHelper::CreatePlane(20, 20, GeometryHelper::HeightFuncs::Flat);
+	plane = GeometryHelper::CreatePlane(20, 20);
 
 
 	// create a default material
