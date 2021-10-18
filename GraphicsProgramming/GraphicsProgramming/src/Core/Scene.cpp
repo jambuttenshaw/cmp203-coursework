@@ -15,6 +15,7 @@ void Scene::init(Input *in)
 
 	// Other OpenGL / render setting should be applied here.
 	glEnable(GL_LIGHTING);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	sceneCamera = new Camera{ input };
 

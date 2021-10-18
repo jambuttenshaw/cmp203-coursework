@@ -67,10 +67,6 @@ void TestScene::OnHandleInput(float dt)
 	sceneCamera->Process3DControllerInputs(dt);
 }
 
-void TestScene::OnUpdate(float dt)
-{
-}
-
 void TestScene::OnRender()
 {
 

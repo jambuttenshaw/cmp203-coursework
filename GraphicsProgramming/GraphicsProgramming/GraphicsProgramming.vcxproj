@@ -99,7 +99,9 @@
     <ClCompile Include="src\Rendering\Transform.cpp" />
     <ClCompile Include="src\Core\Vector3.cpp" />
     <ClCompile Include="src\Scenes\TestScene.cpp" />
+    <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="vendor\PerlinNoise.cpp" />
+    <ClCompile Include="src\Scenes\Week5Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Math.h" />
@@ -116,7 +118,9 @@
     <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Core\Vector3.h" />
     <ClInclude Include="src\Scenes\TestScene.h" />
+    <ClInclude Include="src\Rendering\Texture.h" />
     <ClInclude Include="vendor\PerlinNoise.h" />
+    <ClInclude Include="src\Scenes\Week5Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
