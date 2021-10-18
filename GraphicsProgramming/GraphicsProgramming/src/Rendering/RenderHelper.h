@@ -10,18 +10,10 @@ public:
 
 	static void drawSphere(float radius, int slices = 20, int stacks = 20);
 
+	static void drawQuad();
+
 	static void drawUnitCube();
 
 	static void drawMesh(const Mesh& mesh);
-
-private:
-	struct Vertex
-	{
-		Vector3 position;
-		Vector3 normal;
-	};
-	static const Vertex cubeVertices[];
-	static const size_t cubeIndices[];
-
 };
 

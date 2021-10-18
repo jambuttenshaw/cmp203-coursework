@@ -15,7 +15,16 @@
 // Further includes should go here:
 #include "SOIL.h"
 
+// includes that most scenes will use
 #include "Core/Color.h"
+#include "Core/Math.h"
+#include "Rendering/RenderHelper.h"
+#include "Rendering/GeometryHelper.h"
+#include "Rendering/Material.h"
+#include "Rendering/Light.h"
+#include "Rendering/Mesh.h"
+#include "Rendering/Texture.h"
+#include "Rendering/Transform.h"
 #include "Rendering/Camera.h"
 
 

@@ -4,6 +4,7 @@
 #include "Core/Input.h"
 
 #include <cassert>
+#include <type_traits>
 
 class Application
 {

@@ -89,6 +89,7 @@
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Color.cpp" />
+    <ClCompile Include="src\Rendering\DefaultMeshes.cpp" />
     <ClCompile Include="src\Rendering\Material.cpp" />
     <ClCompile Include="src\Rendering\GeometryHelper.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
