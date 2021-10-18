@@ -29,9 +29,9 @@ void RenderHelper::drawMesh(const Mesh& mesh)
 		const auto& p = mesh.Vertices[i];
 		const auto& n = mesh.Normals[i];
 		const auto& uv = mesh.TexCoords[i];
+		glTexCoord2f(uv.x, uv.y);
 		glNormal3f(n.x, n.y, n.z);
 		glVertex3f(p.x, p.y, p.z);
-		glTexCoord2f(uv.x, uv.y);
 	}
 
 	glEnd();

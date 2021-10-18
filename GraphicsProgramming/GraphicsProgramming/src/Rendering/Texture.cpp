@@ -27,10 +27,17 @@ Texture::Texture(std::string filepath, bool genMipmaps)
 	assert(textureHandle && "Failed to load texture!");
 }
 
+Texture::~Texture()
+{
+	glDeleteTextures(1, &textureHandle);
+}
+
 void Texture::SetSampleMode(SampleMode x, SampleMode y)
 {
 	sampleModeX = x;
 	sampleModeY = y;
+
+	UpdateParameters();
 }
 
 void Texture::SetFilterMode(FilterMode min, FilterMode mag)
@@ -40,17 +47,18 @@ void Texture::SetFilterMode(FilterMode min, FilterMode mag)
 
 	if (!hasMipmaps) assert(mag <= FilterMode::Linear && "This texture doesn't have mipmaps");
 	minFilter = min;
+
+	UpdateParameters();
 }
 
 void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GetGLSampleMode(sampleModeX));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GetGLSampleMode(sampleModeY));
+}
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GetGLFilterMode(minFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GetGLFilterMode(magFilter));
+void Texture::Unbind()
+{
+	glBindTexture(GL_TEXTURE_2D, NULL);
 }
 
 int Texture::GetGLSampleMode(SampleMode mode)
@@ -77,6 +85,19 @@ int Texture::GetGLFilterMode(FilterMode mode)
 	return GL_INVALID_ENUM;
 }
 
+void Texture::UpdateParameters()
+{
+	Bind();
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GetGLSampleMode(sampleModeX));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GetGLSampleMode(sampleModeY));
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GetGLFilterMode(minFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GetGLFilterMode(magFilter));
+
+	Unbind();
+}
+
 void Texture::EnableTextures()
 {
 	glEnable(GL_TEXTURE_2D);
@@ -84,6 +105,5 @@ void Texture::EnableTextures()
 
 void Texture::DisableTextures()
 {
-	glBindTexture(GL_TEXTURE_2D, NULL);
 	glDisable(GL_TEXTURE_2D);
 }

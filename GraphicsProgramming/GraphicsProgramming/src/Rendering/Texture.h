@@ -24,16 +24,21 @@ public:
 
 public:
 	Texture(std::string filepath, bool genMipmaps = false);
+	~Texture();
 
+	inline void SetSampleMode(SampleMode s) { SetSampleMode(s, s); }
 	void SetSampleMode(SampleMode x, SampleMode y);
 	void SetFilterMode(FilterMode min, FilterMode mag);
 
 	void Bind();
+	void Unbind();
 
 private:
 
 	int GetGLSampleMode(SampleMode mode);
 	int GetGLFilterMode(FilterMode mode);
+
+	void UpdateParameters();
 
 public:
 
