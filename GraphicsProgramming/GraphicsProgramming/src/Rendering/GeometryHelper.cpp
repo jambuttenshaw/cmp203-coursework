@@ -20,27 +20,6 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, f
 	float posX = -0.5f;
 	float posZ = 0.5f;
 
-	/*for (size_t i = 0; i < xSlices * ySlices; i++)
-	{
-		Vector3 v;
-		v.x = posX;
-		v.y = heightFunc(posX, posZ);
-		v.z = posZ;
-
-		vertices.push_back(v);
-		texCoords.push_back({
-				i * xStep * uScale,
-				i * yStep * vScale
-			});
-
-		posX += xStep;
-		if ((i + 1) % xSlices == 0)
-		{
-			posZ -= yStep;
-			posX = -0.5f;
-		}
-	}*/
-
 	for (size_t y = 0; y < ySlices; y++)
 	{
 		for (size_t x = 0; x < xSlices; x++)

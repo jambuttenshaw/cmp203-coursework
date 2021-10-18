@@ -19,13 +19,10 @@ void Camera::Process3DControllerInputs(float dt)
 	if (input->isKeyDown('d'))
 		position += walkDir.cross(up).normalised() * speed * dt;
 	
-	if (input->isKeyDown(' '))
-	{
-		if (input->isShiftDown())
-			position -= up * speed * dt;
-		else
-			position += up * speed * dt;
-	}
+	if (input->isKeyDown('e'))
+		position += up * speed * dt;
+	if (input->isKeyDown('q'))
+		position -= up * speed * dt;
 
 	float xoffset =  static_cast<float>(input->getMouseDeltaX());
 	float yoffset = -static_cast<float>(input->getMouseDeltaY());

@@ -17,6 +17,9 @@ public:
 private:
 	bool escapePressed = false;
 
+	Light sceneLight;
+	Light spotLight;
+
 	Texture* quadTexture;
 	Texture* checkerTexture;
 
