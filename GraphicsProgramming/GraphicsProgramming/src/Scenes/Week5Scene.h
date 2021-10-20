@@ -12,6 +12,7 @@ public:
 	// Inherited via Scene
 	virtual void OnSetup() override;
 	virtual void OnHandleInput(float dt) override;
+	virtual void OnUpdate(float dt) override;
 	virtual void OnRender() override;
 
 private:
@@ -21,7 +22,10 @@ private:
 	Light spotLight;
 
 	Texture* quadTexture;
-	Texture* checkerTexture;
+	Texture* groundTexture;
+
+	Material shiny;
+	Material defaultMat;
 
 	Mesh plane;
 };

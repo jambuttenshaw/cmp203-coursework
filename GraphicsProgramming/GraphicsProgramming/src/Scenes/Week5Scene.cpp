@@ -4,7 +4,7 @@
 
 Week5Scene::~Week5Scene()
 {
-	delete checkerTexture;
+	delete groundTexture;
 	delete quadTexture;
 }
 
@@ -12,30 +12,34 @@ void Week5Scene::OnSetup()
 {
 	sceneLight.setType(Light::LightType::Directional);
 	sceneLight.setPosition({1, 1, 1});
-	sceneLight.setDiffuseColor(0.5f);
-	sceneLight.setSpecularColor(0.7f);
+	sceneLight.setDiffuseColor(0.4f);
+	sceneLight.setSpecularColor(0.3f);
 	sceneLight.setAmbientColor(0.2f);
 
 
 	spotLight.setType(Light::LightType::Spot);
 	spotLight.setPosition(Vector3::zero);
-	spotLight.setDiffuseColor({6, 0, 0});
-	spotLight.setSpecularColor(0.7f);
-	spotLight.setAmbientColor(0.3f);
-	spotLight.setSpotExponent(50);
-	spotLight.setSpotDirection({ 0.75f, -1, 0 });
-	spotLight.setSpotCutoff(25);
+	spotLight.setDiffuseColor({ 5, 5, 5 });
+	spotLight.setSpecularColor(Color::White);
+	spotLight.setAmbientColor(0.2f);
+	spotLight.setSpotExponent(75);
+	spotLight.setSpotCutoff(15);
+	spotLight.setAttenuation({ 1, 0.2f, 0.05f });
 
 	const float uvScale = 10.0f;
-	plane = GeometryHelper::CreatePlane(100, 100, uvScale, uvScale, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	plane = GeometryHelper::CreatePlane(100, 100, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
 
 	Texture::EnableTextures();
 	quadTexture = new Texture("gfx/crate.png", true);
 	quadTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	checkerTexture = new Texture("gfx/grass.png", true);
-	checkerTexture->SetSampleMode(Texture::SampleMode::Repeat);
-	checkerTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+	groundTexture = new Texture("gfx/concrete.png", true);
+	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
+	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+	shiny.setAmbientAndDiffuse(Color::White);
+	shiny.setSpecular(Color::White);
+	shiny.setShininess(128);
 
 	Application::SetCursorDisabled(true);
 
@@ -56,28 +60,28 @@ void Week5Scene::OnHandleInput(float dt)
 	sceneCamera->Process3DControllerInputs(dt);
 }
 
+void Week5Scene::OnUpdate(float dt)
+{
+	spotLight.setPosition(sceneCamera->getPosition());
+	spotLight.setSpotDirection(sceneCamera->getForward());
+}
+
 void Week5Scene::OnRender()
 {
+	//sceneLight.render(GL_LIGHT0);
+	spotLight.render(GL_LIGHT1);
 
-	{
-		Transform t{ {0, 2, 0}, Vector3::zero, Vector3::one };
-		sceneLight.render(GL_LIGHT0);
-	}
 
-	{
-		Transform t{ {1.5f, 6, 0}, Vector3::zero, Vector3::one };
-		spotLight.render(GL_LIGHT1);
-	}
-
+	shiny.apply();
 	{
 		Transform t{ Vector3::zero, Vector3::zero, {30, 1, 30} };
 		
-		checkerTexture->Bind();
+		groundTexture->Bind();
 		RenderHelper::drawMesh(plane);
-		checkerTexture->Unbind();
+		groundTexture->Unbind();
 	}
 
-	
+	defaultMat.apply();
 	{
 		Transform t{ {5, 0.5f, 0}, Vector3::zero, Vector3::one };
 

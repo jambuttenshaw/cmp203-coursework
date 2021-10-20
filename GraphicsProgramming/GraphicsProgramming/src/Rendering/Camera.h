@@ -29,6 +29,8 @@ public:
 
 	void Process3DControllerInputs(float dt);
 
+	inline const Vector3& getForward() { return forward; }
+	inline const Vector3& getUp() { return up; }
 
 private:
 	void ApplyLookAt();

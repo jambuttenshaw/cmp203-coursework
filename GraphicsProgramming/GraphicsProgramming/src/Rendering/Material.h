@@ -29,7 +29,7 @@ public:
 	inline float getShininess() { return shininess; }
 
 private:
-	Color ambient = Color::Black;
+	Color ambient = Color::White;
 	Color diffuse = Color::White;
 	Color specular = Color::Black;
 

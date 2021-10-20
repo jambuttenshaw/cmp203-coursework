@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Vector2.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Color.cpp" />
@@ -97,16 +98,16 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Rendering\RenderHelper.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
+    <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="src\Rendering\Transform.cpp" />
     <ClCompile Include="src\Core\Vector3.cpp" />
     <ClCompile Include="src\Scenes\TestScene.cpp" />
-    <ClCompile Include="src\Rendering\Texture.cpp" />
-    <ClCompile Include="src\Core\Vector2.cpp" />
-    <ClCompile Include="vendor\PerlinNoise.cpp" />
     <ClCompile Include="src\Scenes\Week5Scene.cpp" />
+    <ClCompile Include="vendor\PerlinNoise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Math.h" />
+    <ClInclude Include="src\Core\Vector2.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Rendering\Material.h" />
@@ -117,13 +118,12 @@
     <ClInclude Include="src\Rendering\Mesh.h" />
     <ClInclude Include="src\Rendering\RenderHelper.h" />
     <ClInclude Include="src\Core\Scene.h" />
+    <ClInclude Include="src\Rendering\Texture.h" />
     <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Core\Vector3.h" />
     <ClInclude Include="src\Scenes\TestScene.h" />
-    <ClInclude Include="src\Rendering\Texture.h" />
-    <ClInclude Include="src\Core\Vector2.h" />
-    <ClInclude Include="vendor\PerlinNoise.h" />
     <ClInclude Include="src\Scenes\Week5Scene.h" />
+    <ClInclude Include="vendor\PerlinNoise.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
