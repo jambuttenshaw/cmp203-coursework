@@ -6,8 +6,6 @@
 
 Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, float vScale, std::function<float(float, float)> heightFunc)
 {
-	Mesh newMesh;
-
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normals;
 	std::vector<Vector2> texCoords;
@@ -99,12 +97,12 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, f
 		currentIndex++;
 	}
 
-	newMesh.Vertices = vertices;
-	newMesh.Normals = normals;
-	newMesh.TexCoords = texCoords;
-	newMesh.Indices = indices;
-
-	return newMesh;
+	return Mesh{
+		vertices,
+		normals,
+		texCoords,
+		indices
+	};
 }
 
 float GeometryHelper::HeightFuncs::PerlinNoiseTerrain(float x, float z)

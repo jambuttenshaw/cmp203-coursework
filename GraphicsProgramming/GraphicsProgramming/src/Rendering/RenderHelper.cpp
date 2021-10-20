@@ -26,12 +26,10 @@ void RenderHelper::drawMesh(const Mesh& mesh)
 
 	for (auto i : mesh.Indices)
 	{
-		const auto& p = mesh.Vertices[i];
-		const auto& n = mesh.Normals[i];
-		const auto& uv = mesh.TexCoords[i];
-		glTexCoord2f(uv.x, uv.y);
-		glNormal3f(n.x, n.y, n.z);
-		glVertex3f(p.x, p.y, p.z);
+		const auto& v = mesh.Vertices[i];
+		glTexCoord2f(v.TexCoord.x, v.TexCoord.y);
+		glNormal3f(v.Normal.x, v.Normal.y, v.Normal.z);
+		glVertex3f(v.Position.x, v.Position.y, v.Position.z);
 	}
 
 	glEnd();
