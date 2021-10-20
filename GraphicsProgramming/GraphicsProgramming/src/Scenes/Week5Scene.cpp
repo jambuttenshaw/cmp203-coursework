@@ -27,7 +27,7 @@ void Week5Scene::OnSetup()
 	spotLight.setAttenuation({ 1, 0.2f, 0.05f });
 
 	const float uvScale = 10.0f;
-	plane = GeometryHelper::CreatePlane(100, 100, Vector3::up, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
+	plane = GeometryHelper::CreatePlane(16, 16, Vector3::up, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
 
 
 	cube = GeometryHelper::CreateUnitCube(16);
@@ -37,13 +37,9 @@ void Week5Scene::OnSetup()
 	quadTexture = new Texture("gfx/crate.png", true);
 	quadTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	groundTexture = new Texture("gfx/concrete.png", true);
+	groundTexture = new Texture("gfx/floor.png", true);
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
-
-	shiny.setAmbientAndDiffuse(Color::White);
-	shiny.setSpecular(Color::White);
-	shiny.setShininess(128);
 
 	Application::SetCursorDisabled(true);
 
@@ -78,9 +74,10 @@ void Week5Scene::OnRender()
 
 	defaultMat.apply();
 	{
-		Transform t{ Vector3::zero, Vector3::zero, {8, 8, 8} };
+		//Transform t{ Vector3::zero, Vector3::zero, {8, 8, 8} };
+		Transform t{ Vector3::zero, Vector3::zero, Vector3::one };
 		
-		groundTexture->Bind();
+		//groundTexture->Bind();
 		RenderHelper::drawMesh(plane);
 		groundTexture->Unbind();
 	}
@@ -88,7 +85,7 @@ void Week5Scene::OnRender()
 	{
 		Transform t{ {5, 0.5f, 0}, Vector3::zero, Vector3::one };
 
-		quadTexture->Bind();
+		//quadTexture->Bind();
 		RenderHelper::drawMesh(cube);
 		quadTexture->Unbind();
 	}

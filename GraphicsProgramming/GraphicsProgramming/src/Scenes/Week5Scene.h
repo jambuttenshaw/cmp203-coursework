@@ -24,7 +24,6 @@ private:
 	Texture* quadTexture;
 	Texture* groundTexture;
 
-	Material shiny;
 	Material defaultMat;
 
 	Mesh plane;

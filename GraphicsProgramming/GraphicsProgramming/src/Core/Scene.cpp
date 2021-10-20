@@ -34,7 +34,18 @@ void Scene::handleInput(float dt)
 	{
 		wireframeKeyHeld = true;
 		wireframe = !wireframe;
-		glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
+		if (wireframe)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			Texture::DisableTextures();
+			glDisable(GL_LIGHTING);
+		}
+		else
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			Texture::EnableTextures();
+			glEnable(GL_LIGHTING);
+		}
 	}
 	else if (!input->isKeyDown('r') && wireframeKeyHeld)
 	{
