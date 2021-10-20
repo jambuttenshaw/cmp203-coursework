@@ -3,8 +3,9 @@
 #include "PerlinNoise.h"
 
 #include <cassert>
+#include <array>
 
-Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, float vScale, std::function<float(float, float)> heightFunc)
+Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc)
 {
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normals;
@@ -12,20 +13,21 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, f
 	std::vector<int> indices;
 
 
+	Vector3 axisA{ up.y, up.z, up.x };
+	Vector3 axisB = axisA.cross(up);
+
+
 	float xStep = 1.0f / (xSlices - 1);
 	float yStep = 1.0f / (ySlices - 1);
 
 	float posX = -0.5f;
-	float posZ = 0.5f;
+	float posY = 0.5f;
 
 	for (size_t y = 0; y < ySlices; y++)
 	{
 		for (size_t x = 0; x < xSlices; x++)
 		{
-			Vector3 v;
-			v.x = posX;
-			v.y = heightFunc(posX, posZ);
-			v.z = posZ;
+			Vector3 v{ axisA * posX + axisB * posY + up * heightFunc(posX, posY) };
 
 			vertices.push_back(v);
 			texCoords.push_back({
@@ -35,7 +37,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, f
 
 			posX += xStep;
 		}
-		posZ -= yStep;
+		posY -= yStep;
 		posX = -0.5f;
 	}
 
@@ -103,6 +105,37 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, float uScale, f
 		texCoords,
 		indices
 	};
+}
+
+Mesh GeometryHelper::CreateUnitCube(size_t resolution)
+{
+	Mesh unitCube;
+	std::array<Vector3, 6> faceDirections =
+	{
+		Vector3{  1,  0,  0 },
+		Vector3{ -1,  0,  0 },
+		Vector3{  0,  1,  0 },
+		Vector3{  0, -1,  0 },
+		Vector3{  0,  0,  1 },
+		Vector3{  0,  0, -1 }
+	};
+	for (const auto& dir : faceDirections)
+	{
+		Mesh face = CreatePlane(resolution, resolution, dir, 1.0f, 1.0f, [](float x, float z)->float { return 0.5f; });
+		CombineMeshes(unitCube, face);
+	}
+	return unitCube;
+}
+
+void GeometryHelper::CombineMeshes(Mesh& a, Mesh& b)
+{
+	// offset the indices in b by how many vertices are already in a
+	size_t aVertexCount = a.Vertices.size();
+	for (auto& index : b.Indices) index += aVertexCount;
+
+	a.Vertices.insert(a.Vertices.end(), b.Vertices.begin(), b.Vertices.end());
+
+	a.Indices.insert(a.Indices.end(), b.Indices.begin(), b.Indices.end());
 }
 
 float GeometryHelper::HeightFuncs::PerlinNoiseTerrain(float x, float z)

@@ -28,5 +28,6 @@ private:
 	Material defaultMat;
 
 	Mesh plane;
+	Mesh cube;
 };
 

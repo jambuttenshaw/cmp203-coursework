@@ -27,7 +27,11 @@ void Week5Scene::OnSetup()
 	spotLight.setAttenuation({ 1, 0.2f, 0.05f });
 
 	const float uvScale = 10.0f;
-	plane = GeometryHelper::CreatePlane(100, 100, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
+	plane = GeometryHelper::CreatePlane(100, 100, Vector3::up, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
+
+
+	cube = GeometryHelper::CreateUnitCube(16);
+
 
 	Texture::EnableTextures();
 	quadTexture = new Texture("gfx/crate.png", true);
@@ -72,21 +76,20 @@ void Week5Scene::OnRender()
 	spotLight.render(GL_LIGHT1);
 
 
-	shiny.apply();
+	defaultMat.apply();
 	{
-		Transform t{ Vector3::zero, Vector3::zero, {30, 1, 30} };
+		Transform t{ Vector3::zero, Vector3::zero, {8, 8, 8} };
 		
 		groundTexture->Bind();
 		RenderHelper::drawMesh(plane);
 		groundTexture->Unbind();
 	}
 
-	defaultMat.apply();
 	{
 		Transform t{ {5, 0.5f, 0}, Vector3::zero, Vector3::one };
 
 		quadTexture->Bind();
-		RenderHelper::drawUnitCube();
+		RenderHelper::drawMesh(cube);
 		quadTexture->Unbind();
 	}
 	

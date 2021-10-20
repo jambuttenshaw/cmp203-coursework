@@ -17,6 +17,11 @@ Vector3::Vector3(float x, float y, float z) {
 	this->z = z;
 }
 
+Vector3::Vector3(float xyz)
+	: x(xyz), y(xyz), z(xyz)
+{
+}
+
 Vector3 Vector3::copy() {
 	Vector3 copy(
 		this->x,
