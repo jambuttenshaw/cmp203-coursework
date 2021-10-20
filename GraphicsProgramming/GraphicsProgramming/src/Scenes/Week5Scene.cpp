@@ -19,15 +19,15 @@ void Week5Scene::OnSetup()
 
 	spotLight.setType(Light::LightType::Spot);
 	spotLight.setPosition(Vector3::zero);
-	spotLight.setDiffuseColor({ 5, 5, 5 });
+	spotLight.setDiffuseColor({ 4, 4, 4 });
 	spotLight.setSpecularColor(Color::White);
 	spotLight.setAmbientColor(0.2f);
-	spotLight.setSpotExponent(75);
-	spotLight.setSpotCutoff(15);
+	spotLight.setSpotExponent(40);
+	spotLight.setSpotCutoff(25);
 	spotLight.setAttenuation({ 1, 0.2f, 0.05f });
 
 	const float uvScale = 10.0f;
-	plane = GeometryHelper::CreatePlane(16, 16, Vector3::up, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
+	plane = GeometryHelper::CreatePlane(128, 128, Vector3::up, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
 
 
 	cube = GeometryHelper::CreateUnitCube(16);
@@ -74,10 +74,9 @@ void Week5Scene::OnRender()
 
 	defaultMat.apply();
 	{
-		//Transform t{ Vector3::zero, Vector3::zero, {8, 8, 8} };
-		Transform t{ Vector3::zero, Vector3::zero, Vector3::one };
+		Transform t{ Vector3::zero, Vector3::zero, {10, 10, 10} };
 		
-		//groundTexture->Bind();
+		groundTexture->Bind();
 		RenderHelper::drawMesh(plane);
 		groundTexture->Unbind();
 	}
@@ -85,7 +84,7 @@ void Week5Scene::OnRender()
 	{
 		Transform t{ {5, 0.5f, 0}, Vector3::zero, Vector3::one };
 
-		//quadTexture->Bind();
+		quadTexture->Bind();
 		RenderHelper::drawMesh(cube);
 		quadTexture->Unbind();
 	}
