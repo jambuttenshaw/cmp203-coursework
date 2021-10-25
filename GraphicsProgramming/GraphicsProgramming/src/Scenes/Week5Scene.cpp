@@ -12,7 +12,7 @@ void Week5Scene::OnSetup()
 {
 	sceneLight.setType(Light::LightType::Directional);
 	sceneLight.setPosition({1, 1, 1});
-	sceneLight.setDiffuseColor(0.4f);
+	sceneLight.setDiffuseColor(0.9f);
 	sceneLight.setSpecularColor(0.3f);
 	sceneLight.setAmbientColor(0.2f);
 
@@ -68,8 +68,8 @@ void Week5Scene::OnUpdate(float dt)
 
 void Week5Scene::OnRender()
 {
-	//sceneLight.render(GL_LIGHT0);
-	spotLight.render(GL_LIGHT1);
+	sceneLight.render(GL_LIGHT0);
+	//spotLight.render(GL_LIGHT1);
 
 
 	defaultMat.apply();
@@ -82,7 +82,7 @@ void Week5Scene::OnRender()
 	}
 
 	{
-		Transform t{ {5, 0.5f, 0}, Vector3::zero, Vector3::one };
+		Transform t{ {0, 0.5f, 0}, Vector3::zero, Vector3::one };
 
 		quadTexture->Bind();
 		RenderHelper::drawMesh(cube);
