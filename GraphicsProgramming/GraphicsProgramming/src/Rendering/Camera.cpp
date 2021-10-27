@@ -10,17 +10,26 @@ void Camera::Process3DControllerInputs(float dt)
 {
 	// do not walk up or down the y-axis
 	Vector3 walkDir{ forward.x, 0.0f, forward.z };
-	walkDir.normalise();
+
+	// movement variable is used to make sure that the camera doesn't move faster
+	// when 'W' and 'A' are held for example
+	Vector3 movement;
 
 	// keyboard inputs to move the cameras position
 	if (input->isKeyDown('w'))
-		position += walkDir * speed * dt;
+		movement += walkDir;
 	if (input->isKeyDown('s'))
-		position -= walkDir * speed * dt;
+		movement -= walkDir;
 	if (input->isKeyDown('a'))
-		position -= walkDir.cross(up).normalised() * speed * dt;
+		movement -= walkDir.cross(up).normalised();
 	if (input->isKeyDown('d'))
-		position += walkDir.cross(up).normalised() * speed * dt;
+		movement += walkDir.cross(up).normalised();
+
+	if (movement.lengthSquared() > 0)
+	{
+		movement.normalise();
+		position += movement * speed * dt;
+	}
 
 	// control the cameras height with E and Q
 	if (input->isKeyDown('e'))
