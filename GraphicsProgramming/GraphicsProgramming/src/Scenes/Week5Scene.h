@@ -16,17 +16,21 @@ public:
 	virtual void OnRender() override;
 
 private:
-	bool escapePressed = false;
-
 	Light sceneLight;
 	Light spotLight;
 
 	Texture* quadTexture;
 	Texture* groundTexture;
+	Texture* metalTexture;
 
 	Material defaultMat;
+	Material metalMat;
 
 	Mesh plane;
 	Mesh cube;
+
+
+	// gameplay
+	bool spotOn = false;
 };
 
