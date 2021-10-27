@@ -4,6 +4,7 @@
 
 Week5Scene::~Week5Scene()
 {
+	delete secondCamera;
 	delete groundTexture;
 	delete quadTexture;
 	delete metalTexture;
@@ -12,6 +13,10 @@ Week5Scene::~Week5Scene()
 void Week5Scene::OnSetup()
 {
 	setGlobalAmbientLighting(Color::Black);
+
+	secondCamera = new Camera{ input };
+	secondCamera->setPitch(-89);
+	secondCamera->setPosition({ 0, 6, 0 });
 
 	sceneLight.setType(Light::LightType::Directional);
 	sceneLight.setPosition({1, 1, 1});
@@ -33,7 +38,7 @@ void Week5Scene::OnSetup()
 	plane = GeometryHelper::CreatePlane(128, 128, Vector3::up, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
 
 
-	cube = GeometryHelper::CreateUnitCube(16);
+	cube = GeometryHelper::CreateUnitCube(32);
 
 
 	Texture::EnableTextures();
@@ -63,13 +68,23 @@ void Week5Scene::OnHandleInput(float dt)
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
 		input->setKeyUp(VK_ESCAPE);
 	}
-	sceneCamera->Process3DControllerInputs(dt);
 
 
 	if (input->isMouseLDown())
 	{
 		spotOn = !spotOn;
 		input->setMouseLDown(false);
+	}
+
+	if (input->isMouseRDown())
+	{
+		setCurrentCamera(secondCamera);
+		secondCamera->Process3DControllerInputs(dt);
+	}
+	else
+	{
+		setCurrentCamera(sceneCamera);
+		sceneCamera->Process3DControllerInputs(dt);
 	}
 
 }

@@ -16,12 +16,14 @@ public:
 	virtual void OnRender() override;
 
 private:
+	Camera* secondCamera = nullptr;
+
 	Light sceneLight;
 	Light spotLight;
 
-	Texture* quadTexture;
-	Texture* groundTexture;
-	Texture* metalTexture;
+	Texture* quadTexture = nullptr;
+	Texture* groundTexture = nullptr;
+	Texture* metalTexture = nullptr;
 
 	Material defaultMat;
 	Material metalMat;
