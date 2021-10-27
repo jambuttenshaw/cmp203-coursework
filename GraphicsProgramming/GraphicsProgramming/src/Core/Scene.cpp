@@ -19,6 +19,7 @@ void Scene::init(Input *in)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	sceneCamera = new Camera{ input };
+	currentCamera = sceneCamera;
 
 	// Initialise scene variables
 	OnSetup();
@@ -71,7 +72,7 @@ void Scene::render()
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	sceneCamera->ApplyLookAt();
+	currentCamera->ApplyLookAt();
 
 	// Render geometry/scene here -------------------------------------
 	OnRender();
