@@ -6,6 +6,7 @@
 
 #include "Core/Math.h"
 
+
 void Camera::Process3DControllerInputs(float dt)
 {
 	// do not walk up or down the y-axis
@@ -62,9 +63,9 @@ void Camera::ApplyLookAt()
 void Camera::RecalculateForward()
 {
 	// calculate forward vector
-	forward.x = static_cast<float>(cos(Math::radians(yaw)) * cos(Math::radians(pitch)));
-	forward.y = static_cast<float>(sin(Math::radians(pitch)));
-	forward.z = static_cast<float>(sin(Math::radians(yaw)) * cos(Math::radians(pitch)));
+	forward.x = cosf(Math::radians(yaw)) * cosf(Math::radians(pitch));
+	forward.y = sinf(Math::radians(pitch));
+	forward.z = sinf(Math::radians(yaw)) * cosf(Math::radians(pitch));
 	// make sure it is normalized
 	forward.normalise();
 }
