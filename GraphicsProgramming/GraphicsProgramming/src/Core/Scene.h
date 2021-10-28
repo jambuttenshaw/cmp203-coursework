@@ -48,6 +48,7 @@ protected:
 
 	// for use by the client scene
 	void setGlobalAmbientLighting(const Color& c);
+	inline void setCurrentCamera(Camera* cam) { currentCamera = cam; }
 
 private:
 	// configure opengl render pipeline
@@ -59,7 +60,7 @@ private:
 	void calculateFPS();
 
 
-private:
+protected:
 	// to be implemented by client scenes
 	virtual void OnSetup() {};
 	virtual void OnHandleInput(float dt) {};
@@ -83,6 +84,9 @@ private:
 
 	bool wireframe = false;
 	bool wireframeKeyHeld = false;
+
+	// the camera to render from 
+	Camera* currentCamera = nullptr;
 };
 
 #endif

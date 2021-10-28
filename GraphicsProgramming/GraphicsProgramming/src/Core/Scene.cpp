@@ -19,6 +19,7 @@ void Scene::init(Input *in)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	sceneCamera = new Camera{ input };
+	currentCamera = sceneCamera;
 
 	// Initialise scene variables
 	OnSetup();
@@ -71,7 +72,7 @@ void Scene::render()
 	// Reset transformations
 	glLoadIdentity();
 	// Set the camera
-	sceneCamera->ApplyLookAt();
+	currentCamera->ApplyLookAt();
 
 	// Render geometry/scene here -------------------------------------
 	OnRender();
@@ -164,6 +165,8 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 	int j = strlen(string);
 
 	// Swap to 2D rendering
+	bool lightingEnabled = glIsEnabled(GL_LIGHTING);
+	if (lightingEnabled) glDisable(GL_LIGHTING);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1.0, 1.0, -1.0, 1.0, 5, 100);
@@ -187,4 +190,5 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 	glLoadIdentity();
 	gluPerspective(fov, ((float)width/(float)height), nearPlane, farPlane);
 	glMatrixMode(GL_MODELVIEW);
+	if (lightingEnabled) glEnable(GL_LIGHTING);
 }
