@@ -70,11 +70,11 @@ std::vector<float> Shadow::buildShadowVolume(float lightPosit[4], std::vector<fl
 
 	// For each vertex of the shadow casting object, find the edge 
 	// that it helps define and extrude a quad out from that edge.
-	for (int i = 0; i < verts.size(); i += 3)
+	for (size_t i = 0; i < verts.size(); i += 3)
 	{
 		// Define the edge we're currently working on extruding...
-		int e0 = i;
-		int e1 = i + 3;
+		size_t e0 = i;
+		size_t e1 = i + 3;
 
 		// If the edge's second vertex is out of array range, 
 		// place it back at 0

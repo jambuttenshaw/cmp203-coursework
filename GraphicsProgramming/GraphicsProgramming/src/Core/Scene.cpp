@@ -164,9 +164,11 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 	// Get Lenth of string
 	int j = strlen(string);
 
+	// disable lighting
+	glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_LIGHTING);
+
 	// Swap to 2D rendering
-	bool lightingEnabled = glIsEnabled(GL_LIGHTING);
-	if (lightingEnabled) glDisable(GL_LIGHTING);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1.0, 1.0, -1.0, 1.0, 5, 100);
@@ -190,5 +192,7 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 	glLoadIdentity();
 	gluPerspective(fov, ((float)width/(float)height), nearPlane, farPlane);
 	glMatrixMode(GL_MODELVIEW);
-	if (lightingEnabled) glEnable(GL_LIGHTING);
+
+	// pop back to existing state
+	glPopAttrib();
 }

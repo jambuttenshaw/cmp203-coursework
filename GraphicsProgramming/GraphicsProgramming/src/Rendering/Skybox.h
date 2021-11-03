@@ -28,11 +28,10 @@ public:
 
 public:
 	Skybox(const std::string& filepath);
-	~Skybox();
 
 
 	void setFaceUVOffset(Face face, const Vector2& offset);
-	void setFaceUVScale(Face face, const Vector2& scale);
+	void setFaceUVDimensions(Face face, const Vector2& size);
 
 
 	void render(const Vector3& position);

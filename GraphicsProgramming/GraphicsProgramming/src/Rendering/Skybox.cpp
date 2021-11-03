@@ -65,10 +65,6 @@ Skybox::Skybox(const std::string& filepath)
 	}
 }
 
-Skybox::~Skybox()
-{
-}
-
 void Skybox::setFaceUVOffset(Face face, const Vector2& offset)
 {
 	if (face == Face::None) return;
@@ -82,7 +78,7 @@ void Skybox::setFaceUVOffset(Face face, const Vector2& offset)
 	}
 }
 
-void Skybox::setFaceUVScale(Face face, const Vector2& scale)
+void Skybox::setFaceUVDimensions(Face face, const Vector2& size)
 {
 	if (face == Face::None) return;
 	if (face == Face::All)
@@ -90,7 +86,7 @@ void Skybox::setFaceUVScale(Face face, const Vector2& scale)
 		for (auto& face : mFaceData)
 		{
 			FaceData& fD = face.second;
-			fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, scale.x, scale.y,
+			fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, size.x, size.y,
 				[](float x, float y) -> float { return -0.5f; },
 				fD.tangent, fD.bitangent);
 		}
@@ -98,7 +94,7 @@ void Skybox::setFaceUVScale(Face face, const Vector2& scale)
 	else
 	{
 		FaceData& fD = mFaceData[face];
-		fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, scale.x, scale.y,
+		fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, size.x, size.y,
 			[](float x, float y) -> float { return -0.5f; },
 			fD.tangent, fD.bitangent);
 	}
@@ -119,51 +115,24 @@ void Skybox::render(const Vector3& position)
 	Transform t{ position };
 	
 	glBegin(GL_TRIANGLES);
-
 	for (auto& face : mFaceData)
 	{
 		FaceData& fD = face.second;
-
-
 		
+		// draw the indices in the mesh
 		for (auto& i : fD.planeMesh.Indices)
 		{
-
 			auto& v = fD.planeMesh.Vertices[i];
 
+			// the texture coords will be offset inside the texture depending on what face were drawing
 			Vector2 adjustedTexCoord = v.TexCoord + fD.uvOffset;
 
 			glTexCoord2fv(adjustedTexCoord.ptr());
 			glNormal3fv(v.Normal.ptr());
 			glVertex3fv(v.Position.ptr());
-
 		}
-
-
 	}
-
 	glEnd();
-
-	// FaceData face;
-	// 
-	// 
-	// glBegin(GL_QUADS);
-	// 
-	// // right face
-	// face = mFaceData[Face::Right];
-	// glNormal3fv(face.normal.ptr());
-	// 
-	// glTexCoord2fv(face.topleftUV.ptr());
-	// glVertex3f(1, 1, -1);
-	// glTexCoord2f(face.topleftUV.x, face.bottomRightUV.y);
-	// glVertex3f(1, -1, -1);
-	// glTexCoord2fv(face.bottomRightUV.ptr());
-	// glVertex3f(1, -1,  1);
-	// glTexCoord2f(face.bottomRightUV.x, face.topleftUV.y);
-	// glVertex3f(1, 1,  1);
-	// 
-	// glEnd();
-
 
 	// revert opengl state
 	glPopAttrib();

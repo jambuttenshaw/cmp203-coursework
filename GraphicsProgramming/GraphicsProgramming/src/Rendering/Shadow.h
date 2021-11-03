@@ -4,7 +4,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <vector>
-#include "Vector3.h"
+#include "Core/Vector3.h"
 
 class Shadow
 {
