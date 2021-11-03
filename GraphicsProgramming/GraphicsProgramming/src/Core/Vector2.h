@@ -1,5 +1,8 @@
 #include <math.h>
 
+#ifndef _VECTOR2_H_
+#define _VECTOR2_H_
+
 class Vector2 {
 
 public:
@@ -53,3 +56,5 @@ public:
 	static const Vector2 left;
 	static const Vector2 right;
 };
+
+#endif

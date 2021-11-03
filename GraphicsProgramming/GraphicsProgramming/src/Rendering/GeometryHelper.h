@@ -22,7 +22,8 @@ public:
 	static Mesh CreatePlane(size_t xSlices, size_t ySlices,
 							Vector3 up = Vector3::up,
 							float uScale = 1.0f, float vScale = 1.0f,
-							std::function<float(float, float)> heightFunc = HeightFuncs::Flat);
+							std::function<float(float, float)> heightFunc = HeightFuncs::Flat,
+							Vector3 tangent = Vector3::zero, Vector3 bitangent = Vector3::zero);
 
 	static Mesh CreateUnitCube(size_t resolution);
 

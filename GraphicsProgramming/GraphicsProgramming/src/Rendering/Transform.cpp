@@ -4,6 +4,11 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+Transform::Transform(Vector3 translation)
+	: Transform(translation, Vector3::zero, Vector3::one)
+{
+}
+
 Transform::Transform(Vector3 t, Vector3 r, Vector3 s)
 {
 	glPushMatrix();

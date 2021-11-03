@@ -5,16 +5,18 @@
 #include <cassert>
 #include <array>
 
-Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc)
+Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc, Vector3 tangent, Vector3 bitangent)
 {
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normals;
 	std::vector<Vector2> texCoords;
 	std::vector<int> indices;
 
-
-	Vector3 axisA{ up.y, up.z, up.x };
-	Vector3 axisB = axisA.cross(up);
+	if (tangent.equals(Vector3::zero) || bitangent.equals(Vector3::zero))
+	{
+		tangent = { up.z, up.x, up.y };
+		bitangent = tangent.cross(up);
+	}
 
 
 	float xStep = 1.0f / (xSlices - 1);
@@ -27,7 +29,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 	{
 		for (size_t x = 0; x < xSlices; x++)
 		{
-			Vector3 v{ axisA * posX + axisB * posY + up * heightFunc(posX, posY) };
+			Vector3 v{ tangent * posX + bitangent * posY + up * heightFunc(posX, posY) };
 
 			vertices.push_back(v);
 			texCoords.push_back({
