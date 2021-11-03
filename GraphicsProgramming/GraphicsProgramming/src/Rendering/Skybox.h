@@ -20,12 +20,19 @@ public:
 		Top,
 		Bottom,
 		Front,
-		Back
+		Back,
+		// special values for setting up skybox
+		None,
+		All
 	};
 
 public:
 	Skybox(const std::string& filepath);
 	~Skybox();
+
+
+	void setFaceUVOffset(Face face, const Vector2& offset);
+	void setFaceUVScale(Face face, const Vector2& scale);
 
 
 	void render(const Vector3& position);

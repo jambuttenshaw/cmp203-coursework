@@ -69,6 +69,41 @@ Skybox::~Skybox()
 {
 }
 
+void Skybox::setFaceUVOffset(Face face, const Vector2& offset)
+{
+	if (face == Face::None) return;
+	if (face == Face::All)
+	{
+		for (auto& face : mFaceData) face.second.uvOffset = offset;
+	}
+	else
+	{
+		mFaceData[face].uvOffset = offset;
+	}
+}
+
+void Skybox::setFaceUVScale(Face face, const Vector2& scale)
+{
+	if (face == Face::None) return;
+	if (face == Face::All)
+	{
+		for (auto& face : mFaceData)
+		{
+			FaceData& fD = face.second;
+			fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, scale.x, scale.y,
+				[](float x, float y) -> float { return -0.5f; },
+				fD.tangent, fD.bitangent);
+		}
+	}
+	else
+	{
+		FaceData& fD = mFaceData[face];
+		fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, scale.x, scale.y,
+			[](float x, float y) -> float { return -0.5f; },
+			fD.tangent, fD.bitangent);
+	}
+}
+
 void Skybox::render(const Vector3& position)
 {
 	// set up opengl state
