@@ -43,6 +43,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 		posX = -0.5f;
 	}
 
+	// recalculation of tangent and bitangent are required as the surface may no longer be flat
 	for (size_t i = 0; i < xSlices * ySlices; i++)
 	{
 		// tangent calculation

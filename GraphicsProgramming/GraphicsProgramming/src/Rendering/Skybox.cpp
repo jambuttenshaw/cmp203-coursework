@@ -103,8 +103,9 @@ void Skybox::setFaceUVDimensions(Face face, const Vector2& size)
 void Skybox::render(const Vector3& position)
 {
 	// set up opengl state
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glPushAttrib(GL_ENABLE_BIT);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_COLOR_MATERIAL);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 
@@ -133,6 +134,10 @@ void Skybox::render(const Vector3& position)
 		}
 	}
 	glEnd();
+
+	// unbind texture
+	mTexture.Unbind();
+
 
 	// revert opengl state
 	glPopAttrib();

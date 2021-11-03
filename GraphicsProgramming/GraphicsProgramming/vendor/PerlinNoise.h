@@ -1,5 +1,9 @@
 #include <vector>
 
+
+// FROM https://github.com/sol-prog/Perlin_Noise
+
+
 // THIS CLASS IS A TRANSLATION TO C++11 FROM THE REFERENCE
 // JAVA IMPLEMENTATION OF THE IMPROVED PERLIN FUNCTION (see http://mrl.nyu.edu/~perlin/noise/)
 // THE ORIGINAL JAVA IMPLEMENTATION IS COPYRIGHT 2002 KEN PERLIN

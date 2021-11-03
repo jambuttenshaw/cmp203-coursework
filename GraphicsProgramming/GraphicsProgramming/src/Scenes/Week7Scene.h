@@ -18,6 +18,15 @@ protected:
 
 
 private:
+	Material defaultMat;
+
+	Mesh ground;
+	Texture* groundTexture = nullptr;
+
+	Mesh cube;
+	Material metal;
+	Texture* metalTexture = nullptr;
+
 	Light dirLight;
 	Skybox* skybox = nullptr;
 

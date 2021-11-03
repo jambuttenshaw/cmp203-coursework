@@ -38,15 +38,17 @@ void Scene::handleInput(float dt)
 		wireframe = !wireframe;
 		if (wireframe)
 		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPushAttrib(GL_ENABLE_BIT);
 			Texture::DisableTextures();
 			glDisable(GL_LIGHTING);
+
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 		else
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			Texture::EnableTextures();
-			glEnable(GL_LIGHTING);
+
+			glPopAttrib();
 		}
 	}
 	else if (!input->isKeyDown('r') && wireframeKeyHeld)
@@ -116,7 +118,7 @@ void Scene::resize(int w, int h)
 		h = 1;
 
 	float ratio = (float)w / (float)h;
-	fov = 45.0f;
+	fov = 90.0f;
 	nearPlane = 0.1f;
 	farPlane = 100.0f;
 
