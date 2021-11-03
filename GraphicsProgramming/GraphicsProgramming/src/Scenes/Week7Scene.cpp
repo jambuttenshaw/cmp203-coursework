@@ -17,7 +17,7 @@ void Week7Scene::OnSetup()
 	dirLight.setPosition({ -1, 0, 0 });
 
 	// load skybox
-	skybox = new Skybox("gfx/skybox.png");
+	skybox = new Skybox("gfx/skybox2.png");
 	
 
 	Application::SetCursorDisabled(true);
