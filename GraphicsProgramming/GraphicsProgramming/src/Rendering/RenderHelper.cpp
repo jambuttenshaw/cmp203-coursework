@@ -20,18 +20,20 @@ void RenderHelper::drawUnitCube()
 	drawMesh(Mesh::Cube);
 }
 
+
 void RenderHelper::drawMesh(const Mesh& mesh)
 {
-	glBegin(GL_TRIANGLES);
+	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
 
-	for (auto i : mesh.Indices)
-	{
-		const auto& v = mesh.Vertices[i];
-		glTexCoord2f(v.TexCoord.x, v.TexCoord.y);
-		glNormal3f(v.Normal.x, v.Normal.y, v.Normal.z);
-		glVertex3f(v.Position.x, v.Position.y, v.Position.z);
-	}
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glEnd();
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), &mesh.Vertices[0].Position);
+	glNormalPointer(GL_FLOAT, sizeof(Vertex), &mesh.Vertices[0].Normal);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), &mesh.Vertices[0].TexCoord);
+
+	glDrawElements(GL_TRIANGLES, mesh.Indices.size(), GL_UNSIGNED_INT, &mesh.Indices[0]);
+
+	glPopClientAttrib();
 }
-

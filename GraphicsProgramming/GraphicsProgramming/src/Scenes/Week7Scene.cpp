@@ -26,8 +26,8 @@ void Week7Scene::OnSetup()
 	skybox = new Skybox("gfx/skybox2.png");
 	
 
-	ground = GeometryHelper::CreatePlane(50, 50, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
-	cube = GeometryHelper::CreateUnitCube(4);
+	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	cube = GeometryHelper::CreateUnitCube(50);
 
 	Texture::EnableTextures();
 
@@ -75,9 +75,25 @@ void Week7Scene::OnRender()
 	}
 
 	metal.apply();
+	metalTexture->Bind();
 	{
 		Transform t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
-		metalTexture->Bind();
+		RenderHelper::drawMesh(cube);
+	}
+	{
+		Transform t({ 2, 1, 0 }, { 0, rot, 0 }, Vector3::one);
+		RenderHelper::drawMesh(cube);
+	}
+	{
+		Transform t({ 0, 1, 2 }, { 0, rot, 0 }, Vector3::one);
+		RenderHelper::drawMesh(cube);
+	}
+	{
+		Transform t({ 2, 1, 2 }, { 0, rot, 0 }, Vector3::one);
+		RenderHelper::drawMesh(cube);
+	}
+	{
+		Transform t({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
 }

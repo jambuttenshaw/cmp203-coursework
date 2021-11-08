@@ -10,7 +10,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 	std::vector<Vector3> vertices;
 	std::vector<Vector3> normals;
 	std::vector<Vector2> texCoords;
-	std::vector<int> indices;
+	std::vector<unsigned int> indices;
 
 	if (tangent.equals(Vector3::zero) || bitangent.equals(Vector3::zero))
 	{
@@ -84,7 +84,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 		normals.push_back(normal);
 	}
 
-	int currentIndex = 0;
+	unsigned int currentIndex = 0;
 	for (size_t y = 0; y < ySlices - 1; y++)
 	{
 		for (size_t x = 0; x < xSlices - 1; x++)

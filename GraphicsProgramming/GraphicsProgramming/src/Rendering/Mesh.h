@@ -18,7 +18,7 @@ struct Vertex
 struct Mesh
 {
 	std::vector<Vertex> Vertices;
-	std::vector<int> Indices;
+	std::vector<unsigned int> Indices;
 
 	// defined in DefaultMeshes.cpp
 	static const Mesh Quad;
@@ -29,7 +29,7 @@ struct Mesh
 	Mesh(std::vector<Vector3> positions,
 		std::vector<Vector3> normals,
 		std::vector<Vector2> texCoords,
-		std::vector<int> indices)
+		std::vector<unsigned int> indices)
 		: Indices(indices)
 	{
 		assert((positions.size() == normals.size()) && (positions.size() == texCoords.size()) && "Invalid model data!");
