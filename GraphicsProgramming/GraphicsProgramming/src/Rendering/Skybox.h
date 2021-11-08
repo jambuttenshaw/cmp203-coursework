@@ -9,46 +9,15 @@
 #include "Mesh.h"
 
 
-class Skybox
+class Skybox : public Mesh
 {
 public:
-
-	enum class Face
-	{
-		Right,
-		Left,
-		Top,
-		Bottom,
-		Front,
-		Back,
-		// special values for setting up skybox
-		None,
-		All
-	};
-
-public:
 	Skybox(const std::string& filepath);
-
-
-	void setFaceUVOffset(Face face, const Vector2& offset);
-	void setFaceUVDimensions(Face face, const Vector2& size);
-
+	~Skybox();
 
 	void render(const Vector3& position);
 
 private:
-
-	struct FaceData
-	{
-		Vector3 normal;
-		Vector3 tangent;
-		Vector3 bitangent;
-		Vector2 uvOffset;
-		Mesh planeMesh;
-	};
-
-	Texture mTexture;
-	std::unordered_map<Face, FaceData> mFaceData;
-
+	void Rebuild();
 };
 

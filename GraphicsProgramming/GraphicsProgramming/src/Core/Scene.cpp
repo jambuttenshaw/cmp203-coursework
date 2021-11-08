@@ -34,28 +34,10 @@ void Scene::handleInput(float dt)
 	// Handle user input
 	OnHandleInput(dt);
 
-	if (input->isKeyDown('r') && !wireframeKeyHeld)
+	if (input->isKeyDown(wireframeModeKey))
 	{
-		wireframeKeyHeld = true;
-		wireframe = !wireframe;
-		if (wireframe)
-		{
-			glPushAttrib(GL_ENABLE_BIT);
-			glDisable(GL_LIGHTING);
-			glDisable(GL_TEXTURE_2D);
-
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-			glPopAttrib();
-		}
-	}
-	else if (!input->isKeyDown('r') && wireframeKeyHeld)
-	{
-		wireframeKeyHeld = false;
+		RenderHelper::ToggleWireframeMode();
+		input->setKeyUp(wireframeModeKey);
 	}
 }
 

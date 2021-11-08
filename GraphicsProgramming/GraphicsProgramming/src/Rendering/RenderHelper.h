@@ -15,5 +15,14 @@ public:
 	static void drawUnitCube();
 
 	static void drawMesh(const Mesh& mesh);
+
+
+
+	static void EnableWireframeMode();
+	static void DisableWireframeMode();
+	static void ToggleWireframeMode();
+
+private:
+	static bool wireframe;
 };
 

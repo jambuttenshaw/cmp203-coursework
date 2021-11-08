@@ -30,7 +30,7 @@ void Week7Scene::OnSetup()
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
 	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
-	ground.Texture = groundTexture;
+	ground.MeshTexture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);
 	metal.setSpecular(Color::White);
@@ -40,7 +40,7 @@ void Week7Scene::OnSetup()
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
 	cube = GeometryHelper::CreateUnitCube(50);
-	cube.Texture = metalTexture;
+	cube.MeshTexture = metalTexture;
 
 	Application::SetCursorDisabled(true);
 }
@@ -70,12 +70,10 @@ void Week7Scene::OnRender()
 	defaultMat.apply();
 	{
 		Transform t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
-		groundTexture->Bind();
 		RenderHelper::drawMesh(ground);
 	}
 
 	metal.apply();
-	metalTexture->Bind();
 	{
 		Transform t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);

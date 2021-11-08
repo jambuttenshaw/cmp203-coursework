@@ -16,12 +16,13 @@ struct Vertex
 };
 
 
-struct Mesh
+class Mesh
 {
+public:
 	std::vector<Vertex> Vertices;
 	std::vector<unsigned int> Indices;
 
-	Texture* Texture = nullptr;
+	Texture* MeshTexture = nullptr;
 
 	// defined in DefaultMeshes.cpp
 	static const Mesh Quad;

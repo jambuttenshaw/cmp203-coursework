@@ -50,6 +50,8 @@ protected:
 	void setGlobalAmbientLighting(const Color& c);
 	inline void setCurrentCamera(Camera* cam) { currentCamera = cam; }
 
+	inline void SetWireframeModeKey(char key) { wireframeModeKey = key; }
+
 private:
 	// configure opengl render pipeline
 	void initialiseOpenGL();
@@ -83,8 +85,8 @@ private:
 	char mouseText[40];
 	char renderTime[40];
 
-	bool wireframe = false;
-	bool wireframeKeyHeld = false;
+	// wireframe mode
+	char wireframeModeKey = 'r';
 
 	// the camera to render from 
 	Camera* currentCamera = nullptr;
