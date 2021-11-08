@@ -3,6 +3,7 @@
 
 #include "Transform.h"
 #include "GeometryHelper.h"
+#include "RenderHelper.h"
 
 #include "freeglut.h"
 #include <gl/GL.h>
@@ -62,6 +63,11 @@ Skybox::Skybox(const std::string& filepath)
 		fD.planeMesh = GeometryHelper::CreatePlane(2, 2, fD.normal, 0.25f, 0.25f, 
 			[](float x, float y) -> float { return -0.5f; },
 			fD.tangent, fD.bitangent);
+
+		for (auto& vertex : fD.planeMesh.Vertices)
+		{
+			vertex.TexCoord += fD.uvOffset;
+		}
 	}
 }
 
@@ -115,25 +121,8 @@ void Skybox::render(const Vector3& position)
 	// move to the given position
 	Transform t{ position };
 	
-	glBegin(GL_TRIANGLES);
 	for (auto& face : mFaceData)
-	{
-		FaceData& fD = face.second;
-		
-		// draw the indices in the mesh
-		for (auto& i : fD.planeMesh.Indices)
-		{
-			auto& v = fD.planeMesh.Vertices[i];
-
-			// the texture coords will be offset inside the texture depending on what face were drawing
-			Vector2 adjustedTexCoord = v.TexCoord + fD.uvOffset;
-
-			glTexCoord2fv(adjustedTexCoord.ptr());
-			glNormal3fv(v.Normal.ptr());
-			glVertex3fv(v.Position.ptr());
-		}
-	}
-	glEnd();
+		RenderHelper::drawMesh(face.second.planeMesh);
 
 	// unbind texture
 	mTexture.Unbind();

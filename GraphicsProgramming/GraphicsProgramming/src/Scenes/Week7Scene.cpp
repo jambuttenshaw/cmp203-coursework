@@ -26,8 +26,8 @@ void Week7Scene::OnSetup()
 	skybox = new Skybox("gfx/skybox2.png");
 	
 
-	ground = GeometryHelper::CreatePlane(100, 100, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
-	cube = GeometryHelper::CreateUnitCube(20);
+	ground = GeometryHelper::CreatePlane(50, 50, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	cube = GeometryHelper::CreateUnitCube(4);
 
 	Texture::EnableTextures();
 
