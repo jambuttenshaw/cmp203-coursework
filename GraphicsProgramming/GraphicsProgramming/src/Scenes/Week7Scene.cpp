@@ -29,7 +29,8 @@ void Week7Scene::OnSetup()
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	//ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	ground = GeometryHelper::CreatePlane(20, 20);
 	ground.MeshTexture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);

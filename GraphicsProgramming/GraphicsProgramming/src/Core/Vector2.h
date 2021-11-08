@@ -14,22 +14,22 @@ public:
 	void setX(float x);
 	void setY(float y);
 
-	float getX();
-	float getY();
+	float getX() const;
+	float getY() const;
 
 	void add(const Vector2& v1, float scale = 1.0);
 	void subtract(const Vector2& v1, float scale = 1.0);
 	void scale(float scale);
 
-	float dot(const Vector2& v2);
+	float dot(const Vector2& v2) const;
 
 	void normalise();
-	Vector2 normalised();
-	float length();
-	float lengthSquared();
+	Vector2 normalised() const;
+	float length() const;
+	float lengthSquared() const;
 
-	bool equals(const Vector2& v2, float epsilon);
-	bool equals(const Vector2& v2);
+	bool equals(const Vector2& v2, float epsilon) const;
+	bool equals(const Vector2& v2) const;
 
 	Vector2 operator+(const Vector2& v2);
 	Vector2 operator-(const Vector2& v2);

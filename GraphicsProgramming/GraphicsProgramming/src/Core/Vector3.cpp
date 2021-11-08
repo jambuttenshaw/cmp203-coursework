@@ -30,23 +30,23 @@ Vector3 Vector3::copy() {
 	return copy;
 }
 
-bool Vector3::equals(const Vector3& v2, float epsilon) {
+bool Vector3::equals(const Vector3& v2, float epsilon) const {
 	return ((fabsf(this->x - v2.x) < epsilon) &&
 		(fabsf(this->y - v2.y) < epsilon) &&
 		(fabsf(this->z - v2.z) < epsilon));
 }
 
-bool Vector3::equals(const Vector3& v2)
+bool Vector3::equals(const Vector3& v2) const
 {
 	return equals(v2, 0.00001f);
 }
 
 
-float Vector3::length() {
+float Vector3::length() const {
 	return (float)sqrt(this->lengthSquared());
 }
 
-float Vector3::lengthSquared() {
+float Vector3::lengthSquared() const {
 	return (
 		this->x*this->x +
 		this->y*this->y +
@@ -64,14 +64,14 @@ void Vector3::normalise() {
 	}
 }
 
-Vector3 Vector3::normalised()
+Vector3 Vector3::normalised() const
 {
 	Vector3 norm(x, y, z);
 	norm.normalise();
 	return norm;
 }
 
-Vector3 Vector3::cross(const Vector3& v2) {
+Vector3 Vector3::cross(const Vector3& v2) const {
 	Vector3 cross(
 		(this->y * v2.z - this->z * v2.y),
 		(this->z * v2.x - this->x * v2.z),
@@ -104,19 +104,19 @@ void Vector3::setZ(float z) {
 	this->z = z;
 }
 
-float Vector3::getX() {
+float Vector3::getX() const {
 	return this->x;
 }
 
-float Vector3::getY() {
+float Vector3::getY() const {
 	return this->y;
 }
 
-float Vector3::getZ() {
+float Vector3::getZ() const {
 	return this->z;
 }
 
-float Vector3::dot(const Vector3& v2) {
+float Vector3::dot(const Vector3& v2) const {
 	return (this->x*v2.x +
 		this->y*v2.y +
 		this->z*v2.z

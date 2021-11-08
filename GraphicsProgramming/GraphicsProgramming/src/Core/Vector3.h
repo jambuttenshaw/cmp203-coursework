@@ -20,24 +20,24 @@ public:
 	void setY(float y);
 	void setZ(float z);
 
-	float getX();
-	float getY();
-	float getZ();
+	float getX() const;
+	float getY() const;
+	float getZ() const;
 
 	void add(const Vector3& v1, float scale = 1.0);
 	void subtract(const Vector3& v1, float scale = 1.0);
 	void scale(float scale);
 
-	float dot(const Vector3& v2);
-	Vector3 cross(const Vector3& v2);
+	float dot(const Vector3& v2) const;
+	Vector3 cross(const Vector3& v2) const;
 
 	void normalise();
-	Vector3 normalised();
-	float length();
-	float lengthSquared();
+	Vector3 normalised() const;
+	float length() const;
+	float lengthSquared() const;
 
-	bool equals(const Vector3& v2, float epsilon);
-	bool equals(const Vector3& v2);
+	bool equals(const Vector3& v2, float epsilon) const;
+	bool equals(const Vector3& v2) const;
 
 	Vector3 operator+(const Vector3& v2);
 	Vector3 operator-(const Vector3& v2);

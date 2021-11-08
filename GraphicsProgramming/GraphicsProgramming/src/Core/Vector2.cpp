@@ -21,22 +21,22 @@ Vector2 Vector2::copy() {
 	return copy;
 }
 
-bool Vector2::equals(const Vector2& v2, float epsilon) {
+bool Vector2::equals(const Vector2& v2, float epsilon) const {
 	return ((fabsf(this->x - v2.x) < epsilon) &&
 		(fabsf(this->y - v2.y) < epsilon));
 }
 
-bool Vector2::equals(const Vector2& v2)
+bool Vector2::equals(const Vector2& v2) const
 {
 	return equals(v2, 0.00001f);
 }
 
 
-float Vector2::length() {
+float Vector2::length() const {
 	return (float)sqrt(this->lengthSquared());
 }
 
-float Vector2::lengthSquared() {
+float Vector2::lengthSquared() const {
 	return (
 		this->x * this->x +
 		this->y * this->y
@@ -52,7 +52,7 @@ void Vector2::normalise() {
 	}
 }
 
-Vector2 Vector2::normalised()
+Vector2 Vector2::normalised() const
 {
 	Vector2 norm(x, y);
 	norm.normalise();
@@ -77,15 +77,15 @@ void Vector2::setY(float y) {
 	this->y = y;
 }
 
-float Vector2::getX() {
+float Vector2::getX() const {
 	return this->x;
 }
 
-float Vector2::getY() {
+float Vector2::getY() const {
 	return this->y;
 }
 
-float Vector2::dot(const Vector2& v2) {
+float Vector2::dot(const Vector2& v2) const {
 	return (this->x * v2.x +
 		this->y * v2.y
 		);

@@ -4,6 +4,11 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+Transformation::Transformation()
+	: Transformation(Vector3::zero, Vector3::zero, Vector3::one)
+{
+}
+
 Transformation::Transformation(Vector3 translation)
 	: Transformation(translation, Vector3::zero, Vector3::one)
 {

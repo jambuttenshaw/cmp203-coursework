@@ -1,16 +1,12 @@
 #pragma once
 
 #include "Core/Scene.h"
-#include "Core/Color.h"
-
-#include "Rendering/Light.h"
-#include "Rendering/Mesh.h"
-#include "Rendering/Material.h"
 
 class TestScene : public Scene
 {
 public:
 	TestScene() = default;
+	~TestScene();
 
 	// Inherited via Scene
 	virtual void OnSetup() override;
@@ -18,16 +14,11 @@ public:
 	virtual void OnRender() override;
 
 private:
-	bool escapePressed = false;
+	Skybox* skybox;
 
-	Color globalAmbience = Color::Black;
+	Light light;
+	float* shadowMatrix;
 
+	Material defaultMat;
 	Mesh plane;
-
-	Light redLight;
-	Light blueLight;
-	Light whiteLight;
-
-	Material planeMat;	
-	Material metallic;
 };

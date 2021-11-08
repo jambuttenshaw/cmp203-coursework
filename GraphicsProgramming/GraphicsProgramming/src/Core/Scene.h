@@ -26,6 +26,7 @@
 #include "Rendering/Texture.h"
 #include "Rendering/Transformation.h"
 #include "Rendering/Camera.h"
+#include "Rendering/Skybox.h"
 
 
 class Scene
