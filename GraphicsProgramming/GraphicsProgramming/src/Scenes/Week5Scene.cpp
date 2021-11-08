@@ -41,7 +41,6 @@ void Week5Scene::OnSetup()
 	cube = GeometryHelper::CreateUnitCube(32);
 
 
-	Texture::EnableTextures();
 	quadTexture = new Texture("gfx/crate.png", true);
 	quadTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 

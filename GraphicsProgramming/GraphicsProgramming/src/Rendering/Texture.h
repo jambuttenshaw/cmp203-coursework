@@ -40,11 +40,6 @@ private:
 
 	void UpdateParameters();
 
-public:
-
-	static void EnableTextures();
-	static void DisableTextures();
-
 private:
 	unsigned int textureHandle = 0;
 

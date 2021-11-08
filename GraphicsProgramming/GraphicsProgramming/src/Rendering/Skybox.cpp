@@ -68,6 +68,8 @@ Skybox::Skybox(const std::string& filepath)
 		{
 			vertex.TexCoord += fD.uvOffset;
 		}
+
+		fD.planeMesh.Texture = &mTexture;
 	}
 }
 

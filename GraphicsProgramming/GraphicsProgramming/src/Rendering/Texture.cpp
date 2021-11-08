@@ -97,13 +97,3 @@ void Texture::UpdateParameters()
 
 	Unbind();
 }
-
-void Texture::EnableTextures()
-{
-	glEnable(GL_TEXTURE_2D);
-}
-
-void Texture::DisableTextures()
-{
-	glDisable(GL_TEXTURE_2D);
-}

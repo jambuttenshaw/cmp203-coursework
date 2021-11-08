@@ -6,6 +6,7 @@
 #include "Core/Vector3.h"
 #include "Core/Vector2.h"
 
+#include "Texture.h"
 
 struct Vertex
 {
@@ -19,6 +20,8 @@ struct Mesh
 {
 	std::vector<Vertex> Vertices;
 	std::vector<unsigned int> Indices;
+
+	Texture* Texture = nullptr;
 
 	// defined in DefaultMeshes.cpp
 	static const Mesh Quad;

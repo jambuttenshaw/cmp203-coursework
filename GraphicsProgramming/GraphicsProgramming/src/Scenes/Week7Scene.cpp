@@ -25,15 +25,12 @@ void Week7Scene::OnSetup()
 	// load skybox
 	skybox = new Skybox("gfx/skybox2.png");
 	
-
-	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
-	cube = GeometryHelper::CreateUnitCube(50);
-
-	Texture::EnableTextures();
-
 	groundTexture = new Texture("gfx/sand.png", true);
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	ground.Texture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);
 	metal.setSpecular(Color::White);
@@ -41,6 +38,9 @@ void Week7Scene::OnSetup()
 
 	metalTexture = new Texture("gfx/metal.png", true);
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+	cube = GeometryHelper::CreateUnitCube(50);
+	cube.Texture = metalTexture;
 
 	Application::SetCursorDisabled(true);
 }

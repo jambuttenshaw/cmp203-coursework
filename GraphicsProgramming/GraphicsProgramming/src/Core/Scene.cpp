@@ -41,8 +41,8 @@ void Scene::handleInput(float dt)
 		if (wireframe)
 		{
 			glPushAttrib(GL_ENABLE_BIT);
-			Texture::DisableTextures();
 			glDisable(GL_LIGHTING);
+			glDisable(GL_TEXTURE_2D);
 
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
