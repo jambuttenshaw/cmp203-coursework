@@ -101,7 +101,7 @@
     <ClCompile Include="src\Rendering\RenderHelper.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />
-    <ClCompile Include="src\Rendering\Transform.cpp" />
+    <ClCompile Include="src\Rendering\Transformation.cpp" />
     <ClCompile Include="src\Core\Vector3.cpp" />
     <ClCompile Include="src\Scenes\TestScene.cpp" />
     <ClCompile Include="src\Scenes\Week5Scene.cpp" />
@@ -124,7 +124,7 @@
     <ClInclude Include="src\Rendering\RenderHelper.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Rendering\Texture.h" />
-    <ClInclude Include="src\Rendering\Transform.h" />
+    <ClInclude Include="src\Rendering\Transformation.h" />
     <ClInclude Include="src\Core\Vector3.h" />
     <ClInclude Include="src\Scenes\TestScene.h" />
     <ClInclude Include="src\Scenes\Week5Scene.h" />

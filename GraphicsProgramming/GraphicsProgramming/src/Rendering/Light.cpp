@@ -5,7 +5,7 @@
 #include <gl/GLU.h>
 
 #include "RenderHelper.h"
-#include "Transform.h"
+#include "Transformation.h"
 
 bool Light::debugSpheresOnAllLights = false;
 
@@ -43,7 +43,7 @@ void Light::render(unsigned int lightID, bool debugSphere)
 		glGetFloatv(GL_CURRENT_COLOR, currentColor);
 
 		{
-			Transform t(homogeneousPos.xyz, { 0, 0, 0 }, { 1, 1, 1 });
+			Transformation t(homogeneousPos.xyz, { 0, 0, 0 }, { 1, 1, 1 });
 
 			glColor3f(1.0f, 1.0f, 1.0f);
 			RenderHelper::drawSphere(0.05f);

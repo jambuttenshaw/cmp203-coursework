@@ -69,29 +69,29 @@ void Week7Scene::OnRender()
 
 	defaultMat.apply();
 	{
-		Transform t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
+		Transformation t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
 		RenderHelper::drawMesh(ground);
 	}
 
 	metal.apply();
 	{
-		Transform t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
+		Transformation t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
 	{
-		Transform t({ 2, 1, 0 }, { 0, rot, 0 }, Vector3::one);
+		Transformation t({ 2, 1, 0 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
 	{
-		Transform t({ 0, 1, 2 }, { 0, rot, 0 }, Vector3::one);
+		Transformation t({ 0, 1, 2 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
 	{
-		Transform t({ 2, 1, 2 }, { 0, rot, 0 }, Vector3::one);
+		Transformation t({ 2, 1, 2 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
 	{
-		Transform t({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
+		Transformation t({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
 }

@@ -6,7 +6,7 @@
 
 #include "Core/Application.h"
 
-#include "Rendering/Transform.h"
+#include "Rendering/Transformation.h"
 #include "Rendering/RenderHelper.h"
 #include "Rendering/GeometryHelper.h"
 
@@ -71,15 +71,15 @@ void TestScene::OnRender()
 {
 
 	{
-		Transform t({ -4, 3, -4 }, Vector3::zero, Vector3::one);
+		Transformation t({ -4, 3, -4 }, Vector3::zero, Vector3::one);
 		redLight.render(GL_LIGHT0);
 	}
 	{
-		Transform t({ 4, 3, 0 }, Vector3::zero, Vector3::one);
+		Transformation t({ 4, 3, 0 }, Vector3::zero, Vector3::one);
 		blueLight.render(GL_LIGHT1);
 	}
 	{
-		Transform t({ 0, 8, 0 }, Vector3::zero, Vector3::one);
+		Transformation t({ 0, 8, 0 }, Vector3::zero, Vector3::one);
 		whiteLight.render(GL_LIGHT3);
 	}
 
@@ -88,30 +88,30 @@ void TestScene::OnRender()
 
 	planeMat.apply();
 	{
-		Transform t(Vector3::zero, Vector3::zero, planeScale);
+		Transformation t(Vector3::zero, Vector3::zero, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 0, 0.5f * planeScaleEdge, -0.5f * planeScaleEdge }, { 90, 0, 0 }, planeScale);
+		Transformation t({ 0, 0.5f * planeScaleEdge, -0.5f * planeScaleEdge }, { 90, 0, 0 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ -0.5f * planeScaleEdge, 0.5f * planeScaleEdge, 0 }, { 0, 0, -90 }, planeScale);
+		Transformation t({ -0.5f * planeScaleEdge, 0.5f * planeScaleEdge, 0 }, { 0, 0, -90 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 	{
-		Transform t({ 0.5f * planeScaleEdge, 0.5f * planeScaleEdge, 0 }, { 0, 0, 90 }, planeScale);
+		Transformation t({ 0.5f * planeScaleEdge, 0.5f * planeScaleEdge, 0 }, { 0, 0, 90 }, planeScale);
 		RenderHelper::drawMesh(plane);
 	}
 
 
 	metallic.apply();
 	{
-		Transform t({3.0f, 1.5f, -3.0f}, Vector3::zero, Vector3::one);
+		Transformation t({3.0f, 1.5f, -3.0f}, Vector3::zero, Vector3::one);
 		RenderHelper::drawSphere(1.5f, 30, 30);
 	}
 	{
-		Transform t({ -3.0f, 1, 3.0f }, Vector3::zero, Vector3::one);
+		Transformation t({ -3.0f, 1, 3.0f }, Vector3::zero, Vector3::one);
 		RenderHelper::drawSphere(1, 30, 30);
 	}
 }

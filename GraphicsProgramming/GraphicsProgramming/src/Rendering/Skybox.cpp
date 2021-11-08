@@ -1,7 +1,7 @@
 #include "Skybox.h"
 
 
-#include "Transform.h"
+#include "Transformation.h"
 #include "GeometryHelper.h"
 #include "RenderHelper.h"
 
@@ -27,13 +27,11 @@ void Skybox::render(const Vector3& position)
 {
 	// set up opengl state
 	glPushAttrib(GL_ENABLE_BIT);
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_COLOR_MATERIAL);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 
 	// move to the given position
-	Transform t{ position };
+	Transformation t{ position };
 	
 	RenderHelper::drawMesh(*this);
 

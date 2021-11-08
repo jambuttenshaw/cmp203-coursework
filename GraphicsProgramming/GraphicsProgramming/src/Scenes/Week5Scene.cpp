@@ -102,7 +102,7 @@ void Week5Scene::OnRender()
 
 	defaultMat.apply();
 	{
-		Transform t{ Vector3::zero, Vector3::zero, {10, 10, 10} };
+		Transformation t{ Vector3::zero, Vector3::zero, {10, 10, 10} };
 		
 		groundTexture->Bind();
 		RenderHelper::drawMesh(plane);
@@ -110,7 +110,7 @@ void Week5Scene::OnRender()
 	}
 
 	{
-		Transform t{ {0, 0.5f, 0}, Vector3::zero, Vector3::one };
+		Transformation t{ {0, 0.5f, 0}, Vector3::zero, Vector3::one };
 
 		quadTexture->Bind();
 		RenderHelper::drawMesh(cube);
@@ -119,7 +119,7 @@ void Week5Scene::OnRender()
 
 	metalMat.apply();
 	{
-		Transform t{ { 3, 1, -2 }, { 0, 45, 0 }, { 2.0f, 2.0f, 2.0f } };
+		Transformation t{ { 3, 1, -2 }, { 0, 45, 0 }, { 2.0f, 2.0f, 2.0f } };
 
 		metalTexture->Bind();
 		RenderHelper::drawMesh(cube);

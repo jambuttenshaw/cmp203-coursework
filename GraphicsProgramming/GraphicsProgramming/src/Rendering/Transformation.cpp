@@ -1,15 +1,15 @@
-#include "Transform.h"
+#include "Transformation.h"
 
 #include "glut.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-Transform::Transform(Vector3 translation)
-	: Transform(translation, Vector3::zero, Vector3::one)
+Transformation::Transformation(Vector3 translation)
+	: Transformation(translation, Vector3::zero, Vector3::one)
 {
 }
 
-Transform::Transform(Vector3 t, Vector3 r, Vector3 s)
+Transformation::Transformation(Vector3 t, Vector3 r, Vector3 s)
 {
 	glPushMatrix();
 
@@ -20,7 +20,7 @@ Transform::Transform(Vector3 t, Vector3 r, Vector3 s)
 	glScalef(s.x, s.y, s.z);
 }
 
-Transform::~Transform()
+Transformation::~Transformation()
 {
 	glPopMatrix();
 }
