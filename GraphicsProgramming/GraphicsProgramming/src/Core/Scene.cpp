@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include <chrono>
+
 Scene::~Scene()
 {
 	if (sceneCamera != nullptr) delete sceneCamera;
@@ -76,10 +78,12 @@ void Scene::render()
 	// Set the camera
 	currentCamera->ApplyLookAt();
 
+	auto start = std::chrono::steady_clock::now();
 	// Render geometry/scene here -------------------------------------
 	OnRender();
-
 	// End render geometry --------------------------------------
+	auto end = std::chrono::steady_clock::now();
+	rawRenderTime = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
 
 	// Render text, should be last object rendered.
 	renderTextOutput();
@@ -148,6 +152,8 @@ void Scene::calculateFPS()
 		sprintf_s(fps, "FPS: %4.2f", frame*1000.0f / (time - timebase));
 		timebase = time;
 		frame = 0;
+
+		sprintf_s(renderTime, "Render Time: %4.2f", rawRenderTime / 1000.0f);
 	}
 }
 
@@ -159,6 +165,7 @@ void Scene::renderTextOutput()
 	sprintf_s(mouseText, "Mouse: %i, %i", input->getMouseX(), input->getMouseY());
 	displayText(-1.f, 0.96f, 1.f, 0.f, 0.f, mouseText);
 	displayText(-1.f, 0.90f, 1.f, 0.f, 0.f, fps);
+	displayText(-1.f, 0.84f, 1.f, 0.f, 0.f, renderTime);
 }
 
 // Renders text to screen. Must be called last in render function (before swap buffers)

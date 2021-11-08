@@ -78,9 +78,10 @@ private:
 	float fov = 0, nearPlane = 0, farPlane = 0;
 
 	// For FPS counter and mouse coordinate output.
-	int frame = 0, time = 0, timebase = 0;
+	int frame = 0, time = 0, timebase = 0, rawRenderTime = 0;
 	char fps[40];
 	char mouseText[40];
+	char renderTime[40];
 
 	bool wireframe = false;
 	bool wireframeKeyHeld = false;
