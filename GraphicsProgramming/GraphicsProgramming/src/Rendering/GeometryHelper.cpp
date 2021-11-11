@@ -2,7 +2,10 @@
 
 #include "PerlinNoise.h"
 
+#include <delaunator.hpp>
+
 #include <cassert>
+#include <cmath>
 #include <array>
 
 Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc, Vector3 tangent, Vector3 bitangent)
@@ -128,6 +131,88 @@ Mesh GeometryHelper::CreateUnitCube(size_t resolution)
 		CombineMeshes(unitCube, face);
 	}
 	return unitCube;
+}
+
+Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
+{
+	std::vector<Vector3> points(resolution);
+
+	float dlong = 3.1415926f * (3 - sqrtf(5));  /* ~2.39996323 */
+	float dy = 2.0f / resolution;
+	float longitude = 0;
+	float y = 1 - dy / 2.0f;
+	for (size_t i = 0; i < resolution; i++)
+	{
+		float r = sqrtf(1 - y * y);
+		points[i] = { cosf(longitude) * r, y, sinf(longitude) * r };
+		y -= dy;
+		longitude += dlong;
+	}
+
+
+	// sterographically project all the points on the sphere
+	// so we can perform delaunay triangulation
+	// format is: x0, y0, x1, y1...
+	std::vector<double> projectedPoints(2 * resolution);
+	for (size_t i = 0; i < resolution; i++)
+	{
+		Vector3 p = points[i];
+		double X = p.x / (1.0 + p.y);
+		double Z = p.z / (1.0 + p.y);
+
+		projectedPoints[2 * i] = X;
+		projectedPoints[(2 * i) + 1] = Z;
+	}
+
+	// triangulate using delaunator
+	delaunator::Delaunator d(projectedPoints);
+
+	// the mesh expects a vector of unsigned ints, so we need to convert
+	std::vector<unsigned int> triangles(d.triangles.size());
+	for (size_t i = 0; i < triangles.size(); i++)
+		triangles[i] = static_cast<unsigned int>(d.triangles[i]);
+
+	// the mesh will contain a hole at the south pole which needs to be stitched up
+	// this is a side effect of using a stereographic projection; the south pole would be projected to infinity
+
+	// add a vertex at the south pole
+	points.push_back(Vector3::down);
+
+	int n = points.size() - 1;
+
+	// add 5 new triangles to stitch up the hole
+	triangles.push_back(n);
+	triangles.push_back(n - 5);
+	triangles.push_back(n - 2);
+
+	triangles.push_back(n);
+	triangles.push_back(n - 2);
+	triangles.push_back(n - 4);
+
+	triangles.push_back(n);
+	triangles.push_back(n - 4);
+	triangles.push_back(n - 1);
+
+	triangles.push_back(n);
+	triangles.push_back(n - 1);
+	triangles.push_back(n - 3);
+
+	triangles.push_back(n);
+	triangles.push_back(n - 3);
+	triangles.push_back(n - 5);
+
+	// define normals
+	std::vector<Vector3> normals(points.size());
+	for (size_t i = 0; i < resolution; i++)
+		normals[i] = points[i].normalised();
+
+	// return mesh
+	return Mesh{
+		points,
+		normals,
+		triangles
+	};
+
 }
 
 void GeometryHelper::CombineMeshes(Mesh& a, Mesh& b)

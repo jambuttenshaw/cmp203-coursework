@@ -27,5 +27,7 @@ public:
 
 	static Mesh CreateUnitCube(size_t resolution);
 
+	static Mesh CreateUnitSphere(size_t resolution);
+
 	static void CombineMeshes(Mesh& a, Mesh& b);
 };

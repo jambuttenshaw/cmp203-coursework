@@ -29,8 +29,7 @@ void Week7Scene::OnSetup()
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	//ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
-	ground = GeometryHelper::CreatePlane(20, 20);
+	ground = GeometryHelper::CreatePlane(2, 2, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
 	ground.MeshTexture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);
@@ -40,8 +39,10 @@ void Week7Scene::OnSetup()
 	metalTexture = new Texture("gfx/metal.png", true);
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	cube = GeometryHelper::CreateUnitCube(50);
+	cube = GeometryHelper::CreateUnitCube(5);
 	cube.MeshTexture = metalTexture;
+
+	sphere = GeometryHelper::CreateUnitSphere(3000);
 
 	Application::SetCursorDisabled(true);
 }
@@ -64,16 +65,21 @@ void Week7Scene::OnUpdate(float dt)
 
 void Week7Scene::OnRender()
 {
-	skybox->render(sceneCamera->getPosition());
+	//skybox->render(sceneCamera->getPosition());
 
 	dirLight.render(GL_LIGHT0);
 
 	defaultMat.apply();
 	{
 		Transformation t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
-		RenderHelper::drawMesh(ground);
+		//RenderHelper::drawMesh(ground);
 	}
 
+	{
+		Transformation t({ 0, 4, 0 }, Vector3::zero, {3, 3, 3});
+		RenderHelper::drawMesh(sphere);
+	}
+	/*
 	metal.apply();
 	{
 		Transformation t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
@@ -86,13 +92,16 @@ void Week7Scene::OnRender()
 	{
 		Transformation t({ 0, 1, 2 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
+		{
+			Transformation t1({ 2, 1, 2 }, { 0, rot, 0 }, Vector3::one);
+			RenderHelper::drawMesh(cube);
+			{
+				Transformation t2({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
+				RenderHelper::drawMesh(cube);
+			}
+		}
 	}
-	{
-		Transformation t({ 2, 1, 2 }, { 0, rot, 0 }, Vector3::one);
-		RenderHelper::drawMesh(cube);
-	}
-	{
-		Transformation t({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
-		RenderHelper::drawMesh(cube);
-	}
+	*/
+	
+	
 }

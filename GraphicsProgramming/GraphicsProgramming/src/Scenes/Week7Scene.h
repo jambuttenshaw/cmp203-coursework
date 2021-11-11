@@ -27,6 +27,8 @@ private:
 	Material metal;
 	Texture* metalTexture = nullptr;
 
+	Mesh sphere;
+
 	Light dirLight;
 	Skybox* skybox = nullptr;
 

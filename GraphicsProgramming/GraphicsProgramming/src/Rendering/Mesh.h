@@ -45,5 +45,21 @@ public:
 			Vertices[vertex] = { positions[vertex], normals[vertex], texCoords[vertex] };
 		}
 	}
+
+	// for meshes without textures
+	Mesh(std::vector<Vector3> positions,
+		std::vector<Vector3> normals,
+		std::vector<unsigned int> indices)
+		: Indices(indices)
+	{
+		assert((positions.size() == normals.size()) && "Invalid model data!");
+
+		Vertices.resize(positions.size());
+
+		for (size_t vertex = 0; vertex < positions.size(); vertex++)
+		{
+			Vertices[vertex] = { positions[vertex], normals[vertex], { 0, 0} };
+		}
+	}
 };
 
