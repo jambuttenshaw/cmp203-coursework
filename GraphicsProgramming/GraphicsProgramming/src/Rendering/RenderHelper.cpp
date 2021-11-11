@@ -4,6 +4,8 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "Core/Color.h"
+
 
 bool RenderHelper::wireframe = false;
 
@@ -50,6 +52,39 @@ void RenderHelper::drawMesh(const Mesh& mesh)
 	glDrawElements(GL_TRIANGLES, mesh.Indices.size(), GL_UNSIGNED_INT, &mesh.Indices[0]);
 
 	glPopClientAttrib();
+	glPopAttrib();
+}
+
+void RenderHelper::drawMeshWireframeOverlay(const Mesh& mesh)
+{
+	// draw normally in wireframe mode
+	if (wireframe)
+	{
+		drawMesh(mesh);
+		return;
+	}
+
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT | GL_LIGHTING_BIT);
+
+	// draw solid objects with offset applied
+	glPolygonOffset(1, 1);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_POLYGON_OFFSET_FILL);
+
+	drawMesh(mesh);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_POLYGON_OFFSET_FILL);
+
+	// draw solid black lines that are not affected my colours or materials
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_COLOR_MATERIAL);
+	glColor3fv(Color::Black.ptr());
+
+	drawMesh(mesh);
+
 	glPopAttrib();
 }
 

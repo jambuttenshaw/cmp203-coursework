@@ -15,6 +15,7 @@ public:
 	static void drawUnitCube();
 
 	static void drawMesh(const Mesh& mesh);
+	static void drawMeshWireframeOverlay(const Mesh& mesh);
 
 
 
