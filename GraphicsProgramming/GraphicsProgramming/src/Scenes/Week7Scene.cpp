@@ -36,13 +36,14 @@ void Week7Scene::OnSetup()
 	metal.setSpecular(Color::White);
 	metal.setShininess(128);
 
-	metalTexture = new Texture("gfx/metal.png", true);
+	metalTexture = new Texture("gfx/perfection.png", true);
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
 	cube = GeometryHelper::CreateUnitCube(5);
 	cube.MeshTexture = metalTexture;
 
 	sphere = GeometryHelper::CreateUnitSphere(3000);
+	sphere.MeshTexture = metalTexture;
 
 	Application::SetCursorDisabled(true);
 }
@@ -75,12 +76,13 @@ void Week7Scene::OnRender()
 		RenderHelper::drawMeshWireframeOverlay(ground);
 	}
 
+	metal.apply();
 	{
-		Transformation t({ 0, 4, 0 }, Vector3::zero, {3, 3, 3});
-		RenderHelper::drawMeshWireframeOverlay(sphere);
+		//Transformation t({ 0, 4, 0 }, Vector3::zero, {3, 3, 3});
+		Transformation t({ 0, 4, 0 });
+		RenderHelper::drawMesh(sphere);
 	}
 	/*
-	metal.apply();
 	{
 		Transformation t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);

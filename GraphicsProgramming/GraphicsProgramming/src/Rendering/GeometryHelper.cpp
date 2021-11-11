@@ -8,6 +8,10 @@
 #include <cmath>
 #include <array>
 
+
+#define PI 3.1415926f
+
+
 Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc, Vector3 tangent, Vector3 bitangent)
 {
 	std::vector<Vector3> vertices;
@@ -137,7 +141,9 @@ Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 {
 	std::vector<Vector3> points(resolution);
 
-	float dlong = 3.1415926f * (3 - sqrtf(5));  /* ~2.39996323 */
+	// dlong = PI * (3 - sqrt(5))
+	// sqrt is not constexpr, so computed manually and hard-coded instead
+	constexpr float dlong = 2.39996323f;
 	float dy = 2.0f / resolution;
 	float longitude = 0;
 	float y = 1 - dy / 2.0f;
@@ -206,10 +212,25 @@ Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 	for (size_t i = 0; i < resolution; i++)
 		normals[i] = points[i].normalised();
 
+
+	// calculate texture coordinates for every point
+	std::vector<Vector2> texCoords(points.size());
+	size_t i = 0;
+	for (auto& p : points)
+	{
+		float phi = acosf(p.y);
+		float theta = acosf(p.x / sinf(phi));
+
+		texCoords[i] = { theta / PI, phi / PI };
+		i++;
+	}
+
+
 	// return mesh
 	return Mesh{
 		points,
 		normals,
+		texCoords,
 		triangles
 	};
 
