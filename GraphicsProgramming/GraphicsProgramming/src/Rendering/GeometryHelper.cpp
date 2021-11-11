@@ -130,6 +130,44 @@ Mesh GeometryHelper::CreateUnitCube(size_t resolution)
 	return unitCube;
 }
 
+Mesh GeometryHelper::CreateUnitDisc(size_t resolution)
+{
+	float deltaAngle = 2 * 3.1415926f / resolution;
+
+	std::vector<Vector3> positions(resolution + 1);
+	std::vector<Vector3> normals(resolution + 1, { 0, 1, 0 });
+	std::vector<Vector2> texCoords(resolution + 1);
+	std::vector<unsigned int> triangles(3 * resolution);
+
+	// one central vertex
+	positions[0] = Vector3::zero;
+	texCoords[0] = { 0.5f, 0.5f };
+
+	float angle = 0.0f;
+	size_t triIndex = 0;
+	for (size_t i = 0; i < resolution; i++)
+	{
+		positions[i + 1] = { cosf(angle), 0, sinf(angle) };
+		texCoords[i + 1] = { 0.5f * (cosf(angle) + 1), 0.5f * (sinf(angle) + 1) };
+		angle += deltaAngle;
+
+		triangles[triIndex] = 0;
+		triangles[triIndex + 1] = i + 1;
+		if (i == 0)
+			triangles[triIndex + 2] = resolution;
+		else
+			triangles[triIndex + 2] = i;
+		triIndex += 3;
+	}
+
+	return Mesh{
+		positions,
+		normals,
+		texCoords,
+		triangles
+	};
+}
+
 void GeometryHelper::CombineMeshes(Mesh& a, Mesh& b)
 {
 	// offset the indices in b by how many vertices are already in a

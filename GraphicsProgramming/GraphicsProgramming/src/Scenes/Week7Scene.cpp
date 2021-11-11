@@ -29,8 +29,7 @@ void Week7Scene::OnSetup()
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	//ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
-	ground = GeometryHelper::CreatePlane(20, 20);
+	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, [](float x, float z)->float {return 3 * sinf(10.0f * x * x) + z; });
 	ground.MeshTexture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);
@@ -42,6 +41,9 @@ void Week7Scene::OnSetup()
 
 	cube = GeometryHelper::CreateUnitCube(50);
 	cube.MeshTexture = metalTexture;
+
+	disc = GeometryHelper::CreateUnitDisc(150);
+	disc.MeshTexture = metalTexture;
 
 	Application::SetCursorDisabled(true);
 }
@@ -70,10 +72,16 @@ void Week7Scene::OnRender()
 
 	defaultMat.apply();
 	{
-		Transformation t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
+		Transformation t({0, -1, 0}, Vector3::zero, { 30, 3, 30 });
 		RenderHelper::drawMesh(ground);
 	}
 
+	{
+		Transformation t({ 3, 1, 0 });
+		RenderHelper::drawMesh(disc);
+	}
+
+	
 	metal.apply();
 	{
 		Transformation t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
@@ -95,4 +103,5 @@ void Week7Scene::OnRender()
 		Transformation t({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
 		RenderHelper::drawMesh(cube);
 	}
+	
 }

@@ -30,6 +30,8 @@ private:
 	Light dirLight;
 	Skybox* skybox = nullptr;
 
+	Mesh disc;
+
 	float rot = 0;
 };
 
