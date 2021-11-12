@@ -27,6 +27,8 @@ private:
 	Material metal;
 	Texture* metalTexture = nullptr;
 
+	Mesh disc;
+	Mesh sphere;
 	Mesh cylinder;
 
 	Light dirLight;

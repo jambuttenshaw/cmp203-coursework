@@ -36,13 +36,17 @@ void Week7Scene::OnSetup()
 	metal.setSpecular(Color::White);
 	metal.setShininess(128);
 
-	metalTexture = new Texture("gfx/checked.png", true);
+	metalTexture = new Texture("gfx/metal.png", true);
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
 	cube = GeometryHelper::CreateUnitCube(5);
 	cube.MeshTexture = metalTexture;
 
-	cylinder = GeometryHelper::CreateUnitSphere(4000);
+	disc = GeometryHelper::CreateDisc(1, 50);
+	sphere = GeometryHelper::CreateUnitSphere(4000);
+	cylinder = GeometryHelper::CreateCylinder(2, 1, 75);
+	disc.MeshTexture = metalTexture;
+	sphere.MeshTexture = metalTexture;
 	cylinder.MeshTexture = metalTexture;
 
 	Application::SetCursorDisabled(true);
@@ -78,32 +82,15 @@ void Week7Scene::OnRender()
 
 	metal.apply();
 	{
-		Transformation t({ 0, 4, 0 }, { 0.1f * rot, rot, 0 }, {3, 3, 3});
-		//Transformation t({ 0, 4, 0 });
-		RenderHelper::drawMeshWireframeOverlay(cylinder);
-	}
-	/*
-	{
-		Transformation t({0, 1, 0}, { 0, rot, 0 }, Vector3::one);
-		RenderHelper::drawMesh(cube);
+		Transformation t({ -3, 4, 0 });
+		RenderHelper::drawMesh(disc);
 	}
 	{
-		Transformation t({ 2, 1, 0 }, { 0, rot, 0 }, Vector3::one);
-		RenderHelper::drawMesh(cube);
+		Transformation t({ 0, 4, 0 });
+		RenderHelper::drawMesh(cylinder);
 	}
 	{
-		Transformation t({ 0, 1, 2 }, { 0, rot, 0 }, Vector3::one);
-		RenderHelper::drawMesh(cube);
-		{
-			Transformation t1({ 2, 1, 2 }, { 0, rot, 0 }, Vector3::one);
-			RenderHelper::drawMesh(cube);
-			{
-				Transformation t2({ -2, 1, -2 }, { 0, rot, 0 }, Vector3::one);
-				RenderHelper::drawMesh(cube);
-			}
-		}
+		Transformation t({ 3, 4, 0 });
+		RenderHelper::drawMeshWireframeOverlay(sphere);
 	}
-	*/
-	
-	
 }
