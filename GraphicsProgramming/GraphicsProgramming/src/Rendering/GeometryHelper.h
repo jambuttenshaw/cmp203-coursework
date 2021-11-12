@@ -26,8 +26,9 @@ public:
 							Vector3 tangent = Vector3::zero, Vector3 bitangent = Vector3::zero);
 
 	static Mesh CreateUnitCube(size_t resolution);
-
 	static Mesh CreateUnitSphere(size_t resolution);
+	static Mesh CreateDisc(float radius, size_t resolution);
+	static Mesh CreateCylinder(float height, float radius, size_t resolution);
 
 	static void CombineMeshes(Mesh& a, Mesh& b);
 };

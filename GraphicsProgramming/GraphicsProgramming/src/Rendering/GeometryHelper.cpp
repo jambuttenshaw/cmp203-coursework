@@ -236,6 +236,82 @@ Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 
 }
 
+Mesh GeometryHelper::CreateDisc(float radius, size_t resolution)
+{
+	float deltaAngle = 2 * 3.1415926f / resolution;
+
+	std::vector<Vector3> positions(resolution + 1);
+	std::vector<Vector3> normals(resolution + 1, { 0, 1, 0 });
+	std::vector<Vector2> texCoords(resolution + 1);
+	std::vector<unsigned int> triangles(3 * resolution);
+
+	// one central vertex
+	positions[0] = Vector3::zero;
+	texCoords[0] = { 0.5f, 0.5f };
+
+	float angle = 0.0f;
+	size_t triIndex = 0;
+	for (size_t i = 0; i < resolution; i++)
+	{
+		positions[i + 1] = { radius * cosf(angle), 0, radius * sinf(angle) };
+		texCoords[i + 1] = { 0.5f * (cosf(angle) + 1), 0.5f * (sinf(angle) + 1) };
+		angle += deltaAngle;
+
+		triangles[triIndex] = 0;
+		triangles[triIndex + 1] = i + 1;
+		if (i == 0)
+			triangles[triIndex + 2] = resolution;
+		else
+			triangles[triIndex + 2] = i;
+		triIndex += 3;
+	}
+
+	return Mesh{
+		positions,
+		normals,
+		texCoords,
+		triangles
+	};
+}
+
+Mesh GeometryHelper::CreateCylinder(float height, float radius, size_t resolution)
+{
+	// create the top cap of the cylinder
+	Mesh topCap = CreateDisc(radius, resolution);
+	Mesh bottomCap = CreateDisc(radius, resolution);
+	// there are resolution + 1 points in each mesh
+	for (size_t i = 0; i < resolution + 1; i++)
+	{
+		topCap.Vertices[i].Position.y += height * 0.5f;
+		bottomCap.Vertices[i].Position.y -= height * 0.5f;
+		bottomCap.Vertices[i].Normal.y *= -1;
+	}
+
+	CombineMeshes(topCap, bottomCap);
+
+	for (size_t i = 1; i < resolution + 1; i++)
+	{
+		// create 2 triangles connecting the top and bottom cap
+		topCap.Indices.push_back(i);
+		if (i + resolution + 2 >= topCap.Vertices.size())
+			topCap.Indices.push_back(resolution + 2);
+		else
+			topCap.Indices.push_back(i + resolution + 2);
+		topCap.Indices.push_back(i + resolution + 1);
+
+		topCap.Indices.push_back(i);
+		if (i + 1 >= resolution + 1)
+			topCap.Indices.push_back(1);
+		else
+			topCap.Indices.push_back(i + 1);
+		if (i + resolution + 2 >= topCap.Vertices.size())
+			topCap.Indices.push_back(resolution + 2);
+		else
+			topCap.Indices.push_back(i + resolution + 2);
+	}
+	return topCap;
+}
+
 void GeometryHelper::CombineMeshes(Mesh& a, Mesh& b)
 {
 	// offset the indices in b by how many vertices are already in a
