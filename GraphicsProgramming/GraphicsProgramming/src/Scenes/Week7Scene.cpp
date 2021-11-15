@@ -25,7 +25,7 @@ void Week7Scene::OnSetup()
 	// load skybox
 	skybox = new Skybox("gfx/skybox2.png");
 	
-	groundTexture = new Texture("gfx/sand.png", true);
+	groundTexture = new Texture("gfx/sand.png", Texture::MIPMAPS);
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
@@ -36,7 +36,7 @@ void Week7Scene::OnSetup()
 	metal.setSpecular(Color::White);
 	metal.setShininess(128);
 
-	metalTexture = new Texture("gfx/metal.png", true);
+	metalTexture = new Texture("gfx/metal.png", Texture::MIPMAPS);
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
 	cube = GeometryHelper::CreateUnitCube(5);

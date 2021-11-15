@@ -8,20 +8,24 @@
 
 #include <cassert>
 
-Texture::Texture(std::string filepath, bool genMipmaps)
+Texture::Texture(std::string filepath, char flags)
 {
-	int flags = SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT;
-	if (genMipmaps)
+	int soilFlags = SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT;
+	if ((flags & MIPMAPS) != 0)
 	{
-		flags |= SOIL_FLAG_MIPMAPS;
+		soilFlags |= SOIL_FLAG_MIPMAPS;
 		hasMipmaps = true;
+	}
+	if ((flags & INVERT_Y) != 0)
+	{
+		soilFlags |= SOIL_FLAG_INVERT_Y;
 	}
 
 	textureHandle = SOIL_load_OGL_texture(
 		filepath.c_str(),
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
-		flags
+		soilFlags
 	);
 
 	assert(textureHandle && "Failed to load texture!");

@@ -6,6 +6,12 @@
 class Texture
 {
 public:
+	enum Flags : char
+	{
+		MIPMAPS = 1,
+		INVERT_Y = 2
+	};
+
 	enum class SampleMode
 	{
 		Repeat,
@@ -23,7 +29,7 @@ public:
 	};
 
 public:
-	Texture(std::string filepath, bool genMipmaps = false);
+	Texture(std::string filepath, char flags = 0);
 	~Texture();
 
 	inline void SetSampleMode(SampleMode s) { SetSampleMode(s, s); }

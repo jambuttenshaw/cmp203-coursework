@@ -41,14 +41,14 @@ void Week5Scene::OnSetup()
 	cube = GeometryHelper::CreateUnitCube(32);
 
 
-	quadTexture = new Texture("gfx/crate.png", true);
+	quadTexture = new Texture("gfx/crate.png", Texture::MIPMAPS);
 	quadTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	groundTexture = new Texture("gfx/floor.png", true);
+	groundTexture = new Texture("gfx/floor.png", Texture::MIPMAPS);
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	metalTexture = new Texture("gfx/metal.png", true);
+	metalTexture = new Texture("gfx/metal.png", Texture::MIPMAPS);
 	metalTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 	
 	metalMat.setAmbientAndDiffuse(Color::White);
