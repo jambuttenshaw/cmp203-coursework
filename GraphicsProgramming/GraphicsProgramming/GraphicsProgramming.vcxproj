@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scenes\CourseworkScene.cpp" />
     <ClCompile Include="src\Rendering\Shadow.cpp" />
     <ClCompile Include="src\Rendering\Skybox.cpp" />
     <ClCompile Include="src\Core\Vector2.cpp" />
@@ -109,6 +110,7 @@
     <ClCompile Include="src\Scenes\Week7Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Scenes\CourseworkScene.h" />
     <ClInclude Include="src\Rendering\Shadow.h" />
     <ClInclude Include="src\Rendering\Skybox.h" />
     <ClInclude Include="src\Core\Math.h" />
@@ -128,6 +130,7 @@
     <ClInclude Include="src\Core\Vector3.h" />
     <ClInclude Include="src\Scenes\TestScene.h" />
     <ClInclude Include="src\Scenes\Week5Scene.h" />
+    <ClInclude Include="vendor\delaunator.hpp" />
     <ClInclude Include="vendor\PerlinNoise.h" />
     <ClInclude Include="src\Scenes\Week7Scene.h" />
   </ItemGroup>

@@ -3,7 +3,9 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-void Material::apply()
+const Material Material::Default;
+
+void Material::apply() const
 {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, ambient.ptr());
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse.ptr());

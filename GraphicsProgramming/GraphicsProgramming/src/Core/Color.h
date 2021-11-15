@@ -18,6 +18,9 @@ struct Color
 	float a = 1.0f;
 
 
+	// color helper functions
+	static Color Lerp(const Color& color1, const Color& color2, float t);
+
 	// default colors
 	static const Color White;
 	static const Color Black;
@@ -29,3 +32,6 @@ struct Color
 	static const Color Magenta;
 
 };
+
+Color operator+(const Color& lhs, const Color& rhs);
+Color operator*(const Color& lhs, float rhs);
