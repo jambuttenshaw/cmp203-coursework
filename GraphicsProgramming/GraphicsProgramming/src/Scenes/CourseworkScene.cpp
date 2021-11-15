@@ -6,13 +6,22 @@
 CourseworkScene::~CourseworkScene()
 {
 	if (skybox != nullptr) delete skybox;
+	if (tex != nullptr) delete tex;
 }
 
 void CourseworkScene::OnSetup()
 {
 	skybox = new Skybox("gfx/skybox3.png");
 
-	ground = GeometryHelper::CreatePlane(30, 30);
+	l.setType(Light::LightType::Directional);
+	l.setDiffuseColor(1.0f);
+	l.setAmbientColor(0.15f);
+	l.setSpecularColor(1.0f);
+	l.setPosition({ -1, 1, 0 });
+
+	model = GeometryHelper::LoadObj("models/spaceship.obj");
+	tex = new Texture("models/spaceship.png");
+	model.MeshTexture = tex;
 }
 
 void CourseworkScene::OnHandleInput(float dt)
@@ -31,11 +40,13 @@ void CourseworkScene::OnUpdate(float dt)
 
 void CourseworkScene::OnRender()
 {
+	l.render(GL_LIGHT0);
+
 	skybox->render(sceneCamera->getPosition());
 
-	Material::Default.apply();
+	//Material::Default.apply();
 	{
-		Transformation t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
-		RenderHelper::drawMesh(ground);
+		// Transformation t(Vector3::zero, Vector3::zero, { 50, 50, 50 });
+		RenderHelper::drawMesh(model);
 	}
 }

@@ -393,7 +393,9 @@ Mesh GeometryHelper::LoadObj(const std::string& filename)
 				for (size_t i = 0; i < 3; i++)
 				{
 					// construct a string to identify the pos, normal and uv that we require
-					std::string id = std::to_string(face[i]) + "/" + std::to_string(face[i + 1]) + "/" + std::to_string(face[i + 2]);
+					std::string id = std::to_string(face[ 3 * i     ]) + "/" +
+									 std::to_string(face[(3 * i) + 1]) + "/" +
+									 std::to_string(face[(3 * i) + 2]);
 					// find out if we have seen this pattern before
 					if (indexMap.find(id) != indexMap.end())
 					{
@@ -408,9 +410,9 @@ Mesh GeometryHelper::LoadObj(const std::string& filename)
 						Vertex newVertex;
 
 						// this relies on all positions, texcoords and normals being BEFORE face data in the file
-						newVertex.Position = positions[face[i]];
-						newVertex.TexCoord = uvs[face[i + 1]];
-						newVertex.Normal = normals[face[i + 2]];
+						newVertex.Position = positions[face[3 * i] - 1];
+						newVertex.TexCoord = uvs[face[(3 * i) + 1] - 1];
+						newVertex.Normal = normals[face[(3 * i) + 2] - 1];
 
 						unsigned int newIndex = static_cast<unsigned int>(vertices.size());
 						vertices.push_back(newVertex);

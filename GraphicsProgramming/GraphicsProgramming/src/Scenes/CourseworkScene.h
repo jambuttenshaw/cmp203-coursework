@@ -16,6 +16,8 @@ public:
 
 private:
 	Skybox* skybox;
+	Light l;
 
-	Mesh ground;
+	Mesh model;
+	Texture* tex;
 };
