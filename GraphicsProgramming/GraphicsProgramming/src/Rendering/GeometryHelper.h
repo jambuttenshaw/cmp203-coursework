@@ -28,5 +28,7 @@ public:
 	static Mesh CreateUnitCube(size_t resolution);
 	static Mesh CreateUnitDisc(size_t resolution);
 
+	static Mesh LoadObj(const std::string& filename);
+
 	static void CombineMeshes(Mesh& a, Mesh& b);
 };

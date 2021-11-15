@@ -30,6 +30,9 @@ public:
 
 	Mesh() = default;
 
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+		: Vertices(vertices), Indices(indices) {}
+
 	Mesh(std::vector<Vector3> positions,
 		std::vector<Vector3> normals,
 		std::vector<Vector2> texCoords,
@@ -45,5 +48,6 @@ public:
 			Vertices[vertex] = { positions[vertex], normals[vertex], texCoords[vertex] };
 		}
 	}
+
 };
 
