@@ -411,8 +411,8 @@ Mesh GeometryHelper::LoadObj(const std::string& filename)
 
 						// this relies on all positions, texcoords and normals being BEFORE face data in the file
 						newVertex.Position = positions[face[3 * i] - 1];
-						newVertex.TexCoord = uvs[face[(3 * i) + 1] - 1];
-						newVertex.Normal = normals[face[(3 * i) + 2] - 1];
+						if (uvs.size() > 0) newVertex.TexCoord = uvs[face[(3 * i) + 1] - 1];
+						if (normals.size() > 0) newVertex.Normal = normals[face[(3 * i) + 2] - 1];
 
 						unsigned int newIndex = static_cast<unsigned int>(vertices.size());
 						vertices.push_back(newVertex);
