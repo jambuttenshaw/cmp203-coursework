@@ -30,5 +30,7 @@ public:
 	static Mesh CreateDisc(float radius, size_t resolution);
 	static Mesh CreateCylinder(float height, float radius, size_t resolution);
 
+	static Mesh LoadObj(const std::string& filename);
+
 	static void CombineMeshes(Mesh& a, Mesh& b);
 };

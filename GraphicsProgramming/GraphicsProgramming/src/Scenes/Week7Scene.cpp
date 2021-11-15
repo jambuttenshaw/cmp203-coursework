@@ -29,7 +29,7 @@ void Week7Scene::OnSetup()
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	ground = GeometryHelper::CreatePlane(50, 50, Vector3::up, 50, 50, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, [](float x, float z)->float {return 3 * sinf(10.0f * x * x) + z; });
 	ground.MeshTexture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);
@@ -42,7 +42,7 @@ void Week7Scene::OnSetup()
 	cube = GeometryHelper::CreateUnitCube(5);
 	cube.MeshTexture = metalTexture;
 
-	disc = GeometryHelper::CreateDisc(1, 50);
+	disc = GeometryHelper::CreateDisc(1.0f, 50);
 	sphere = GeometryHelper::CreateUnitSphere(4000);
 	cylinder = GeometryHelper::CreateCylinder(2, 1, 75);
 	disc.MeshTexture = metalTexture;
