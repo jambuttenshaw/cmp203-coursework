@@ -18,6 +18,8 @@ private:
 	Skybox* skybox;
 	Light l;
 
+	float rot = 0;
+
 	Mesh model;
 	Texture* tex;
 };

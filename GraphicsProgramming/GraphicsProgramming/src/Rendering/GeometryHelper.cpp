@@ -380,9 +380,10 @@ Mesh GeometryHelper::LoadObj(const std::string& filename)
 			else if (strcmp(lineHeader, "f") == 0) // Face
 			{
 				unsigned int face[9];
+
 				int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &face[0], &face[1], &face[2],
-					&face[3], &face[4], &face[5],
-					&face[6], &face[7], &face[8]);
+																					&face[3], &face[4],  &face[5],
+																					&face[6], &face[7],  &face[8]);
 				if (matches != 9)
 				{
 					assert(false && "Failed to parse model");

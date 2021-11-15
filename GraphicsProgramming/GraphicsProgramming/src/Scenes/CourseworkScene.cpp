@@ -19,9 +19,9 @@ void CourseworkScene::OnSetup()
 	l.setSpecularColor(1.0f);
 	l.setPosition({ -1, 1, 0 });
 
-	model = GeometryHelper::LoadObj("models/spaceship.obj");
-	tex = new Texture("models/spaceship.png");
-	model.MeshTexture = tex;
+	model = GeometryHelper::LoadObj("models/bro.obj");
+	//tex = new Texture("models/spaceship.png");
+	//model.MeshTexture = tex;
 }
 
 void CourseworkScene::OnHandleInput(float dt)
@@ -36,6 +36,7 @@ void CourseworkScene::OnHandleInput(float dt)
 
 void CourseworkScene::OnUpdate(float dt)
 {
+	rot += 30 * dt;
 }
 
 void CourseworkScene::OnRender()
@@ -44,9 +45,9 @@ void CourseworkScene::OnRender()
 
 	skybox->render(sceneCamera->getPosition());
 
-	//Material::Default.apply();
+	Material::Default.apply();
 	{
-		// Transformation t(Vector3::zero, Vector3::zero, { 50, 50, 50 });
+		Transformation t(Vector3::zero, {0, rot, 0}, Vector3::one);
 		RenderHelper::drawMesh(model);
 	}
 }
