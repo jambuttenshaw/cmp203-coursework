@@ -32,7 +32,7 @@ public:
 
 	// call this in your scene if you want the camera to act
 	// as a first-person camera, controlled by the keyboard and mouse
-	void Process3DControllerInputs(float dt);
+	void Process3DControllerInputs(float dt, bool allowVertical = true);
 
 	// get the cameras forward and up vectors
 	inline const Vector3& getForward() { return forward; }

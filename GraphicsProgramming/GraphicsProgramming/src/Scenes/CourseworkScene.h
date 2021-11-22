@@ -16,10 +16,14 @@ public:
 
 private:
 	Skybox* skybox;
-	Light l;
+	Skybox* skybox2;
+	Light directionalLight;
 
-	float rot = 0;
+	Mesh portal;
+	Mesh portalScreen;
+	Mesh groundPlane;
 
-	Mesh model;
-	Texture* tex;
+	Material red;
+
+	float rot = 0.0f;
 };

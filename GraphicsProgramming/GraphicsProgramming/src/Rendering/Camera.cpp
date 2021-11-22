@@ -7,7 +7,7 @@
 #include "Core/Math.h"
 
 
-void Camera::Process3DControllerInputs(float dt)
+void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 {
 	// do not walk up or down the y-axis
 	Vector3 walkDir{ forward.x, 0.0f, forward.z };
@@ -32,11 +32,14 @@ void Camera::Process3DControllerInputs(float dt)
 		position += movement * speed * dt;
 	}
 
-	// control the cameras height with E and Q
-	if (input->isKeyDown('e'))
-		position += up * speed * dt;
-	if (input->isKeyDown('q'))
-		position -= up * speed * dt;
+	if (allowVertical)
+	{
+		// control the cameras height with E and Q
+		if (input->isKeyDown('e'))
+			position += up * speed * dt;
+		if (input->isKeyDown('q'))
+			position -= up * speed * dt;
+	}
 
 	// get the change in mouse position since last frame
 	float xoffset =  static_cast<float>(input->getMouseDeltaX());
