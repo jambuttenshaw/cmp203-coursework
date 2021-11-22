@@ -69,19 +69,21 @@ void CourseworkScene::OnRender()
 	// re-enable writing to frame buffer
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-	// now we want to write to the framebuffer only when the stencil test is 1 (as we specified that the stencil buffer will have 1's written to it on line 53)
-	glStencilFunc(GL_EQUAL, 1, 1);
 	// we do not want to change the stencil buffer from here
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-	// render all objects we want to be rendered under the stencil test
+
+	// render everything on one side of the portal
+	glStencilFunc(GL_GREATER, 1, 1);
+
 	skybox2->render(sceneCamera->getPosition());
 	{
 		Transformation t({ 0, 0.5f, -3.0f }, { 0.5f * rot, 1.2f * rot, 0.0f }, Vector3::one);
 		RenderHelper::drawUnitCube();
 	}
 
-	glStencilFunc(GL_GREATER, 1, 1);
+	// render everything on the other side of the portal
+	glStencilFunc(GL_EQUAL, 1, 1);
 
 	skybox->render(sceneCamera->getPosition());
 
@@ -89,7 +91,9 @@ void CourseworkScene::OnRender()
 		Transformation t{ Vector3::zero, Vector3::zero, {10, 1, 10} };
 		RenderHelper::drawMesh(groundPlane);
 	}
-	RenderHelper::drawMesh(portal);
 
 	glDisable(GL_STENCIL_TEST);
+
+	// render everything on both sides of the portal
+	RenderHelper::drawMesh(portal);
 }
