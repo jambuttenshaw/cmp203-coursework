@@ -59,7 +59,7 @@ private:
 	// position
 	struct
 	{
-		glm::vec3 xyz;
+		glm::vec3 xyz{ 0.0f };
 		float w = 1.0f;
 
 		float const* ptr() const { return reinterpret_cast<float const*>(this); }
@@ -71,7 +71,7 @@ private:
 	Color specularColor;
 
 	// spotlight
-	glm::vec3 spotDirection;
+	glm::vec3 spotDirection{ 0.0f };
 	float spotExponent = 0.0f;
 	float spotCutoff = 0.0f;
 

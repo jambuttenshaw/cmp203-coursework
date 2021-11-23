@@ -6,8 +6,11 @@ class Transformation
 {
 public:
 	Transformation();
-	Transformation(glm::vec3 translation);
-	Transformation(glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
+	Transformation(const glm::vec3& translation);
+	Transformation(const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale);
+
+	Transformation(const glm::mat4& matrix);
+
 	~Transformation();
 };
 

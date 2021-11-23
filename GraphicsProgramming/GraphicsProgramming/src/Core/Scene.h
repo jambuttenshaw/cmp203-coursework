@@ -45,6 +45,10 @@ public:
 	// Resizes the OpenGL output based on new window size.
 	void resize(int w, int h);
 
+
+
+	const Camera& GetActiveCamera() const { return *currentCamera; }
+
 protected:
 
 	// for use by the client scene

@@ -7,7 +7,9 @@ CourseworkScene::~CourseworkScene()
 {
 	if (skybox != nullptr) delete skybox;
 	if (skybox2 != nullptr) delete skybox2;
+
 	if (portal != nullptr) delete portal;
+	if (portal2 != nullptr) delete portal2;
 }
 
 void CourseworkScene::OnSetup()
@@ -22,7 +24,13 @@ void CourseworkScene::OnSetup()
 	directionalLight.setPosition({ -1, 1, 0 });
 
 	portal = new Portal(this);
-	portal->SetLinkedPortal(portal);
+	portal2 = new Portal(this);
+
+	portal->SetPosition({ -2, 0, 0 });
+	portal2->SetPosition({ 2, 0, 0 });
+
+	portal->SetLinkedPortal(portal2);
+	//portal2->SetLinkedPortal(portal);
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
 	sphere = GeometryHelper::CreateUnitSphere(150);
@@ -56,7 +64,14 @@ void CourseworkScene::OnRender()
 	Material::Default.apply();
 
 
-	portal->Render();
+	{
+		Transformation t({ -2, 0, 0 }, { 0, 0, 0 }, { 1, 1, 1 });
+		portal->Render();
+	}
+	{
+		Transformation t({ 2, 0, 0 }, { 0, 0, 0 }, { 1, 1, 1 });
+		portal2->Render();
+	} 
 
 
 	// render the rest of the scene as normal

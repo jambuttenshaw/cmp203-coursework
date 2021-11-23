@@ -6,6 +6,8 @@
 
 #include "Core/Math.h"
 
+#include <glm/gtx/transform.hpp>
+
 
 void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 {
@@ -58,6 +60,20 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
+}
+
+glm::mat4 Camera::getLocalToWorldMatrix() const
+{
+	glm::vec3 right = glm::normalize(glm::cross(forward, up));
+
+	glm::mat4 m(1.0f);
+	m[0] = glm::vec4(right, 0.0f);
+	m[1] = glm::vec4(up, 0.0f);
+	m[2] = glm::vec4(forward, 0.0f);
+
+	glm::translate(m, position);
+
+	return m;
 }
 
 void Camera::ApplyLookAt()

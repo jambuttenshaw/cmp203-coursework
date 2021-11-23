@@ -4,17 +4,19 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 Transformation::Transformation()
 	: Transformation({0, 0, 0}, {0, 0, 0}, {1, 1, 1})
 {
 }
 
-Transformation::Transformation(glm::vec3 translation)
+Transformation::Transformation(const glm::vec3& translation)
 	: Transformation(translation, {0, 0, 0}, {1, 1, 1})
 {
 }
 
-Transformation::Transformation(glm::vec3 t, glm::vec3 r, glm::vec3 s)
+Transformation::Transformation(const glm::vec3& t, const glm::vec3& r, const glm::vec3& s)
 {
 	glPushMatrix();
 
@@ -23,6 +25,13 @@ Transformation::Transformation(glm::vec3 t, glm::vec3 r, glm::vec3 s)
 	glRotatef(r.y, 0, 1, 0);
 	glRotatef(r.z, 0, 0, 1);
 	glScalef(s.x, s.y, s.z);
+}
+
+Transformation::Transformation(const glm::mat4& matrix)
+{
+	// this doesnt work :(
+	glPushMatrix();
+	glLoadMatrixf(glm::value_ptr(matrix));
 }
 
 Transformation::~Transformation()

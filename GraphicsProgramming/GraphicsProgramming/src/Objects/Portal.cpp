@@ -4,10 +4,13 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include <glm/gtx/transform.hpp>
+
 #include "Core/Scene.h"
 
 #include "Rendering/GeometryHelper.h"
 #include "Rendering/RenderHelper.h"
+#include "Rendering/Camera.h"
 
 #include <cassert>
 
@@ -25,7 +28,12 @@ Portal::Portal(Scene* sceneToRender)
 void Portal::Render()
 {
 	// dont draw this portal if were already rendering one to the screen!
-	if (sPortalRenderInProgress) return;
+	if (sPortalRenderInProgress)
+	{
+		// just draw the frame
+		RenderHelper::drawMesh(mFrameModel);
+		return;
+	}
 	// mark portal rendering as begun
 	sPortalRenderInProgress = true;
 
@@ -40,6 +48,7 @@ void Portal::Render()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	// draw our stencil
 	RenderHelper::drawMesh(mScreenModel);
+	
 
 	// re-enable writing to frame buffer
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -59,9 +68,17 @@ void Portal::Render()
 		// transform the point of view of the camera to be looking into the linked scene
 		// from its current pov in this scene
 		
+		//glm::mat4 m = mLinkedPortal->mLocalToWorld * glm::inverse(mLocalToWorld) * mSceneToRender->GetActiveCamera().getLocalToWorldMatrix();
 		
-		// render the scene that the linked portal looks into
-		mLinkedPortal->mSceneToRender->OnRender();
+		{
+			glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+			Transformation t({4, 0, -6}, {0, 180, 0}, {1, 1, 1});
+			// render the scene that the linked portal looks into
+			mLinkedPortal->mSceneToRender->OnRender();
+
+			glPopAttrib();
+		}
 	}
 	else
 	{
@@ -84,9 +101,14 @@ void Portal::Render()
 	RenderHelper::drawMesh(mScreenModel);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-	// finally render frame
+	// finally render the frame of the portal
 	RenderHelper::drawMesh(mFrameModel);
 
 	// portal render is finished
 	sPortalRenderInProgress = false;
+}
+
+void Portal::SetPosition(const glm::vec3& pos)
+{
+	mLocalToWorld = glm::translate(pos);
 }

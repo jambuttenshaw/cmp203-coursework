@@ -21,6 +21,8 @@ private:
 	Light directionalLight;
 
 	Portal* portal;
+	Portal* portal2;
+
 	Mesh groundPlane;
 	Mesh sphere;
 

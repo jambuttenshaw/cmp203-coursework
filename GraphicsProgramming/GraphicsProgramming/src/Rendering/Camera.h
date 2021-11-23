@@ -14,29 +14,31 @@ public:
 	// getters and setters
 	inline void setPosition(const glm::vec3& pos) { position = pos; }
 	inline void translate(const glm::vec3& translation) { position += translation; }
-	inline const glm::vec3& getPosition() { return position; };
+	inline const glm::vec3& getPosition() const { return position; };
 
 	inline void setPitch(float p) { pitch = p; }
 	inline void changePitch(float deltaP) { pitch += deltaP; }
-	inline float getPitch() { return pitch; }
+	inline float getPitch() const { return pitch; }
 
 	inline void setYaw(float y) { yaw = y; }
 	inline void changeYaw(float deltaY) { yaw += deltaY; }
-	inline float getYaw() { return yaw; }
+	inline float getYaw() const { return yaw; }
 
 	// properties of the camera controller
 	inline void setSpeed(float s) { speed = s; }
-	inline float getSpeed() { return speed; }
+	inline float getSpeed() const { return speed; }
 	inline void setSensitivity(float s) { sensitivity = s; }
-	inline float getSensitivity() { return sensitivity; }
+	inline float getSensitivity() const { return sensitivity; }
 
 	// call this in your scene if you want the camera to act
 	// as a first-person camera, controlled by the keyboard and mouse
 	void Process3DControllerInputs(float dt, bool allowVertical = true);
 
 	// get the cameras forward and up vectors
-	inline const glm::vec3& getForward() { return forward; }
-	inline const glm::vec3& getUp() { return up; }
+	inline const glm::vec3& getForward() const { return forward; }
+	inline const glm::vec3& getUp() const { return up; }
+
+	glm::mat4 getLocalToWorldMatrix() const;
 
 private:
 	// uploads the cameras position and orientation to opengl
