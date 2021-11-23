@@ -20,10 +20,10 @@ public:
 	GeometryHelper() = delete;
 
 	static Mesh CreatePlane(size_t xSlices, size_t ySlices,
-							Vector3 up = Vector3::up,
+							glm::vec3 up = {0, 1, 0},
 							float uScale = 1.0f, float vScale = 1.0f,
 							std::function<float(float, float)> heightFunc = HeightFuncs::Flat,
-							Vector3 tangent = Vector3::zero, Vector3 bitangent = Vector3::zero);
+							glm::vec3 tangent = {0, 0, 0}, glm::vec3 bitangent = {0, 0, 0});
 
 	static Mesh CreateUnitCube(size_t resolution);
 	static Mesh CreateUnitSphere(size_t resolution);

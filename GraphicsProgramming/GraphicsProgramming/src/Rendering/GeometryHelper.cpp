@@ -21,17 +21,17 @@
 #define PI 3.1415926f
 
 
-Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc, Vector3 tangent, Vector3 bitangent)
+Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, glm::vec3 up, float uScale, float vScale, std::function<float(float, float)> heightFunc, glm::vec3 tangent, glm::vec3 bitangent)
 {
-	std::vector<Vector3> vertices;
-	std::vector<Vector3> normals;
-	std::vector<Vector2> texCoords;
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec2> texCoords;
 	std::vector<unsigned int> indices;
 
-	if (tangent.equals(Vector3::zero) || bitangent.equals(Vector3::zero))
+	if (tangent == glm::vec3{0, 0, 0} || bitangent == glm::vec3{0, 0, 0})
 	{
 		tangent = { up.z, up.x, up.y };
-		bitangent = tangent.cross(up);
+		bitangent = glm::cross(tangent, up);
 	}
 
 
@@ -45,7 +45,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 	{
 		for (size_t x = 0; x < xSlices; x++)
 		{
-			Vector3 v{ tangent * posX + bitangent * posY + up * heightFunc(posX, posY) };
+			glm::vec3 v{ tangent * posX + bitangent * posY + up * heightFunc(posX, posY) };
 
 			vertices.push_back(v);
 			texCoords.push_back({
@@ -63,7 +63,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 	for (size_t i = 0; i < xSlices * ySlices; i++)
 	{
 		// tangent calculation
-		Vector3 tangent;
+		glm::vec3 tangent{0, 0, 0};
 		float factor = 0;
 		if (i % xSlices != 0)
 		{
@@ -80,7 +80,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 
 
 		// bi-tangent calculation
-		Vector3 bitangent;
+		glm::vec3 bitangent{0, 0, 0};
 		factor = 0;
 		if (i >= xSlices)
 		{
@@ -96,7 +96,7 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 		bitangent = { bitangent.x / factor, bitangent.y / factor, bitangent.z / factor };
 
 		// normal calculation
-		Vector3 normal = tangent.cross(bitangent).normalised();
+		glm::vec3 normal = glm::normalize(cross(tangent, bitangent));
 		normals.push_back(normal);
 	}
 
@@ -129,14 +129,14 @@ Mesh GeometryHelper::CreatePlane(size_t xSlices, size_t ySlices, Vector3 up, flo
 Mesh GeometryHelper::CreateUnitCube(size_t resolution)
 {
 	Mesh unitCube;
-	std::array<Vector3, 6> faceDirections =
+	std::array<glm::vec3, 6> faceDirections =
 	{
-		Vector3{  1,  0,  0 },
-		Vector3{ -1,  0,  0 },
-		Vector3{  0,  1,  0 },
-		Vector3{  0, -1,  0 },
-		Vector3{  0,  0,  1 },
-		Vector3{  0,  0, -1 }
+		glm::vec3{  1,  0,  0 },
+		glm::vec3{ -1,  0,  0 },
+		glm::vec3{  0,  1,  0 },
+		glm::vec3{  0, -1,  0 },
+		glm::vec3{  0,  0,  1 },
+		glm::vec3{  0,  0, -1 }
 	};
 	for (const auto& dir : faceDirections)
 	{
@@ -150,13 +150,13 @@ Mesh GeometryHelper::CreateDisc(float radius, size_t resolution)
 {
 	float deltaAngle = 2 * 3.1415926f / resolution;
 
-	std::vector<Vector3> positions(resolution + 1);
-	std::vector<Vector3> normals(resolution + 1, { 0, 1, 0 });
-	std::vector<Vector2> texCoords(resolution + 1);
+	std::vector<glm::vec3> positions(resolution + 1);
+	std::vector<glm::vec3> normals(resolution + 1, { 0, 1, 0 });
+	std::vector<glm::vec2> texCoords(resolution + 1);
 	std::vector<unsigned int> triangles(3 * resolution);
 
 	// one central vertex
-	positions[0] = Vector3::zero;
+	positions[0] = {0, 0, 0};
 	texCoords[0] = { 0.5f, 0.5f };
 
 	float angle = 0.0f;
@@ -186,7 +186,7 @@ Mesh GeometryHelper::CreateDisc(float radius, size_t resolution)
 
 Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 {
-	std::vector<Vector3> points(resolution);
+	std::vector<glm::vec3> points(resolution);
 
 	// dlong = PI * (3 - sqrt(5))
 	// sqrt is not constexpr, so computed manually and hard-coded instead
@@ -209,7 +209,7 @@ Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 	std::vector<double> projectedPoints(2 * resolution);
 	for (size_t i = 0; i < resolution; i++)
 	{
-		Vector3 p = points[i];
+		glm::vec3 p = points[i];
 		double X = p.x / (1.0 + p.y);
 		double Z = p.z / (1.0 + p.y);
 
@@ -229,7 +229,7 @@ Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 	// this is a side effect of using a stereographic projection; the south pole would be projected to infinity
 
 	// add a vertex at the south pole
-	points.push_back(Vector3::down);
+	points.push_back({0, -1, 0});
 
 	int n = points.size() - 1;
 
@@ -255,13 +255,13 @@ Mesh GeometryHelper::CreateUnitSphere(size_t resolution)
 	triangles.push_back(n - 5);
 
 	// define normals
-	std::vector<Vector3> normals(points.size());
+	std::vector<glm::vec3> normals(points.size());
 	for (size_t i = 0; i < resolution; i++)
-		normals[i] = points[i].normalised();
+		normals[i] = glm::normalize(points[i]);
 
 
 	// calculate texture coordinates for every point
-	std::vector<Vector2> texCoords(points.size());
+	std::vector<glm::vec2> texCoords(points.size());
 	size_t i = 0;
 	for (auto& p : points)
 	{
@@ -326,9 +326,9 @@ Mesh GeometryHelper::CreateCylinder(float height, float radius, size_t resolutio
 Mesh GeometryHelper::LoadObj(const std::string& filename)
 {
 	// these arrays may not be the same size after loading from the file!
-	std::vector<Vector3> positions;
-	std::vector<Vector3> normals;
-	std::vector<Vector2> uvs;
+	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec2> uvs;
 
 	// map from an obj format index (v/n/t) to a constructed Vertex object inside the vertices vector
 	std::unordered_map<std::string, unsigned int> indexMap;
@@ -358,21 +358,21 @@ Mesh GeometryHelper::LoadObj(const std::string& filename)
 		{
 			if (strcmp(lineHeader, "v") == 0) // Vertex
 			{
-				Vector3 pos;
+				glm::vec3 pos;
 				int matches = fscanf(file, "%f %f %f\n", &pos.x, &pos.y, &pos.z);
 				assert((matches == 3) && "Failed to parse model");
 				positions.push_back(pos);
 			}
 			else if (strcmp(lineHeader, "vt") == 0) // Tex Coord
 			{
-				Vector2 uv;
+				glm::vec2 uv;
 				int matches = fscanf(file, "%f %f\n", &uv.x, &uv.y);
 				assert((matches == 2) && "Failed to parse model");
 				uvs.push_back(uv);
 			}
 			else if (strcmp(lineHeader, "vn") == 0) // Normal
 			{
-				Vector3 normal;
+				glm::vec3 normal;
 				int matches = fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
 				assert((matches == 3) && "Failed to parse model");
 				normals.push_back(normal);

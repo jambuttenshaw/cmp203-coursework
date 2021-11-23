@@ -5,16 +5,16 @@
 #include <gl/GLU.h>
 
 Transformation::Transformation()
-	: Transformation(Vector3::zero, Vector3::zero, Vector3::one)
+	: Transformation({0, 0, 0}, {0, 0, 0}, {1, 1, 1})
 {
 }
 
-Transformation::Transformation(Vector3 translation)
-	: Transformation(translation, Vector3::zero, Vector3::one)
+Transformation::Transformation(glm::vec3 translation)
+	: Transformation(translation, {0, 0, 0}, {1, 1, 1})
 {
 }
 
-Transformation::Transformation(Vector3 t, Vector3 r, Vector3 s)
+Transformation::Transformation(glm::vec3 t, glm::vec3 r, glm::vec3 s)
 {
 	glPushMatrix();
 

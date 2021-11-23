@@ -61,11 +61,11 @@ void CourseworkScene::OnRender()
 
 	// render the rest of the scene as normal
 	{
-		Transformation t{ Vector3::zero, Vector3::zero, {10, 1, 10} };
+		Transformation t{ {0, 0, 0}, {0, 0, 0}, {10, 1, 10} };
 		RenderHelper::drawMesh(groundPlane);
 	}
 	{
-		Transformation t({ 0, 1.0f, 3.0f }, Vector3::zero, {0.5f, 0.5f, 0.5f});
+		Transformation t({ 0, 1.0f, 3.0f }, {0, 0, 0}, {0.5f, 0.5f, 0.5f});
 		RenderHelper::drawMesh(sphere);
 	}
 }

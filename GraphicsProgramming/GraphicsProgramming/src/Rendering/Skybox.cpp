@@ -23,7 +23,7 @@ Skybox::~Skybox()
 	delete MeshTexture;
 }
 
-void Skybox::render(const Vector3& position)
+void Skybox::render(const glm::vec3& position)
 {
 	// set up opengl state
 	glPushAttrib(GL_ENABLE_BIT);
@@ -44,10 +44,10 @@ void Skybox::Rebuild()
 	// Remember: skybox is an inside-out cube, so normals will be opposite from what you expect!
 	struct FaceData
 	{
-		Vector3 normal;
-		Vector3 tangent;
-		Vector3 bitangent;
-		Vector2 uvOffset;
+		glm::vec3 normal;
+		glm::vec3 tangent;
+		glm::vec3 bitangent;
+		glm::vec2 uvOffset;
 	};
 	
 	FaceData faceData[6] = {

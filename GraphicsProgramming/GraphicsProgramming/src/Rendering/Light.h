@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Vector3.h"
+#include <glm/glm.hpp>
 #include "Core/Color.h"
 
 
@@ -24,8 +24,8 @@ public:
 	void setType(LightType t);
 	inline LightType getType() const { return type; }
 
-	inline void setPosition(const Vector3& pos) { homogeneousPos.xyz = pos; }
-	inline const Vector3& getPosition() { return homogeneousPos.xyz; }
+	inline void setPosition(const glm::vec3& pos) { homogeneousPos.xyz = pos; }
+	inline const glm::vec3& getPosition() { return homogeneousPos.xyz; }
 
 	inline void setDiffuseColor(const Color& color) { diffuseColor = color; }
 	inline const Color& getDiffuseColor() { return diffuseColor; }
@@ -36,8 +36,8 @@ public:
 	inline void setSpecularColor(const Color& color) { specularColor = color; }
 	inline const Color& getSpecularColor() { return specularColor; }
 
-	inline void setSpotDirection(const Vector3& dir) { spotDirection = dir; }
-	inline const Vector3& getSpotDirection() { return spotDirection; }
+	inline void setSpotDirection(const glm::vec3& dir) { spotDirection = dir; }
+	inline const glm::vec3& getSpotDirection() { return spotDirection; }
 
 	inline void setSpotExponent(float e) { spotExponent = e; }
 	inline float getSpotExponent() { return spotExponent; }
@@ -45,8 +45,8 @@ public:
 	inline void setSpotCutoff(float cutoff) { spotCutoff = cutoff; }
 	inline float getSpotCutoff() { return spotCutoff; }
 
-	inline void setAttenuation(const Vector3& a) { attentuation = a; }
-	inline const Vector3& getAttenuation() { return attentuation; }
+	inline void setAttenuation(const glm::vec3& a) { attentuation = a; }
+	inline const glm::vec3& getAttenuation() { return attentuation; }
 
 public:
 
@@ -59,7 +59,7 @@ private:
 	// position
 	struct
 	{
-		Vector3 xyz;
+		glm::vec3 xyz;
 		float w = 1.0f;
 
 		float const* ptr() const { return reinterpret_cast<float const*>(this); }
@@ -71,12 +71,12 @@ private:
 	Color specularColor;
 
 	// spotlight
-	Vector3 spotDirection;
+	glm::vec3 spotDirection;
 	float spotExponent = 0.0f;
 	float spotCutoff = 0.0f;
 
 	// attenuation
-	Vector3 attentuation = { 1, 0, 0 };
+	glm::vec3 attentuation = { 1, 0, 0 };
 
 private:
 

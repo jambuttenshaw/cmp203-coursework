@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Vector3.h"
+#include <glm/glm.hpp>
 #include "Mesh.h"
 
 class RenderHelper

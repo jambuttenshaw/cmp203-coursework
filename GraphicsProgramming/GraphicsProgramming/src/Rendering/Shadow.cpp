@@ -4,13 +4,13 @@
 void Shadow::generateShadowMatrix(float* shadowMatrix, float light_pos[4], GLfloat floor[12]) {
 
 	//Defining vertices of plane are PQR with edges PQ and PR
-	Vector3 P(floor[0], floor[1], floor[2]);	//top left
-	Vector3 Q(floor[3], floor[4], floor[5]);	// bottom left
-	Vector3 R(floor[9], floor[10], floor[11]);	// top right
+	glm::vec3 P(floor[0], floor[1], floor[2]);	//top left
+	glm::vec3 Q(floor[3], floor[4], floor[5]);	// bottom left
+	glm::vec3 R(floor[9], floor[10], floor[11]);	// top right
 
-	Vector3 PQ = (Q - P).normalised();
-	Vector3 PR = (R - P).normalised();
-	Vector3 normal = PR.cross(PQ);
+	glm::vec3 PQ = (Q - P).normalised();
+	glm::vec3 PR = (R - P).normalised();
+	glm::vec3 normal = PR.cross(PQ);
 
 	//Equation of plane is ax + by + cz = d
 	//a, b and c are the coefficients of the normal to the plane (i.e. normal = ai + bj + ck)
@@ -50,7 +50,7 @@ void Shadow::generateShadowMatrix(float* shadowMatrix, float light_pos[4], GLflo
 	shadowMatrix[15] = -(a * x + b * y + c * z);
 }
 
-void Shadow::generateShadowMatrix(float* shadowMatrix, const Vector3& lightPos, const Vector3& normal, const Vector3& point)
+void Shadow::generateShadowMatrix(float* shadowMatrix, const glm::vec3& lightPos, const glm::vec3& normal, const glm::vec3& point)
 {
 	//Equation of plane is ax + by + cz = d
 	//a, b and c are the coefficients of the normal to the plane (i.e. normal = ai + bj + ck)

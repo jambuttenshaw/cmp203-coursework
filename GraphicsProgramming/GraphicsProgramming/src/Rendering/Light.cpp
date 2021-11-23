@@ -23,7 +23,7 @@ void Light::render(unsigned int lightID, bool debugSphere)
 
 	if (type == LightType::Spot)
 	{
-		glLightfv(lightID, GL_SPOT_DIRECTION, spotDirection.ptr());
+		glLightfv(lightID, GL_SPOT_DIRECTION, &spotDirection.x);
 		glLightf(lightID, GL_SPOT_EXPONENT, spotExponent);
 		glLightf(lightID, GL_SPOT_CUTOFF, spotCutoff);
 	}

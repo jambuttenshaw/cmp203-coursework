@@ -10,11 +10,11 @@
 void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 {
 	// do not walk up or down the y-axis
-	Vector3 walkDir{ forward.x, 0.0f, forward.z };
+	glm::vec3 walkDir{ forward.x, 0.0f, forward.z };
 
 	// movement variable is used to make sure that the camera doesn't move faster
 	// when 'W' and 'A' are held for example
-	Vector3 movement;
+	glm::vec3 movement{0, 0, 0};
 
 	// keyboard inputs to move the cameras position
 	if (input->isKeyDown('w'))
@@ -22,13 +22,13 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 	if (input->isKeyDown('s'))
 		movement -= walkDir;
 	if (input->isKeyDown('a'))
-		movement -= walkDir.cross(up).normalised();
+		movement -= glm::normalize(glm::cross(walkDir, up));
 	if (input->isKeyDown('d'))
-		movement += walkDir.cross(up).normalised();
+		movement += glm::normalize(glm::cross(walkDir, up));
 
-	if (movement.lengthSquared() > 0)
+	if (glm::length(movement) > 0)
 	{
-		movement.normalise();
+		movement = glm::normalize(movement);
 		position += movement * speed * dt;
 	}
 
@@ -65,7 +65,7 @@ void Camera::ApplyLookAt()
 	// calculate forward
 	RecalculateForward();
 	// get the point the camera is looking at
-	Vector3 lookAtPoint = position + forward;
+	glm::vec3 lookAtPoint = position + forward;
 	// apply camera position and orientation
 	gluLookAt(position.x,    position.y,    position.z,
 			  lookAtPoint.x, lookAtPoint.y, lookAtPoint.z,
@@ -79,5 +79,5 @@ void Camera::RecalculateForward()
 	forward.y = sinf(Math::radians(pitch));
 	forward.z = sinf(Math::radians(yaw)) * cosf(Math::radians(pitch));
 	// make sure it is normalized
-	forward.normalise();
+	forward = glm::normalize(forward);
 }

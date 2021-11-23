@@ -29,7 +29,7 @@ void Week7Scene::OnSetup()
 	groundTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	groundTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-	ground = GeometryHelper::CreatePlane(250, 250, Vector3::up, 50, 50, [](float x, float z)->float {return 3 * sinf(10.0f * x * x) + z; });
+	ground = GeometryHelper::CreatePlane(250, 250, {0, 1, 0}, 50, 50, [](float x, float z)->float {return 3 * sinf(10.0f * x * x) + z; });
 	ground.MeshTexture = groundTexture;
 
 	metal.setAmbientAndDiffuse(Color::White);
@@ -76,7 +76,7 @@ void Week7Scene::OnRender()
 
 	defaultMat.apply();
 	{
-		Transformation t(Vector3::zero, Vector3::zero, { 30, 1, 30 });
+		Transformation t({0, 0, 0}, {0, 0, 0}, { 30, 1, 30 });
 		RenderHelper::drawMesh(ground);
 	}
 

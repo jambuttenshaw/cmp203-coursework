@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Core/Vector3.h"
+#include <glm/glm.hpp>
 
 class Transformation
 {
 public:
 	Transformation();
-	Transformation(Vector3 translation);
-	Transformation(Vector3 translation, Vector3 rotation, Vector3 scale);
+	Transformation(glm::vec3 translation);
+	Transformation(glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
 	~Transformation();
 };
 

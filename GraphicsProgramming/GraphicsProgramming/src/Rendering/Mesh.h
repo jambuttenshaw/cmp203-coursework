@@ -3,16 +3,14 @@
 #include <vector>
 #include <cassert>
 
-#include "Core/Vector3.h"
-#include "Core/Vector2.h"
-
+#include <glm/glm.hpp>
 #include "Texture.h"
 
 struct Vertex
 {
-	Vector3 Position;
-	Vector3 Normal;
-	Vector2 TexCoord;
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 TexCoord;
 };
 
 
@@ -33,9 +31,9 @@ public:
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 		: Vertices(vertices), Indices(indices) {}
 
-	Mesh(std::vector<Vector3> positions,
-		std::vector<Vector3> normals,
-		std::vector<Vector2> texCoords,
+	Mesh(std::vector<glm::vec3> positions,
+		std::vector<glm::vec3> normals,
+		std::vector<glm::vec2> texCoords,
 		std::vector<unsigned int> indices)
 		: Indices(indices)
 	{
@@ -50,8 +48,8 @@ public:
 	}
 
 	// for meshes without textures
-	Mesh(std::vector<Vector3> positions,
-		std::vector<Vector3> normals,
+	Mesh(std::vector<glm::vec3> positions,
+		std::vector<glm::vec3> normals,
 		std::vector<unsigned int> indices)
 		: Indices(indices)
 	{

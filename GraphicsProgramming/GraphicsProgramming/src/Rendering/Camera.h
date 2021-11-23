@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Vector3.h"
+#include <glm/glm.hpp>
 #include "Core/Input.h"
 
 
@@ -12,9 +12,9 @@ public:
 	Camera(Input* in) : input(in) {}
 
 	// getters and setters
-	inline void setPosition(const Vector3& pos) { position = pos; }
-	inline void translate(const Vector3& translation) { position += translation; }
-	inline const Vector3& getPosition() { return position; };
+	inline void setPosition(const glm::vec3& pos) { position = pos; }
+	inline void translate(const glm::vec3& translation) { position += translation; }
+	inline const glm::vec3& getPosition() { return position; };
 
 	inline void setPitch(float p) { pitch = p; }
 	inline void changePitch(float deltaP) { pitch += deltaP; }
@@ -35,8 +35,8 @@ public:
 	void Process3DControllerInputs(float dt, bool allowVertical = true);
 
 	// get the cameras forward and up vectors
-	inline const Vector3& getForward() { return forward; }
-	inline const Vector3& getUp() { return up; }
+	inline const glm::vec3& getForward() { return forward; }
+	inline const glm::vec3& getUp() { return up; }
 
 private:
 	// uploads the cameras position and orientation to opengl
@@ -47,14 +47,14 @@ private:
 private:
 	Input* input = nullptr;
 
-	Vector3 position = { 0, 0, 5 };
+	glm::vec3 position = { 0, 0, 5 };
 
 	float pitch = 0.0f;
 	float yaw = -90.0f;
 
 	// never to be accessed directly from outside of this class
-	Vector3 up = Vector3::up;
-	Vector3 forward = Vector3::forward;
+	glm::vec3 up = {0, 1, 0};
+	glm::vec3 forward = {0, 0, -1};
 
 
 	// camera controller

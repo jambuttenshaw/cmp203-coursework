@@ -4,8 +4,7 @@
 #include <unordered_map>
 
 #include "Texture.h"
-#include "Core/Vector2.h"
-#include "Core/Vector3.h"
+#include <glm/glm.hpp>
 #include "Mesh.h"
 
 
@@ -15,7 +14,7 @@ public:
 	Skybox(const std::string& filepath);
 	~Skybox();
 
-	void render(const Vector3& position);
+	void render(const glm::vec3& position);
 
 private:
 	void Rebuild();
