@@ -8,6 +8,7 @@ class Material
 {
 public:
 	Material() = default;
+	Material(const Color& ambientAndDiffuse);
 
 	void apply() const;
 
@@ -39,5 +40,6 @@ private:
 
 public:
 	static const Material Default;
+	static const Material Error;
 };
 

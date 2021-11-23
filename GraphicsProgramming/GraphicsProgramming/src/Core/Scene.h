@@ -63,7 +63,7 @@ private:
 	void calculateFPS();
 
 
-protected:
+public:
 	// to be implemented by client scenes
 	virtual void OnSetup() {};
 	virtual void OnHandleInput(float dt) {};

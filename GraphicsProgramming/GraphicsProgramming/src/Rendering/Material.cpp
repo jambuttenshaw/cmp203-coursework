@@ -4,6 +4,12 @@
 #include <gl/GLU.h>
 
 const Material Material::Default;
+const Material Material::Error{Color::Magenta};
+
+Material::Material(const Color& ambientAndDiffuse)
+{
+	setAmbientAndDiffuse(ambientAndDiffuse);
+}
 
 void Material::apply() const
 {

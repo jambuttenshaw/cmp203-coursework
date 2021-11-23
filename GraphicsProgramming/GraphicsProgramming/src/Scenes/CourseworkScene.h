@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Scene.h"
+#include "Objects/Portal.h"
 
 class CourseworkScene : public Scene
 {
@@ -19,9 +20,9 @@ private:
 	Skybox* skybox2;
 	Light directionalLight;
 
-	Mesh portal;
-	Mesh portalScreen;
+	Portal* portal;
 	Mesh groundPlane;
+	Mesh sphere;
 
 	Material red;
 
