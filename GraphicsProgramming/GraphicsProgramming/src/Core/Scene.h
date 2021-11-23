@@ -49,6 +49,7 @@ public:
 
 	const Camera& GetActiveCamera() const { return *currentCamera; }
 
+
 protected:
 
 	// for use by the client scene

@@ -17,18 +17,12 @@ public:
 	inline void SetTexture(Texture* tex) { mFrameModel.MeshTexture = tex; }
 
 
-	void SetPosition(const glm::vec3& pos);
-
-
 private:
 	Mesh mFrameModel;
 	Mesh mScreenModel;
 
 	Portal* mLinkedPortal = nullptr;
 	Scene* mSceneToRender = nullptr;
-
-	// identity matrix
-	glm::mat4 mLocalToWorld{ 1.0f };
 
 private:
 	static bool sPortalRenderInProgress;

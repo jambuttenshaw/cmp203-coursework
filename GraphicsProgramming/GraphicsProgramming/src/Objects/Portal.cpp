@@ -68,17 +68,23 @@ void Portal::Render()
 		// transform the point of view of the camera to be looking into the linked scene
 		// from its current pov in this scene
 		
-		//glm::mat4 m = mLinkedPortal->mLocalToWorld * glm::inverse(mLocalToWorld) * mSceneToRender->GetActiveCamera().getLocalToWorldMatrix();
-		
-		{
-			glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glm::mat4 m = mLinkedPortal->mLocalToWorld * glm::inverse(mLocalToWorld) * mSceneToRender->GetActiveCamera().getLocalToWorldMatrix();
+		glm::vec3 up = m[1];
+		glm::vec3 pos = m[3];
+		// look at = pos + forward
+		glm::vec3 lookAt = pos + glm::vec3(m[2]);
 
-			Transformation t({4, 0, -6}, {0, 180, 0}, {1, 1, 1});
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		{
+			Transformation t;
+			gluLookAt(pos.x,	pos.y,	  pos.z, 
+					  lookAt.x, lookAt.y, lookAt.z, 
+					  up.x,		up.y,	  up.z);
+
 			// render the scene that the linked portal looks into
 			mLinkedPortal->mSceneToRender->OnRender();
-
-			glPopAttrib();
 		}
+		glPopAttrib();
 	}
 	else
 	{
@@ -106,9 +112,4 @@ void Portal::Render()
 
 	// portal render is finished
 	sPortalRenderInProgress = false;
-}
-
-void Portal::SetPosition(const glm::vec3& pos)
-{
-	mLocalToWorld = glm::translate(pos);
 }
