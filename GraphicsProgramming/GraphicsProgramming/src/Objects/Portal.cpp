@@ -15,6 +15,8 @@
 #include "Rendering/Camera.h"
 
 #include <cassert>
+#include <windows.h>
+#include <sstream>
 
 
 bool Portal::sPortalRenderInProgress = false;
@@ -27,32 +29,47 @@ Portal::Portal(Scene* sceneToRender)
 	mSceneToRender = sceneToRender;
 }
 
-void Portal::TestForTravelling(Input* in, const glm::vec3& travellerPosition)
+void Portal::TestForTravelling(Input* in, Camera* traveller)
 {
 	if (in->isKeyDown('k'))
 	{
-		Application::SetActiveScene(mLinkedPortal->mSceneToRender);
-		in->setKeyDown('k');
-	}
-	/*
-	int sideOfPortal = static_cast<int>(glm::sign(glm::dot(travellerPosition, mTransform.GetTranslation())));
+		Scene* newScene = mLinkedPortal->mSceneToRender;
+		Application::SetActiveScene(newScene);
+		
+		Camera* cam = newScene->GetActiveCamera();
+		cam->setPosition(traveller->getPosition());
+		cam->setPitch(traveller->getPitch());
+		cam->setYaw(traveller->getYaw());
 
-	if (mLastSideOfPortal != 0)
+		in->setKeyUp('k');
+	}
+	
+	float sideOfPortal = glm::dot(traveller->getPosition(), mTransform.GetTranslation());
+	glm::vec3 a = mTransform.GetTranslation();
+	glm::vec3 b = traveller->getPosition();
+
+	std::stringstream s;
+	s << "Side of portal: ";
+	s << sideOfPortal << " -- " << a.x << " " << a.y << " " << a.z << " " << b.x << " " << b.y << " " << b.z << "\n";
+	OutputDebugString(s.str().c_str());
+
+	if (glm::sign(mLastSideOfPortal) != glm::sign(sideOfPortal))
 	{
-		if (mLastSideOfPortal != sideOfPortal)
+		// we have travelled!
+		// switch scenes and move the traveller
+		if (mLinkedPortal != nullptr)
 		{
-			// we have travelled!
-			// switch scenes and move the traveller
-			if (mLinkedPortal != nullptr)
-			{
-				Scene* newScene = mLinkedPortal->mSceneToRender;
-				Application::SetActiveScene(newScene);
-				newScene->GetActiveCamera()->setPosition(mLinkedPortal->GetTransform().GetTranslation());
-			}
+			Scene* newScene = mLinkedPortal->mSceneToRender;
+			Application::SetActiveScene(newScene);
+		
+			Camera* cam = newScene->GetActiveCamera();
+			cam->setPosition(traveller->getPosition());
+			cam->setPitch(traveller->getPitch());
+			cam->setYaw(traveller->getYaw());
 		}
 	}
 	mLastSideOfPortal = sideOfPortal;
-	*/
+	
 }
 
 void Portal::Render()

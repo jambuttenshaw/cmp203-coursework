@@ -97,6 +97,7 @@ void Application::renderScene()
 	if (instance->mQueuedScene != nullptr)
 	{
 		instance->mCurrentScene = instance->mQueuedScene;
+		instance->mCurrentScene->resize(instance->windowX, instance->windowY);
 		instance->mQueuedScene = nullptr;
 	}
 

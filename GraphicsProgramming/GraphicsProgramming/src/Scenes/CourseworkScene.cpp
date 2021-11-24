@@ -50,7 +50,7 @@ void CourseworkScene::OnHandleInput(float dt)
 
 void CourseworkScene::OnUpdate(float dt)
 {
-	portal->TestForTravelling(input, sceneCamera->getPosition());
+	portal->TestForTravelling(input, sceneCamera);
 }
 
 void CourseworkScene::OnRender()

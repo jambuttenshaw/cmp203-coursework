@@ -4,6 +4,7 @@
 #include "Rendering/Texture.h"
 
 #include "Rendering/Transform.h"
+#include "Rendering/Camera.h"
 
 #include "Core/Input.h"
 
@@ -18,7 +19,7 @@ public:
 	Portal(Scene* sceneToRender);
 	~Portal() = default;
 
-	void TestForTravelling(Input* in, const glm::vec3& travellerPosition);
+	void TestForTravelling(Input* in, Camera* traveller);
 	void Render();
 
 	inline void SetLinkedPortal(Portal* portal) { mLinkedPortal = portal; }
@@ -36,7 +37,7 @@ private:
 	Transform mTransform;
 
 	// for tracking traveller
-	int mLastSideOfPortal = 0;
+	float mLastSideOfPortal = 0.0f;
 
 private:
 	static bool sPortalRenderInProgress;

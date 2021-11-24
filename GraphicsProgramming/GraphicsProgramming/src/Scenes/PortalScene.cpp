@@ -50,7 +50,7 @@ void PortalScene::OnHandleInput(float dt)
 
 void PortalScene::OnUpdate(float dt)
 {
-	portal->TestForTravelling(input, sceneCamera->getPosition());
+	portal->TestForTravelling(input, sceneCamera);
 }
 
 void PortalScene::OnRender()
