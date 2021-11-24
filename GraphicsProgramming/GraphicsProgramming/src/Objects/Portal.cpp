@@ -5,6 +5,7 @@
 #include <gl/GLU.h>
 
 #include <glm/gtx/transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include "Core/Scene.h"
 
@@ -75,17 +76,20 @@ void Portal::Render()
 		// from its current pov in this scene
 		
 		glm::mat4 m = mTransform.LocalToWorld() * mLinkedPortal->GetTransform().WorldToLocal();
-		glm::vec3 up = m[1];
 		glm::vec3 pos = m[3];
-		// look at = pos + forward
-		glm::vec3 lookAt = pos + glm::vec3(m[2]);
+
+		// get rotations
+		glm::quat q(m);
+		glm::vec3 euler = glm::eulerAngles(q);
 
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{
-			Transformation t(pos);
+			Transformation t(pos, euler, { 1, 1, 1 });
 
 			// render the scene that the linked portal looks into
+			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->OnRender();
+			Skybox::EnableSkyboxRendering();
 		}
 		glPopAttrib();
 	}

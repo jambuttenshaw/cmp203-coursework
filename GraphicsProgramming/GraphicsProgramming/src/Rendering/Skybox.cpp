@@ -9,6 +9,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+bool Skybox::sSkyboxesEnabled = true;
 
 Skybox::Skybox(const std::string& filepath)
 {
@@ -25,6 +26,9 @@ Skybox::~Skybox()
 
 void Skybox::render(const glm::vec3& position)
 {
+	if (!sSkyboxesEnabled) return;
+
+
 	// set up opengl state
 	glPushAttrib(GL_ENABLE_BIT);
 	glDisable(GL_LIGHTING);

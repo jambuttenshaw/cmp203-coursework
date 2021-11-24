@@ -18,5 +18,13 @@ public:
 
 private:
 	void Rebuild();
+
+public:
+	inline static void EnableSkyboxRendering() { sSkyboxesEnabled = true; }
+	inline static void DisableSkyboxRendering() { sSkyboxesEnabled = false; }
+
+private:
+	static bool sSkyboxesEnabled;
+
 };
 

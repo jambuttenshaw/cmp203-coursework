@@ -26,8 +26,8 @@ void CourseworkScene::OnSetup()
 	portal = new Portal(this);
 	portal2 = new Portal(this);
 
-	portal->GetTransform().SetTranslation({ -2, 0, 0 });
-	portal2->GetTransform().SetTranslation({ 2, 0, 0 });
+	portal->GetTransform().SetTranslation({ -2, 0, 2 });
+	portal2->GetTransform().SetTranslation({ 2, 0, -2 });
 
 	portal->SetLinkedPortal(portal2);
 	portal2->SetLinkedPortal(portal);
@@ -70,6 +70,10 @@ void CourseworkScene::OnRender()
 	portal->Render();
 	portal2->Render();
 
+	{
+		Transformation t{ sceneCamera->getPosition() };
+		RenderHelper::drawMesh(sphere);
+	}
 
 	// render the rest of the scene as normal
 	green.apply();
@@ -86,12 +90,12 @@ void CourseworkScene::OnRender()
 	red.apply();
 	{
 		Transformation t({ 0, 1.0f, 4.0f }, {0, 0, 0}, {0.5f, 0.5f, 0.5f});
-		RenderHelper::drawMesh(sphere);
+		RenderHelper::drawMeshWireframeOverlay(sphere);
 	}
 	blue.apply();
 	{
 		Transformation t({ -1.5f, 1.5f, 5.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawMesh(sphere);
+		RenderHelper::drawMeshWireframeOverlay(sphere);
 	}
 	{
 		Transformation t({ 2.0f, 0.8f, -5.0f }, { 30, 45, 0 }, { 0.5f, 0.5f, 0.5f });
