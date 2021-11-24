@@ -3,11 +3,11 @@
 #include "Core/Scene.h"
 #include "Objects/Portal.h"
 
-class CourseworkScene : public Scene
+class PortalScene : public Scene
 {
 public:
-	CourseworkScene() = default;
-	~CourseworkScene();
+	PortalScene() = default;
+	~PortalScene();
 
 	// Inherited via Scene
 	virtual void OnSetup() override;

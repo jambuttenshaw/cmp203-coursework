@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "Core/Input.h"
 
+#include <vector>
+
 #include <cassert>
 #include <type_traits>
 
@@ -12,17 +14,24 @@ public:
 	Application(int argc, char** argv);
 
 	template<typename SceneType>
-	void loadScene()
+	Scene* loadScene(bool setAsCurrent)
 	{
 		static_assert(std::is_base_of<Scene, SceneType>::value, "SceneType must inherit from Scene.");
 
-		mScene = new SceneType;
-		mScene->init(mInput);
+		Scene* newScene = new SceneType;
+		newScene->init(mInput);
 
-		enterMainLoop();
+		mScenes.push_back(newScene);
+
+		if (setAsCurrent) mCurrentScene = newScene;
+
+		return newScene;
 	}
 
 	~Application();
+
+	void Begin() { enterMainLoop(); }
+
 
 private:
 	void enterMainLoop();
@@ -32,7 +41,9 @@ private:
 	void processMouseMove(int x, int y);
 
 private:
-	Scene* mScene = nullptr;
+	std::vector<Scene*> mScenes;
+	Scene* mCurrentScene = nullptr;
+	Scene* mQueuedScene = nullptr;
 	Input* mInput = nullptr;
 
 	size_t oldTimeSinceStart = 0;
@@ -43,6 +54,8 @@ private:
 
 
 public:
+	static void SetActiveScene(Scene* scene) { instance->mQueuedScene = scene; }
+
 	static size_t GetWindowX() { return instance->windowX; }
 	static size_t GetWindowY() { return instance->windowY; }
 

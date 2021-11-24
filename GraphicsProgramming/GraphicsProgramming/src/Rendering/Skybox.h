@@ -14,7 +14,7 @@ public:
 	Skybox(const std::string& filepath);
 	~Skybox();
 
-	void render(const glm::vec3& position);
+	void render(const glm::vec3& position) const;
 
 private:
 	void Rebuild();

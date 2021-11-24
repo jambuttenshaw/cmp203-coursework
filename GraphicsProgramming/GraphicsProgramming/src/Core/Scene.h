@@ -47,7 +47,8 @@ public:
 
 
 
-	const Camera& GetActiveCamera() const { return *currentCamera; }
+	Camera* GetActiveCamera() const { return currentCamera; }
+	virtual const Skybox* GetSkybox() const { return nullptr; }
 
 
 protected:

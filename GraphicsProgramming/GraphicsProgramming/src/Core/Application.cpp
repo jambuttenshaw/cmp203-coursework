@@ -48,7 +48,7 @@ Application::Application(int argc, char** argv)
 
 Application::~Application()
 {
-	delete mScene;
+	for (auto& scene : mScenes) delete scene;
 	delete mInput;
 }
 
@@ -89,11 +89,17 @@ void Application::changeSize(int w, int h)
 {
 	instance->windowX = static_cast<size_t>(w);
 	instance->windowY = static_cast<size_t>(h);
-	instance->mScene->resize(w, h);
+	instance->mCurrentScene->resize(w, h);
 }
 
 void Application::renderScene()
 {
+	if (instance->mQueuedScene != nullptr)
+	{
+		instance->mCurrentScene = instance->mQueuedScene;
+		instance->mQueuedScene = nullptr;
+	}
+
 	// Calculate delta time.
 	int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
 	float deltaTime = (float)timeSinceStart - (float)instance->oldTimeSinceStart;
@@ -101,9 +107,9 @@ void Application::renderScene()
 	deltaTime = deltaTime / 1000.0f;
 
 	// Update Scene and render next frame.
-	instance->mScene->handleInput(deltaTime);
-	instance->mScene->update(deltaTime);
-	instance->mScene->render();
+	instance->mCurrentScene->handleInput(deltaTime);
+	instance->mCurrentScene->update(deltaTime);
+	instance->mCurrentScene->render();
 }
 
 void Application::processNormalKeys(unsigned char key, int x, int y)

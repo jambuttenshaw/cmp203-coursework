@@ -1,18 +1,18 @@
-#include "CourseworkScene.h"
+#include "PortalScene.h"
 
 #include "Core/Application.h"
 
 
-CourseworkScene::~CourseworkScene()
+PortalScene::~PortalScene()
 {
 	if (skybox != nullptr) delete skybox;
 
 	if (portal != nullptr) delete portal;
 }
 
-void CourseworkScene::OnSetup()
+void PortalScene::OnSetup()
 {
-	skybox = new Skybox("gfx/skybox2.png");
+	skybox = new Skybox("gfx/skybox3.png");
 
 	directionalLight.setType(Light::LightType::Directional);
 	directionalLight.setDiffuseColor(1.0f);
@@ -38,7 +38,7 @@ void CourseworkScene::OnSetup()
 	yellow.setAmbientAndDiffuse(Color::Yellow);
 }
 
-void CourseworkScene::OnHandleInput(float dt)
+void PortalScene::OnHandleInput(float dt)
 {
 	if (input->isKeyDown(VK_ESCAPE))
 	{
@@ -48,12 +48,12 @@ void CourseworkScene::OnHandleInput(float dt)
 	sceneCamera->Process3DControllerInputs(dt, false);
 }
 
-void CourseworkScene::OnUpdate(float dt)
+void PortalScene::OnUpdate(float dt)
 {
 	portal->TestForTravelling(input, sceneCamera->getPosition());
 }
 
-void CourseworkScene::OnRender()
+void PortalScene::OnRender()
 {
 	skybox->render(sceneCamera->getPosition());
 
@@ -63,35 +63,36 @@ void CourseworkScene::OnRender()
 
 	portal->Render();
 
+
 	// render the rest of the scene as normal
-	green.apply();
+	blue.apply();
 	{
 		Transformation t{ {2.5f, 0, 0}, {0, 0, 0}, {5, 1, 10} };
 		RenderHelper::drawMesh(groundPlane);
 	}
-	yellow.apply();
+	red.apply();
 	{
 		Transformation t{ {-2.5f, 0, 0}, {0, 0, 0}, {5, 1, 10} };
 		RenderHelper::drawMesh(groundPlane);
 	}
 
-	red.apply();
+	yellow.apply();
 	{
-		Transformation t({ 0, 1.0f, 4.0f }, {0, 0, 0}, {0.5f, 0.5f, 0.5f});
-		RenderHelper::drawMesh(sphere);
+		Transformation t({ 0, 1.0f, 4.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+		RenderHelper::drawUnitCube();
 	}
-	blue.apply();
+	green.apply();
 	{
 		Transformation t({ -1.5f, 1.5f, 5.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawMesh(sphere);
+		RenderHelper::drawUnitCube();
 	}
 	{
 		Transformation t({ 2.0f, 0.8f, -5.0f }, { 30, 45, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawUnitCube();
+		RenderHelper::drawMesh(sphere);
 	}
 }
 
-void CourseworkScene::LinkPortalsTo(Portal* p)
+void PortalScene::LinkPortalsTo(Portal* p)
 {
 	portal->SetLinkedPortal(p);
 }

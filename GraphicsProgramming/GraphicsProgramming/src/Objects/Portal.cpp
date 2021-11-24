@@ -7,6 +7,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include "Core/Application.h"
 #include "Core/Scene.h"
 
 #include "Rendering/GeometryHelper.h"
@@ -24,6 +25,34 @@ Portal::Portal(Scene* sceneToRender)
 	mScreenModel = GeometryHelper::LoadObj("models/portalScreen.obj");
 
 	mSceneToRender = sceneToRender;
+}
+
+void Portal::TestForTravelling(Input* in, const glm::vec3& travellerPosition)
+{
+	if (in->isKeyDown('k'))
+	{
+		Application::SetActiveScene(mLinkedPortal->mSceneToRender);
+		in->setKeyDown('k');
+	}
+	/*
+	int sideOfPortal = static_cast<int>(glm::sign(glm::dot(travellerPosition, mTransform.GetTranslation())));
+
+	if (mLastSideOfPortal != 0)
+	{
+		if (mLastSideOfPortal != sideOfPortal)
+		{
+			// we have travelled!
+			// switch scenes and move the traveller
+			if (mLinkedPortal != nullptr)
+			{
+				Scene* newScene = mLinkedPortal->mSceneToRender;
+				Application::SetActiveScene(newScene);
+				newScene->GetActiveCamera()->setPosition(mLinkedPortal->GetTransform().GetTranslation());
+			}
+		}
+	}
+	mLastSideOfPortal = sideOfPortal;
+	*/
 }
 
 void Portal::Render()
@@ -85,6 +114,13 @@ void Portal::Render()
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{
 			Transformation t(pos, euler, { 1, 1, 1 });
+
+			// we need to render the skybox at a different position than the scene would render it itself
+			const Skybox* s = mLinkedPortal->mSceneToRender->GetSkybox();
+			if (s != nullptr)
+			{
+				s->render(mSceneToRender->GetActiveCamera()->getPosition());
+			}
 
 			// render the scene that the linked portal looks into
 			Skybox::DisableSkyboxRendering();

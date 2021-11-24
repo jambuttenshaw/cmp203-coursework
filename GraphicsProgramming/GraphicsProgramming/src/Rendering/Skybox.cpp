@@ -24,7 +24,7 @@ Skybox::~Skybox()
 	delete MeshTexture;
 }
 
-void Skybox::render(const glm::vec3& position)
+void Skybox::render(const glm::vec3& position) const
 {
 	if (!sSkyboxesEnabled) return;
 
