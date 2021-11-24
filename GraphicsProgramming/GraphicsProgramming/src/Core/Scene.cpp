@@ -104,8 +104,8 @@ void Scene::resize(int w, int h)
 		h = 1;
 
 	float ratio = (float)w / (float)h;
-	fov = 90.0f;
-	nearPlane = 0.1f;
+	fov = 120.0f;
+	nearPlane = 0.05f;
 	farPlane = 100.0f;
 
 	// Use the Projection Matrix

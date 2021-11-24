@@ -31,25 +31,10 @@ Portal::Portal(Scene* sceneToRender)
 
 void Portal::TestForTravelling(Input* in, Camera* traveller)
 {
-	/*
-	if (in->isKeyDown('k'))
-	{
-		Scene* newScene = mLinkedPortal->mSceneToRender;
-		Application::SetActiveScene(newScene);
-		
-		Camera* cam = newScene->GetActiveCamera();
-		cam->setPosition(traveller->getPosition());
-		cam->setPitch(traveller->getPitch());
-		cam->setYaw(traveller->getYaw());
+	glm::vec3 a = traveller->getPosition() - mTransform.GetTranslation();
+	glm::vec3 b = mTransform.LocalToWorld() * glm::vec4(0, 0, 1, 0);
 
-		in->setKeyUp('k');
-	}
-	*/
-	
-	glm::vec3 c = traveller->getPosition() - mTransform.GetTranslation();
-	glm::vec3 d = mTransform.LocalToWorld() * glm::vec4(0, 0, 1, 0);
-
-	float sideOfPortal = glm::sign(glm::dot(c, d));
+	float sideOfPortal = glm::sign(glm::dot(a, b));
 
 	if ((mLastSideOfPortal != sideOfPortal) && (mLastSideOfPortal != 0))
 	{
@@ -125,12 +110,19 @@ void Portal::Render()
 		// transform the point of view of the camera to be looking into the linked scene
 		// from its current pov in this scene
 		
+		// we also need to move the near clipping plane to just in front of the portal
+		// so that no objects get rendered between the camera and the portal
+
 		glm::mat4 m = mTransform.LocalToWorld() * mLinkedPortal->GetTransform().WorldToLocal();
 		glm::vec3 pos = m[3];
 
 		// get rotations
 		glm::quat q(m);
 		glm::vec3 euler = glm::eulerAngles(q);
+
+		// get distance from pos to portal
+		glm::vec3& a = mSceneToRender->GetActiveCamera()->getPosition() - GetTransform().GetTranslation();
+		float distanceToPortal = glm::length(glm::vec2(a.x, a.z));
 
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{

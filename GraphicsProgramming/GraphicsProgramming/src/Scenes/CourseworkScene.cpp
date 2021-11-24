@@ -30,7 +30,7 @@ void CourseworkScene::OnSetup()
 	sphere = GeometryHelper::CreateUnitSphere(150);
 
 	// move the camera up slightly
-	sceneCamera->setPosition({ 0, 1, 6 });
+	sceneCamera->setPosition({ 1.5f, 1.0f, 3.0f });
 
 	red.setAmbientAndDiffuse(Color::Red);
 	blue.setAmbientAndDiffuse(Color::Blue);
