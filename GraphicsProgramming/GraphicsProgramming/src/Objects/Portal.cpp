@@ -74,8 +74,7 @@ void Portal::Render()
 		// transform the point of view of the camera to be looking into the linked scene
 		// from its current pov in this scene
 		
-		glm::mat4 m = mLinkedPortal->GetTransform().LocalToWorld() * mTransform.WorldToLocal() *
-			mSceneToRender->GetActiveCamera().getLocalToWorldMatrix();
+		glm::mat4 m = mTransform.LocalToWorld() * mLinkedPortal->GetTransform().WorldToLocal();
 		glm::vec3 up = m[1];
 		glm::vec3 pos = m[3];
 		// look at = pos + forward
@@ -83,10 +82,7 @@ void Portal::Render()
 
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{
-			Transformation t;
-			gluLookAt(pos.x,	pos.y,	  pos.z, 
-					  lookAt.x, lookAt.y, lookAt.z, 
-					  up.x,		up.y,	  up.z);
+			Transformation t(pos);
 
 			// render the scene that the linked portal looks into
 			mLinkedPortal->mSceneToRender->OnRender();

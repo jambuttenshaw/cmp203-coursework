@@ -66,13 +66,22 @@ glm::mat4 Camera::getLocalToWorldMatrix() const
 {
 	glm::vec3 right = glm::normalize(glm::cross(forward, up));
 
-	glm::mat4 m(1.0f);
-	m[0] = glm::vec4(right, 0.0f);
-	m[1] = glm::vec4(up, 0.0f);
-	m[2] = glm::vec4(forward, 0.0f);
+	glm::mat4 t = glm::translate(position);
 
-	glm::translate(m, position);
+	glm::mat4 r{ 1.0f };
+	r[0] = glm::vec4(right, 0.0f);
+	r[1] = glm::vec4(up, 0.0f);
+	r[2] = glm::vec4(forward, 0.0f);
 
+	glm::mat4 m = t * r;
+	 
+	/*
+	glm::mat4 m = glm::translate(mTranslation);
+	m *= glm::rotate(mRotation.x, glm::vec3{ 1, 0, 0 });
+	m *= glm::rotate(mRotation.y, glm::vec3{ 0, 1, 0 });
+	m *= glm::rotate(mRotation.z, glm::vec3{ 0, 0, 1 });
+	m *= glm::scale(mScale);
+	*/
 	return m;
 }
 

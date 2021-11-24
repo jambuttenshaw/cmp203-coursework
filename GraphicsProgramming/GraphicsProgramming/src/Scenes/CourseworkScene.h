@@ -27,6 +27,9 @@ private:
 	Mesh sphere;
 
 	Material red;
+	Material blue;
+	Material green;
+	Material yellow;
 
 	float rot = 0.0f;
 };
