@@ -44,13 +44,16 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 		in->setKeyUp('k');
 	}
 	
-	float sideOfPortal = glm::dot(traveller->getPosition(), mTransform.GetTranslation());
-	glm::vec3 a = mTransform.GetTranslation();
-	glm::vec3 b = traveller->getPosition();
+	glm::vec3 c = mTransform.GetTranslation() - traveller->getPosition();
+	glm::vec3 d = traveller->getPosition();
+	glm::vec2 a = glm::vec2(c.x, c.z);
+	glm::vec2 b = glm::vec2(d.x, d.z);
+
+	float sideOfPortal = glm::dot(a, b);
 
 	std::stringstream s;
 	s << "Side of portal: ";
-	s << sideOfPortal << " -- " << a.x << " " << a.y << " " << a.z << " " << b.x << " " << b.y << " " << b.z << "\n";
+	s << sideOfPortal << " -- " << a.x << " " << a.y << " " << b.x << " " << b.y << "\n";
 	OutputDebugString(s.str().c_str());
 
 	if (glm::sign(mLastSideOfPortal) != glm::sign(sideOfPortal))
