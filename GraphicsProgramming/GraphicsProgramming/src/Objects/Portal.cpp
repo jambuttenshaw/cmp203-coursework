@@ -31,7 +31,10 @@ void Portal::Render()
 	if (sPortalRenderInProgress)
 	{
 		// just draw the frame
-		RenderHelper::drawMesh(mFrameModel);
+		{
+			Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+			RenderHelper::drawMesh(mFrameModel);
+		}
 		return;
 	}
 	// mark portal rendering as begun
@@ -47,7 +50,10 @@ void Portal::Render()
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	// draw our stencil
-	RenderHelper::drawMesh(mScreenModel);
+	{
+		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+		RenderHelper::drawMesh(mScreenModel);
+	}
 	
 
 	// re-enable writing to frame buffer
@@ -68,7 +74,8 @@ void Portal::Render()
 		// transform the point of view of the camera to be looking into the linked scene
 		// from its current pov in this scene
 		
-		glm::mat4 m = mLinkedPortal->mLocalToWorld * glm::inverse(mLocalToWorld) * mSceneToRender->GetActiveCamera().getLocalToWorldMatrix();
+		glm::mat4 m = mLinkedPortal->GetTransform().LocalToWorld() * mTransform.WorldToLocal() *
+			mSceneToRender->GetActiveCamera().getLocalToWorldMatrix();
 		glm::vec3 up = m[1];
 		glm::vec3 pos = m[3];
 		// look at = pos + forward
@@ -96,7 +103,10 @@ void Portal::Render()
 		glEnable(GL_COLOR_MATERIAL);
 
 		glColor3fv(Color::Magenta.ptr());
-		RenderHelper::drawMesh(mScreenModel);
+		{
+			Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+			RenderHelper::drawMesh(mScreenModel);
+		}
 
 		glPopAttrib();
 	}
@@ -104,11 +114,17 @@ void Portal::Render()
 	// now we want to fill in the depth information of the portal, since everything behind it has already been drawn
 	glDisable(GL_STENCIL_TEST);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	RenderHelper::drawMesh(mScreenModel);
+	{
+		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+		RenderHelper::drawMesh(mScreenModel);
+	}
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 	// finally render the frame of the portal
-	RenderHelper::drawMesh(mFrameModel);
+	{
+		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+		RenderHelper::drawMesh(mFrameModel);
+	}
 
 	// portal render is finished
 	sPortalRenderInProgress = false;

@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Objects\Portal.cpp" />
+    <ClCompile Include="src\Rendering\Transform.cpp" />
     <ClCompile Include="src\Scenes\CourseworkScene.cpp" />
     <ClCompile Include="src\Rendering\Skybox.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
@@ -108,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Objects\Portal.h" />
+    <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Scenes\CourseworkScene.h" />
     <ClInclude Include="src\Rendering\Skybox.h" />
     <ClInclude Include="src\Core\Math.h" />

@@ -26,11 +26,11 @@ void CourseworkScene::OnSetup()
 	portal = new Portal(this);
 	portal2 = new Portal(this);
 
-	portal->SetPosition({ -2, 0, 0 });
-	portal2->SetPosition({ 2, 0, 0 });
+	portal->GetTransform().SetTranslation({ -2, 0, 0 });
+	portal2->GetTransform().SetTranslation({ 2, 0, 0 });
 
 	portal->SetLinkedPortal(portal2);
-	//portal2->SetLinkedPortal(portal);
+	portal2->SetLinkedPortal(portal);
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
 	sphere = GeometryHelper::CreateUnitSphere(150);
