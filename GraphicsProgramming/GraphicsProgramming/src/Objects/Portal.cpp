@@ -31,6 +31,7 @@ Portal::Portal(Scene* sceneToRender)
 
 void Portal::TestForTravelling(Input* in, Camera* traveller)
 {
+	/*
 	if (in->isKeyDown('k'))
 	{
 		Scene* newScene = mLinkedPortal->mSceneToRender;
@@ -43,36 +44,36 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 
 		in->setKeyUp('k');
 	}
+	*/
 	
-	glm::vec3 c = mTransform.GetTranslation() - traveller->getPosition();
-	glm::vec3 d = traveller->getPosition();
-	glm::vec2 a = glm::vec2(c.x, c.z);
-	glm::vec2 b = glm::vec2(d.x, d.z);
+	glm::vec3 c = traveller->getPosition() - mTransform.GetTranslation();
+	glm::vec3 d = mTransform.LocalToWorld() * glm::vec4(0, 0, 1, 0);
 
-	float sideOfPortal = glm::dot(a, b);
+	float sideOfPortal = glm::sign(glm::dot(c, d));
 
-	std::stringstream s;
-	s << "Side of portal: ";
-	s << sideOfPortal << " -- " << a.x << " " << a.y << " " << b.x << " " << b.y << "\n";
-	OutputDebugString(s.str().c_str());
-
-	if (glm::sign(mLastSideOfPortal) != glm::sign(sideOfPortal))
+	if ((mLastSideOfPortal != sideOfPortal) && (mLastSideOfPortal != 0))
 	{
-		// we have travelled!
-		// switch scenes and move the traveller
-		if (mLinkedPortal != nullptr)
+		// check to make sure the traveller actually passed through the inside of the portal
+		glm::vec3 localPos = mTransform.WorldToLocal() * glm::vec4(traveller->getPosition(), 1);
+		if (glm::abs(localPos.x) < 0.5f)
 		{
-			Scene* newScene = mLinkedPortal->mSceneToRender;
-			Application::SetActiveScene(newScene);
-		
-			Camera* cam = newScene->GetActiveCamera();
-			cam->setPosition(traveller->getPosition());
-			cam->setPitch(traveller->getPitch());
-			cam->setYaw(traveller->getYaw());
+			// we have travelled!
+			// switch scenes and move the traveller
+			if (mLinkedPortal != nullptr)
+			{
+				Scene* newScene = mLinkedPortal->mSceneToRender;
+				Application::SetActiveScene(newScene);
+
+				Camera* cam = newScene->GetActiveCamera();
+				cam->setPosition(traveller->getPosition());
+				cam->setPitch(traveller->getPitch());
+				cam->setYaw(traveller->getYaw());
+
+				mLinkedPortal->SetSideOfPortal(sideOfPortal);
+			}
 		}
 	}
 	mLastSideOfPortal = sideOfPortal;
-	
 }
 
 void Portal::Render()

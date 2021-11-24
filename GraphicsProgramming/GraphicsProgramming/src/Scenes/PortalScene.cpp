@@ -76,19 +76,22 @@ void PortalScene::OnRender()
 		RenderHelper::drawMesh(groundPlane);
 	}
 
-	yellow.apply();
 	{
-		Transformation t({ 0, 1.0f, 4.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawUnitCube();
-	}
-	green.apply();
-	{
-		Transformation t({ -1.5f, 1.5f, 5.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawUnitCube();
-	}
-	{
-		Transformation t({ 2.0f, 0.8f, -5.0f }, { 30, 45, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawMesh(sphere);
+		Transformation t({ 0, 0, 0 }, { 0, 90, 0 }, { 1, 1, 1 });
+		yellow.apply();
+		{
+			Transformation t({ 0, 1.0f, 4.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+			RenderHelper::drawUnitCube();
+		}
+		green.apply();
+		{
+			Transformation t({ -1.5f, 1.5f, 5.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+			RenderHelper::drawUnitCube();
+		}
+		{
+			Transformation t({ 2.0f, 0.8f, -5.0f }, { 30, 45, 0 }, { 0.5f, 0.5f, 0.5f });
+			RenderHelper::drawMesh(sphere);
+		}
 	}
 }
 

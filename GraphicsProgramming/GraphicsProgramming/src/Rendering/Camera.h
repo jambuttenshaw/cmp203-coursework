@@ -60,6 +60,6 @@ private:
 
 
 	// camera controller
-	float speed = 5.0f;
+	float speed = 3.0f;
 	float sensitivity = 10.0f;
 };

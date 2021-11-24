@@ -28,6 +28,9 @@ public:
 	inline Transform& GetTransform() { return mTransform; }
 	
 private:
+	inline void SetSideOfPortal(float s) { mLastSideOfPortal = s; }
+
+private:
 	Mesh mFrameModel;
 	Mesh mScreenModel;
 
