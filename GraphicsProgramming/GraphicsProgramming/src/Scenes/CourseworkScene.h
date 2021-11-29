@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core/Scene.h"
+#include "Objects/PortalScene.h"
 #include "Objects/Portal.h"
 
-class CourseworkScene : public Scene
+class CourseworkScene : public PortalScene
 {
 public:
 	CourseworkScene() = default;
@@ -15,16 +15,14 @@ public:
 	virtual void OnUpdate(float dt) override;
 	virtual void OnRender() override;
 
-	virtual const Skybox* GetSkybox() const override { return skybox; }
+	inline virtual const Skybox* GetSkybox() const override { return skybox; }
 
-	void LinkPortalsTo(Portal* p);
-	Portal* GetScenePortal() { return portal; }
+	virtual void SetExitPortal(Portal* p) override;
+	inline virtual Portal* GetEntryPortal() const override { return mExitPortal; }
 
 private:
 	Skybox* skybox = nullptr;
 	Light directionalLight;
-
-	Portal* portal = nullptr;
 
 	Mesh groundPlane;
 	Mesh sphere;

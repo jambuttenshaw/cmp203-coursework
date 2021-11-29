@@ -46,9 +46,7 @@ public:
 	void resize(int w, int h);
 
 
-
 	Camera* GetActiveCamera() const { return currentCamera; }
-	virtual const Skybox* GetSkybox() const { return nullptr; }
 
 
 protected:

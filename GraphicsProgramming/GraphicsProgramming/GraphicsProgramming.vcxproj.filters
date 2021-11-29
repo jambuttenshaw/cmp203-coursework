@@ -75,7 +75,7 @@
     <ClCompile Include="src\Rendering\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scenes\PortalScene.cpp">
+    <ClCompile Include="src\Scenes\PortalWorlds\World1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\ShadowHelper.cpp">
@@ -149,13 +149,16 @@
     <ClInclude Include="src\Rendering\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scenes\PortalScene.h">
+    <ClInclude Include="src\Scenes\PortalWorlds\World1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\ShadowHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\ShadowScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\PortalScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

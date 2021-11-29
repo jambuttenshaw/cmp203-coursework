@@ -1,0 +1,24 @@
+#pragma once
+
+#include "Core/Scene.h"
+
+class Portal;
+class Skybox;
+
+class PortalScene : public Scene
+{
+public:
+	virtual ~PortalScene() {}
+
+	// the portal you will travel from this scene into
+	virtual void SetExitPortal(Portal* portal) = 0;
+	// the portal you will enter this scene via
+	virtual Portal* GetEntryPortal() const = 0;
+
+	virtual const Skybox* GetSkybox() const = 0;
+
+protected:
+
+	Portal* mEntryPortal = nullptr;
+	Portal* mExitPortal = nullptr;
+};

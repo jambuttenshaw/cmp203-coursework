@@ -8,7 +8,8 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "Core/Application.h"
-#include "Core/Scene.h"
+
+#include "Objects/PortalScene.h"
 
 #include "Rendering/GeometryHelper.h"
 #include "Rendering/RenderHelper.h"
@@ -21,7 +22,7 @@
 
 bool Portal::sPortalRenderInProgress = false;
 
-Portal::Portal(Scene* sceneToRender)
+Portal::Portal(PortalScene* sceneToRender)
 {
 	mFrameModel = GeometryHelper::LoadObj("models/portal.obj");
 	mScreenModel = GeometryHelper::LoadObj("models/portalScreen.obj");

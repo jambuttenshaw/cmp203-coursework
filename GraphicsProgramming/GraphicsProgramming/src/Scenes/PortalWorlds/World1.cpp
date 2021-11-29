@@ -1,16 +1,16 @@
-#include "PortalScene.h"
+#include "World1.h"
 
 #include "Core/Application.h"
 
 
-PortalScene::~PortalScene()
+World1::~World1()
 {
 	if (skybox != nullptr) delete skybox;
 
-	if (portal != nullptr) delete portal;
+	if (mExitPortal != nullptr) delete mExitPortal;
 }
 
-void PortalScene::OnSetup()
+void World1::OnSetup()
 {
 	skybox = new Skybox("gfx/skybox3.png");
 
@@ -20,11 +20,8 @@ void PortalScene::OnSetup()
 	directionalLight.setSpecularColor(1.0f);
 	directionalLight.setPosition({ -1, 1, 0 });
 
-	portal = new Portal(this);
-
-	portal->GetTransform().SetTranslation({ 0, 0, 0 });
-
-	portal->SetLinkedPortal(nullptr);
+	mExitPortal = new Portal(this);
+	mEntryPortal = mExitPortal;
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
 	sphere = GeometryHelper::CreateUnitSphere(150);
@@ -38,7 +35,7 @@ void PortalScene::OnSetup()
 	yellow.setAmbientAndDiffuse(Color::Yellow);
 }
 
-void PortalScene::OnHandleInput(float dt)
+void World1::OnHandleInput(float dt)
 {
 	if (input->isKeyDown(VK_ESCAPE))
 	{
@@ -48,12 +45,12 @@ void PortalScene::OnHandleInput(float dt)
 	sceneCamera->Process3DControllerInputs(dt, false);
 }
 
-void PortalScene::OnUpdate(float dt)
+void World1::OnUpdate(float dt)
 {
-	portal->TestForTravelling(input, sceneCamera);
+	mExitPortal->TestForTravelling(input, sceneCamera);
 }
 
-void PortalScene::OnRender()
+void World1::OnRender()
 {
 	skybox->render(sceneCamera->getPosition());
 
@@ -61,7 +58,7 @@ void PortalScene::OnRender()
 	Material::Default.apply();
 
 
-	portal->Render();
+	mExitPortal->Render();
 
 
 	// render the rest of the scene as normal
@@ -95,7 +92,7 @@ void PortalScene::OnRender()
 	}
 }
 
-void PortalScene::LinkPortalsTo(Portal* p)
+void World1::SetExitPortal(Portal* p)
 {
-	portal->SetLinkedPortal(p);
+	mExitPortal->SetLinkedPortal(p);
 }

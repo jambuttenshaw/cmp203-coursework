@@ -105,12 +105,13 @@
     <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="src\Rendering\Transformation.cpp" />
-    <ClCompile Include="src\Scenes\PortalScene.cpp" />
+    <ClCompile Include="src\Scenes\PortalWorlds\World1.cpp" />
     <ClCompile Include="src\Scenes\Week5Scene.cpp" />
     <ClCompile Include="vendor\PerlinNoise.cpp" />
     <ClCompile Include="src\Scenes\Week7Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Objects\PortalScene.h" />
     <ClInclude Include="src\Scenes\ShadowScene.h" />
     <ClInclude Include="src\Objects\Portal.h" />
     <ClInclude Include="src\Rendering\ShadowHelper.h" />
@@ -130,7 +131,7 @@
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Rendering\Texture.h" />
     <ClInclude Include="src\Rendering\Transformation.h" />
-    <ClInclude Include="src\Scenes\PortalScene.h" />
+    <ClInclude Include="src\Scenes\PortalWorlds\World1.h" />
     <ClInclude Include="src\Scenes\Week5Scene.h" />
     <ClInclude Include="vendor\delaunator.hpp" />
     <ClInclude Include="vendor\PerlinNoise.h" />

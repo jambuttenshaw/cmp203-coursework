@@ -11,12 +11,12 @@
 #include <glm/glm.hpp>
 
 
-class Scene;
+class PortalScene;
 
 class Portal
 {
 public:
-	Portal(Scene* sceneToRender);
+	Portal(PortalScene* sceneToRender);
 	~Portal() = default;
 
 	void TestForTravelling(Input* in, Camera* traveller);
@@ -35,7 +35,7 @@ private:
 	Mesh mScreenModel;
 
 	Portal* mLinkedPortal = nullptr;
-	Scene* mSceneToRender = nullptr;
+	PortalScene* mSceneToRender = nullptr;
 
 	Transform mTransform;
 

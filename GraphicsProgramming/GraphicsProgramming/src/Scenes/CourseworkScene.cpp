@@ -7,7 +7,7 @@ CourseworkScene::~CourseworkScene()
 {
 	if (skybox != nullptr) delete skybox;
 
-	if (portal != nullptr) delete portal;
+	if (mExitPortal != nullptr) delete mExitPortal;
 }
 
 void CourseworkScene::OnSetup()
@@ -20,11 +20,9 @@ void CourseworkScene::OnSetup()
 	directionalLight.setSpecularColor(1.0f);
 	directionalLight.setPosition({ -1, 1, 0 });
 
-	portal = new Portal(this);
-
-	portal->GetTransform().SetTranslation({ 0, 0, 0 });
-
-	portal->SetLinkedPortal(nullptr);
+	mExitPortal = new Portal(this);
+	// this scene is to be entered and exited by the same portal
+	mEntryPortal = mExitPortal;
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
 	sphere = GeometryHelper::CreateUnitSphere(150);
@@ -50,7 +48,7 @@ void CourseworkScene::OnHandleInput(float dt)
 
 void CourseworkScene::OnUpdate(float dt)
 {
-	portal->TestForTravelling(input, sceneCamera);
+	mExitPortal->TestForTravelling(input, sceneCamera);
 }
 
 void CourseworkScene::OnRender()
@@ -61,7 +59,7 @@ void CourseworkScene::OnRender()
 	Material::Default.apply();
 
 
-	portal->Render();
+	mExitPortal->Render();
 
 	// render the rest of the scene as normal
 	green.apply();
@@ -91,7 +89,7 @@ void CourseworkScene::OnRender()
 	}
 }
 
-void CourseworkScene::LinkPortalsTo(Portal* p)
+void CourseworkScene::SetExitPortal(Portal* p)
 {
-	portal->SetLinkedPortal(p);
+	mExitPortal->SetLinkedPortal(p);
 }
