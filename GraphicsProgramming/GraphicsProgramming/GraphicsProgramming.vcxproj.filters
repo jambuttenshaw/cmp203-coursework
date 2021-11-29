@@ -84,6 +84,9 @@
     <ClCompile Include="src\Scenes\ShadowScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\PortalWorlds\World2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Color.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\PortalScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\PortalWorlds\World2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

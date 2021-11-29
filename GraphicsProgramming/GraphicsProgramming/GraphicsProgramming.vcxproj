@@ -109,6 +109,7 @@
     <ClCompile Include="src\Scenes\Week5Scene.cpp" />
     <ClCompile Include="vendor\PerlinNoise.cpp" />
     <ClCompile Include="src\Scenes\Week7Scene.cpp" />
+    <ClCompile Include="src\Scenes\PortalWorlds\World2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Objects\PortalScene.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="vendor\delaunator.hpp" />
     <ClInclude Include="vendor\PerlinNoise.h" />
     <ClInclude Include="src\Scenes\Week7Scene.h" />
+    <ClInclude Include="src\Scenes\PortalWorlds\World2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
