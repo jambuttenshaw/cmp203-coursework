@@ -13,23 +13,20 @@ public:
 	virtual void OnSetup() override;
 	virtual void OnHandleInput(float dt) override;
 	virtual void OnUpdate(float dt) override;
-	virtual void OnRender() override;
-
-
-	void RenderSceneObjects();
+	virtual void OnRenderShadowVolumes() override;
+	virtual void OnRenderObjects() override;
 
 private:
-	Skybox* skybox = nullptr;
-
 	Texture* groundTex = nullptr;
 	Texture* modelTex = nullptr;
 
-	const glm::vec3 lightPos = { -3, 4, 0 };
 	Light pointLight;
 
 	Mesh groundPlane;
 	Mesh model;
 
 	Mesh shadowVolume;
+
+	float t = 0;
 };
 

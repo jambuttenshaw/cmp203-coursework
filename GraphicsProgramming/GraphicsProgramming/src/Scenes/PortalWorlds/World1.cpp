@@ -19,6 +19,7 @@ void World1::OnSetup()
 	directionalLight.setAmbientColor(0.15f);
 	directionalLight.setSpecularColor(1.0f);
 	directionalLight.setPosition({ -1, 1, 0 });
+	RegisterLight(&directionalLight);
 
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
@@ -50,11 +51,8 @@ void World1::OnUpdate(float dt)
 	mExitPortal->TestForTravelling(input, sceneCamera);
 }
 
-void World1::OnRender()
+void World1::OnRenderObjects()
 {
-	skybox->render(sceneCamera->getPosition());
-
-	directionalLight.render(GL_LIGHT0);
 	Material::Default.apply();
 
 

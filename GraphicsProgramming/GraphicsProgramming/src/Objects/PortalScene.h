@@ -15,8 +15,6 @@ public:
 	// the portal you will enter this scene via
 	virtual Portal* GetEntryPortal() const = 0;
 
-	virtual const Skybox* GetSkybox() const = 0;
-
 protected:
 
 	Portal* mEntryPortal = nullptr;

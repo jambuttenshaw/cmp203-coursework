@@ -21,6 +21,7 @@ void Week7Scene::OnSetup()
 	dirLight.setAmbientColor(0.15f);
 	dirLight.setSpecularColor(1.0f);
 	dirLight.setPosition({ -1, 1, 0 });
+	RegisterLight(&dirLight);
 
 	// load skybox
 	skybox = new Skybox("gfx/skybox2.png");
@@ -68,12 +69,8 @@ void Week7Scene::OnUpdate(float dt)
 	rot += 40 * dt;
 }
 
-void Week7Scene::OnRender()
+void Week7Scene::OnRenderObjects()
 {
-	skybox->render(sceneCamera->getPosition());
-
-	dirLight.render(GL_LIGHT0);
-
 	defaultMat.apply();
 	{
 		Transformation t({0, 0, 0}, {0, 0, 0}, { 30, 1, 30 });

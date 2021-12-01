@@ -2,6 +2,12 @@
 
 #include <chrono>
 
+Scene::Scene()
+{
+	for (size_t i = 0; i < 8; i++)
+		sceneLights[i] = nullptr;
+}
+
 Scene::~Scene()
 {
 	if (sceneCamera != nullptr) delete sceneCamera;
@@ -62,7 +68,17 @@ void Scene::render()
 
 	auto start = std::chrono::steady_clock::now();
 	// Render geometry/scene here -------------------------------------
-	OnRender();
+	skybox->render(currentCamera->getPosition());
+
+	if (shadowVolumesEnabled)
+	{
+		RenderWithShadowVolumes();
+	}
+	else
+	{
+		RenderSceneLights();
+		OnRenderObjects();
+	}
 	// End render geometry --------------------------------------
 	auto end = std::chrono::steady_clock::now();
 	rawRenderTime = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
@@ -77,6 +93,19 @@ void Scene::render()
 void Scene::setGlobalAmbientLighting(const Color& c)
 {
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, c.ptr());
+}
+
+void Scene::RegisterLight(Light* light)
+{
+	assert(lightCount < 8);
+	sceneLights[lightCount] = light;
+	lightCount++;
+}
+
+void Scene::RemoveLight(Light* light)
+{
+	assert(lightCount > 0);
+	lightCount--;
 }
 
 void Scene::initialiseOpenGL()
@@ -185,5 +214,67 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 	glMatrixMode(GL_MODELVIEW);
 
 	// pop back to existing state
+	glPopAttrib();
+}
+
+
+
+void Scene::RenderSceneLights()
+{
+	for (unsigned int i = 0; i < 8; i++)
+	{
+		Light* current = sceneLights[i];
+		if ((i < lightCount) && current->getEnabled())
+			current->render(GL_LIGHT0 + i, true);
+		else
+			glDisable(GL_LIGHT0 + i);
+	}
+}
+
+void Scene::DisableSceneLights()
+{
+	for (unsigned int i = 0; i < 8; i++)
+		glDisable(GL_LIGHT0 + i);
+}
+
+void Scene::RenderWithShadowVolumes()
+{
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT | GL_STENCIL_BUFFER_BIT);
+
+	// render depth info of scene
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	OnRenderObjects();
+
+	glDepthMask(GL_FALSE);
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_CULL_FACE);
+
+	glCullFace(GL_BACK);
+	glStencilFunc(GL_ALWAYS, 0, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+
+	OnRenderShadowVolumes();
+
+	glCullFace(GL_FRONT);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
+
+	OnRenderShadowVolumes();
+
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+	glDisable(GL_CULL_FACE);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
+
+	// render shadowed scene
+	glStencilFunc(GL_LESS, 0, 0xFF);
+	DisableSceneLights();
+	OnRenderObjects();
+
+	glStencilFunc(GL_EQUAL, 0, 0xFF);
+	RenderSceneLights();
+	OnRenderObjects();
+
+	glDisable(GL_STENCIL_TEST);
+
 	glPopAttrib();
 }

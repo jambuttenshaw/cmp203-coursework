@@ -23,6 +23,7 @@ void Week5Scene::OnSetup()
 	sceneLight.setDiffuseColor(0.5f);
 	sceneLight.setSpecularColor(0.1f);
 	sceneLight.setAmbientColor(0.0f);
+	RegisterLight(&sceneLight);
 
 
 	spotLight.setType(Light::LightType::Spot);
@@ -33,6 +34,7 @@ void Week5Scene::OnSetup()
 	spotLight.setSpotExponent(75);
 	spotLight.setSpotCutoff(25);
 	spotLight.setAttenuation({ 1, 0.2f, 0.05f });
+	RegisterLight(&spotLight);
 
 	const float uvScale = 10.0f;
 	plane = GeometryHelper::CreatePlane(128, 128, {0, 1, 0}, uvScale, uvScale, GeometryHelper::HeightFuncs::Flat);
@@ -92,14 +94,11 @@ void Week5Scene::OnUpdate(float dt)
 {
 	spotLight.setPosition(sceneCamera->getPosition());
 	spotLight.setSpotDirection(sceneCamera->getForward());
+	spotLight.setEnabled(spotOn);
 }
 
-void Week5Scene::OnRender()
+void Week5Scene::OnRenderObjects()
 {
-	sceneLight.render(GL_LIGHT0);
-	if (spotOn) spotLight.render(GL_LIGHT1); else glDisable(GL_LIGHT1);
-
-
 	defaultMat.apply();
 	{
 		Transformation t{ {0, 0, 0}, {0, 0, 0}, {10, 10, 10} };

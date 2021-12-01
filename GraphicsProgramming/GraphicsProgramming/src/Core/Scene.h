@@ -14,6 +14,7 @@
 #include <stdio.h>
 // Further includes should go here:
 #include "SOIL.h"
+#include <array>
 
 // includes that most scenes will use
 #include "Core/Color.h"
@@ -32,7 +33,7 @@
 class Scene
 {
 public:
-	Scene() = default;
+	Scene();
 	virtual ~Scene();
 
 	void init(Input *in);
@@ -47,6 +48,7 @@ public:
 
 
 	Camera* GetActiveCamera() const { return currentCamera; }
+	Skybox* GetSkybox() const { return skybox; }
 
 
 protected:
@@ -54,8 +56,12 @@ protected:
 	// for use by the client scene
 	void setGlobalAmbientLighting(const Color& c);
 	inline void setCurrentCamera(Camera* cam) { currentCamera = cam; }
-
 	inline void SetWireframeModeKey(char key) { wireframeModeKey = key; }
+	inline void enableShadowVolumes(bool enabled) { shadowVolumesEnabled = enabled; }
+	
+	// lighting
+	void RegisterLight(Light* light);
+	void RemoveLight(Light* light);
 
 private:
 	// configure opengl render pipeline
@@ -66,18 +72,27 @@ private:
 	void renderTextOutput();
 	void calculateFPS();
 
+	void RenderSceneLights();
+	void DisableSceneLights();
+
+	void RenderWithShadowVolumes();
+
 
 public:
 	// to be implemented by client scenes
-	virtual void OnSetup() {};
-	virtual void OnHandleInput(float dt) {};
-	virtual void OnUpdate(float dt) {};
-	virtual void OnRender() {};
+	virtual void OnSetup() {}
+	virtual void OnHandleInput(float dt) {}
+	virtual void OnUpdate(float dt) {}
+
+	// rendering
+	virtual void OnRenderShadowVolumes() {}
+	virtual void OnRenderObjects() {}
 
 protected:
 	// For access to user input.
 	Input* input = nullptr;
 	Camera* sceneCamera = nullptr;
+	Skybox* skybox = nullptr;
 		
 private:
 	// For Window and frustum calculation.
@@ -90,11 +105,15 @@ private:
 	char mouseText[40];
 	char renderTime[40];
 
+	// all lights acting in the scene
+	std::array<Light*, 8> sceneLights;
+	size_t lightCount = 0;
+
 	// wireframe mode
 	char wireframeModeKey = 'r';
-
 	// the camera to render from 
 	Camera* currentCamera = nullptr;
+	bool shadowVolumesEnabled = false;
 };
 
 #endif

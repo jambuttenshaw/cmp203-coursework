@@ -32,6 +32,10 @@ Portal::Portal(PortalScene* sceneToRender)
 
 void Portal::TestForTravelling(Input* in, Camera* traveller)
 {
+
+	//std::stringstream s;
+	//s << "This side of portal: " << mLastSideOfPortal << "\n"
+
 	glm::vec3 a = traveller->getPosition() - mTransform.GetTranslation();
 	glm::vec3 b = mTransform.LocalToWorld() * glm::vec4(0, 0, 1, 0);
 
@@ -138,7 +142,7 @@ void Portal::Render()
 
 			// render the scene that the linked portal looks into
 			Skybox::DisableSkyboxRendering();
-			mLinkedPortal->mSceneToRender->OnRender();
+			mLinkedPortal->mSceneToRender->OnRenderObjects();
 			Skybox::EnableSkyboxRendering();
 		}
 		glPopAttrib();

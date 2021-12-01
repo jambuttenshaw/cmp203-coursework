@@ -10,7 +10,7 @@
 bool Light::debugSpheresOnAllLights = false;
 
 
-void Light::render(unsigned int lightID, bool debugSphere)
+void Light::render(unsigned int lightID, bool debugSphere) const
 {
 	if (type == LightType::Invalid) return;
 
@@ -37,21 +37,16 @@ void Light::render(unsigned int lightID, bool debugSphere)
 
 	if ((debugSphere || debugSpheresOnAllLights) && type != LightType::Directional)
 	{
+		glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
 		glDisable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
-		float currentColor[4];
-		glGetFloatv(GL_CURRENT_COLOR, currentColor);
-
+		
 		{
 			Transformation t(homogeneousPos.xyz, { 0, 0, 0 }, { 1, 1, 1 });
-
-			glColor3f(1.0f, 1.0f, 1.0f);
 			RenderHelper::drawSphere(0.05f);
 		}
 
-		glColor3fv(currentColor);
-		glDisable(GL_COLOR_MATERIAL);
-		glEnable(GL_LIGHTING);
+		glPopAttrib();
 	}
 }
 

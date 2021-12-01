@@ -14,7 +14,7 @@ protected:
 	virtual void OnSetup() override;
 	virtual void OnHandleInput(float dt) override;
 	virtual void OnUpdate(float dt) override;
-	virtual void OnRender() override;
+	virtual void OnRenderObjects() override;
 
 
 private:
@@ -32,7 +32,6 @@ private:
 	Mesh cylinder;
 
 	Light dirLight;
-	Skybox* skybox = nullptr;
 
 	float rot = 0;
 };

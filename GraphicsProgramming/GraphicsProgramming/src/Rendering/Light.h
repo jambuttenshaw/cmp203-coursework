@@ -18,35 +18,38 @@ public:
 	Light() : type(LightType::Invalid) {}
 	Light(LightType t) { setType(t); }
 
-	void render(unsigned int lightID, bool debugSphere = false);
+	void render(unsigned int lightID, bool debugSphere = false) const;
 
 	// getters/setters
 	void setType(LightType t);
 	inline LightType getType() const { return type; }
 
 	inline void setPosition(const glm::vec3& pos) { homogeneousPos.xyz = pos; }
-	inline const glm::vec3& getPosition() { return homogeneousPos.xyz; }
+	inline const glm::vec3& getPosition() const { return homogeneousPos.xyz; }
 
 	inline void setDiffuseColor(const Color& color) { diffuseColor = color; }
-	inline const Color& getDiffuseColor() { return diffuseColor; }
+	inline const Color& getDiffuseColor() const { return diffuseColor; }
 
 	inline void setAmbientColor(const Color& color) { ambientColor = color; }
-	inline const Color& getAmbientColor() { return ambientColor; }
+	inline const Color& getAmbientColor() const { return ambientColor; }
 
 	inline void setSpecularColor(const Color& color) { specularColor = color; }
-	inline const Color& getSpecularColor() { return specularColor; }
+	inline const Color& getSpecularColor() const { return specularColor; }
 
 	inline void setSpotDirection(const glm::vec3& dir) { spotDirection = dir; }
-	inline const glm::vec3& getSpotDirection() { return spotDirection; }
+	inline const glm::vec3& getSpotDirection() const { return spotDirection; }
 
 	inline void setSpotExponent(float e) { spotExponent = e; }
-	inline float getSpotExponent() { return spotExponent; }
+	inline float getSpotExponent() const { return spotExponent; }
 
 	inline void setSpotCutoff(float cutoff) { spotCutoff = cutoff; }
-	inline float getSpotCutoff() { return spotCutoff; }
+	inline float getSpotCutoff() const { return spotCutoff; }
 
 	inline void setAttenuation(const glm::vec3& a) { attentuation = a; }
-	inline const glm::vec3& getAttenuation() { return attentuation; }
+	inline const glm::vec3& getAttenuation() const { return attentuation; }
+
+	inline void setEnabled(bool e) { enabled = e; }
+	inline bool getEnabled() const { return enabled; }
 
 public:
 
@@ -77,6 +80,8 @@ private:
 
 	// attenuation
 	glm::vec3 attentuation = { 1, 0, 0 };
+
+	bool enabled = true;
 
 private:
 

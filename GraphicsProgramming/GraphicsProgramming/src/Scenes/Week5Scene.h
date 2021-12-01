@@ -13,7 +13,7 @@ public:
 	virtual void OnSetup() override;
 	virtual void OnHandleInput(float dt) override;
 	virtual void OnUpdate(float dt) override;
-	virtual void OnRender() override;
+	virtual void OnRenderObjects() override;
 
 private:
 	Camera* secondCamera = nullptr;

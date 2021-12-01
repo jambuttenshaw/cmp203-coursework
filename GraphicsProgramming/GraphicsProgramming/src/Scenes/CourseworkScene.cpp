@@ -19,6 +19,7 @@ void CourseworkScene::OnSetup()
 	directionalLight.setAmbientColor(0.15f);
 	directionalLight.setSpecularColor(1.0f);
 	directionalLight.setPosition({ -1, 1, 0 });
+	RegisterLight(&directionalLight);
 
 	mExitPortal = new Portal(this);
 	// this scene is to be entered and exited by the same portal
@@ -51,11 +52,8 @@ void CourseworkScene::OnUpdate(float dt)
 	mExitPortal->TestForTravelling(input, sceneCamera);
 }
 
-void CourseworkScene::OnRender()
+void CourseworkScene::OnRenderObjects()
 {
-	skybox->render(sceneCamera->getPosition());
-
-	directionalLight.render(GL_LIGHT0);
 	Material::Default.apply();
 
 

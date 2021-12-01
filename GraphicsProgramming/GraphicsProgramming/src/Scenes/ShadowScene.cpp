@@ -19,20 +19,21 @@ void ShadowScene::OnSetup()
 	pointLight.setDiffuseColor(1.0f);
 	pointLight.setAmbientColor(0.15f);
 	pointLight.setSpecularColor(1.0f);
-	pointLight.setPosition(lightPos);
+	RegisterLight(&pointLight);
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
 	groundTex = new Texture("gfx/sand.png");
 	groundPlane.MeshTexture = groundTex;
 
-	model = GeometryHelper::LoadObj("models/bro.obj");
-	//modelTex = new Texture("gfx/perfection.png");
-	//model.MeshTexture = modelTex;
+	model = GeometryHelper::CreatePlane(2, 2);
+	modelTex = new Texture("gfx/perfection.png");
+	model.MeshTexture = modelTex;
 
-	shadowVolume = ShadowHelper::BuildShadowVolume(model, lightPos);
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 0.0f, 1.0f, 3.0f });
+
+	enableShadowVolumes(true);
 }
 
 void ShadowScene::OnHandleInput(float dt)
@@ -43,64 +44,24 @@ void ShadowScene::OnHandleInput(float dt)
 		input->setKeyUp(VK_ESCAPE);
 	}
 	sceneCamera->Process3DControllerInputs(dt, true);
+
 }
 
 void ShadowScene::OnUpdate(float dt)
 {
+	t += 0.5f * dt;
+
+	pointLight.setPosition({ 2 * cosf(t), 3, 2 * sinf(t) });
+	shadowVolume = ShadowHelper::BuildShadowVolume(model, pointLight.getPosition());
 }
 
-void ShadowScene::OnRender()
+void ShadowScene::OnRenderShadowVolumes()
 {
-	skybox->render(sceneCamera->getPosition());
-
-	pointLight.render(GL_LIGHT0, true);
-	Material::Default.apply();
-
-	
-	// render depth info of scene
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	RenderSceneObjects();
-
-
-	glDepthMask(GL_FALSE);
-	glEnable(GL_STENCIL_TEST);
-	glEnable(GL_CULL_FACE);
-
-	glCullFace(GL_BACK);
-	glStencilFunc(GL_ALWAYS, 0, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-
-	{
-		Transformation t{ {0, 1.5f, 0} };
-		RenderHelper::drawMesh(shadowVolume);
-	}
-
-	glCullFace(GL_FRONT);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
-
-	{
-		Transformation t{ {0, 1.5f, 0} };
-		RenderHelper::drawMesh(shadowVolume);
-	}
-
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-	glDisable(GL_CULL_FACE);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glDepthMask(GL_TRUE);
-
-	// render shadowed scene
-	glStencilFunc(GL_LESS, 0, 0xFF);
-	glDisable(GL_LIGHT0);
-	RenderSceneObjects();
-
-	glStencilFunc(GL_EQUAL, 0, 0xFF);
-	glEnable(GL_LIGHT0);
-	RenderSceneObjects();
-
-	glDisable(GL_STENCIL_TEST);
+	Transformation t{ {0, 1.5f, 0} };
+	RenderHelper::drawMesh(shadowVolume);
 }
 
-void ShadowScene::RenderSceneObjects()
+void ShadowScene::OnRenderObjects()
 {
 	{
 		Transformation t{ {0, 0, 0}, {0, 0, 0}, {10, 1, 10} };
