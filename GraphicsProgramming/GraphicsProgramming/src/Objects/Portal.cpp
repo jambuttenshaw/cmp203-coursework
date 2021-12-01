@@ -87,12 +87,16 @@ void Portal::Render()
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 	// draw our stencil
 	{
 		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
 		RenderHelper::drawMesh(mScreenModel);
 	}
-	
+	glDisable(GL_CULL_FACE);
+
 
 	// re-enable writing to frame buffer
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -126,6 +130,7 @@ void Portal::Render()
 		glm::vec3& a = mSceneToRender->GetActiveCamera()->getPosition() - GetTransform().GetTranslation();
 		float distanceToPortal = glm::length(glm::vec2(a.x, a.z));
 
+
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{
 			Transformation t(pos, euler, { 1, 1, 1 });
@@ -138,11 +143,16 @@ void Portal::Render()
 			}
 
 			// render the scene that the linked portal looks into
+			SetNearClippingPlane(std::max(0.05f, distanceToPortal - 1.0f));
+			
 			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
 			Skybox::EnableSkyboxRendering();
+			
+			SetNearClippingPlane(0.05f);
 		}
 		glPopAttrib();
+
 	}
 	else
 	{
@@ -179,4 +189,29 @@ void Portal::Render()
 
 	// portal render is finished
 	sPortalRenderInProgress = false;
+}
+
+void Portal::SetNearClippingPlane(float nearPlane)
+{
+	float w = Application::GetWindowX();
+	float h = Application::GetWindowY();
+
+	float ratio = (float)w / (float)h;
+	float fov = 120.0f;
+	float farPlane = 100.0f;
+
+	// Use the Projection Matrix
+	glMatrixMode(GL_PROJECTION);
+
+	// Reset Matrix
+	glLoadIdentity();
+
+	// Set the viewport to be the entire window
+	glViewport(0, 0, w, h);
+
+	// Set the correct perspective.
+	gluPerspective(fov, ratio, nearPlane, farPlane);
+
+	// Get Back to the Modelview
+	glMatrixMode(GL_MODELVIEW);
 }

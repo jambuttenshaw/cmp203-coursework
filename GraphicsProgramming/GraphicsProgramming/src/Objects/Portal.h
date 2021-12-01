@@ -30,6 +30,10 @@ public:
 private:
 	inline void SetSideOfPortal(float s) { mLastSideOfPortal = s; }
 
+
+	void SetNearClippingPlane(float nearPlane);
+
+
 private:
 	Mesh mFrameModel;
 	Mesh mScreenModel;
