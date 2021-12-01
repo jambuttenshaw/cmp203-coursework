@@ -19,7 +19,7 @@
 #include <windows.h>
 #include <sstream>
 
-
+static float gLastSideOfPortal = 0;
 bool Portal::sPortalRenderInProgress = false;
 
 Portal::Portal(PortalScene* sceneToRender)
@@ -32,16 +32,12 @@ Portal::Portal(PortalScene* sceneToRender)
 
 void Portal::TestForTravelling(Input* in, Camera* traveller)
 {
-
-	//std::stringstream s;
-	//s << "This side of portal: " << mLastSideOfPortal << "\n"
-
 	glm::vec3 a = traveller->getPosition() - mTransform.GetTranslation();
 	glm::vec3 b = mTransform.LocalToWorld() * glm::vec4(0, 0, 1, 0);
 
 	float sideOfPortal = glm::sign(glm::dot(a, b));
 
-	if ((mLastSideOfPortal != sideOfPortal) && (mLastSideOfPortal != 0))
+	if ((gLastSideOfPortal != sideOfPortal) && (gLastSideOfPortal != 0))
 	{
 		// check to make sure the traveller actually passed through the inside of the portal
 		glm::vec3 localPos = mTransform.WorldToLocal() * glm::vec4(traveller->getPosition(), 1);
@@ -55,7 +51,8 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 				Application::SetActiveScene(newScene);
 
 				Camera* cam = newScene->GetActiveCamera();
-				cam->setPosition(traveller->getPosition());
+
+				cam->setPosition(traveller->getPosition() + 0.05f * traveller->getMoveDirection());
 				cam->setPitch(traveller->getPitch());
 				cam->setYaw(traveller->getYaw());
 
@@ -63,7 +60,7 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 			}
 		}
 	}
-	mLastSideOfPortal = sideOfPortal;
+	gLastSideOfPortal = sideOfPortal;
 }
 
 void Portal::Render()

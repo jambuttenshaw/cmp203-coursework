@@ -38,6 +38,8 @@ public:
 	inline const glm::vec3& getForward() const { return forward; }
 	inline const glm::vec3& getUp() const { return up; }
 
+	inline const glm::vec3& getMoveDirection() const { return movement; }
+
 	glm::mat4 getLocalToWorldMatrix() const;
 
 private:
@@ -57,6 +59,9 @@ private:
 	// never to be accessed directly from outside of this class
 	glm::vec3 up = {0, 1, 0};
 	glm::vec3 forward = {0, 0, -1};
+
+	// the last amount that the camera moved by
+	glm::vec3 movement;
 
 
 	// camera controller

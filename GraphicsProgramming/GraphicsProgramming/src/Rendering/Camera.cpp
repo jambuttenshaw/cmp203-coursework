@@ -16,7 +16,7 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 
 	// movement variable is used to make sure that the camera doesn't move faster
 	// when 'W' and 'A' are held for example
-	glm::vec3 movement{0, 0, 0};
+	movement = {0, 0, 0};
 
 	// keyboard inputs to move the cameras position
 	if (input->isKeyDown('w'))
