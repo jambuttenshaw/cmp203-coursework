@@ -19,6 +19,7 @@
 #include <windows.h>
 #include <sstream>
 
+
 static float gLastSideOfPortal = 0;
 bool Portal::sPortalRenderInProgress = false;
 
@@ -85,7 +86,8 @@ void Portal::Render()
 	glDepthMask(GL_FALSE);
 	// enable & setup stencil test
 	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilFunc(GL_ALWAYS, 1 << 2, 0x0C);
+	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 	glEnable(GL_CULL_FACE);
@@ -107,7 +109,8 @@ void Portal::Render()
 
 
 	// render everything on one side of the portal
-	glStencilFunc(GL_EQUAL, 1, 0xFF);
+	glStencilFunc(GL_EQUAL, 1 << 2, 0x0C);
+	//glStencilFunc(GL_EQUAL, 1, 0xFF);
 
 	// this is where we want to render another scene
 	// check to make sure theres actually a portal linked to this one

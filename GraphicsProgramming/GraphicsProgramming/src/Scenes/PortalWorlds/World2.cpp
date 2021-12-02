@@ -14,12 +14,14 @@ void World2::OnSetup()
 {
 	skybox = new Skybox("gfx/skybox.png");
 
-	directionalLight.setType(Light::LightType::Directional);
-	directionalLight.setDiffuseColor(1.0f);
-	directionalLight.setAmbientColor(0.15f);
-	directionalLight.setSpecularColor(1.0f);
-	directionalLight.setPosition({ -1, 1, 0 });
-	RegisterLight(&directionalLight);
+	enableShadowVolumes(true);
+
+	pointLight.setType(Light::LightType::Point);
+	pointLight.setDiffuseColor(1.0f);
+	pointLight.setAmbientColor(0.15f);
+	pointLight.setSpecularColor(1.0f);
+	pointLight.setPosition({ -4, 4, 0 });
+	RegisterLight(&pointLight);
 
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
@@ -62,6 +64,10 @@ void World2::OnRenderObjects()
 		Transformation t{ {0, 0, 0}, {0, 0, 0}, {10, 1, 10} };
 		RenderHelper::drawMesh(groundPlane);
 	}
+}
+
+void World2::OnRenderShadowVolumes()
+{
 }
 
 void World2::SetExitPortal(Portal* p)

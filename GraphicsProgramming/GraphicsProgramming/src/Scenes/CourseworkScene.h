@@ -14,12 +14,13 @@ public:
 	virtual void OnHandleInput(float dt) override;
 	virtual void OnUpdate(float dt) override;
 	virtual void OnRenderObjects() override;
+	virtual void OnRenderShadowVolumes() override;
 
 	virtual void SetExitPortal(Portal* p) override;
 	inline virtual Portal* GetEntryPortal() const override { return mExitPortal; }
 
 private:
-	Light directionalLight;
+	Light pointLight;
 
 	Mesh groundPlane;
 	Mesh sphere;
