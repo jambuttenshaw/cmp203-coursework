@@ -143,7 +143,7 @@ void Portal::Render()
 			}
 
 			// render the scene that the linked portal looks into
-			SetNearClippingPlane(std::max(0.05f, distanceToPortal - 1.0f));
+			SetNearClippingPlane(std::max(0.05f, distanceToPortal - 2.0f));
 			
 			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
@@ -175,10 +175,17 @@ void Portal::Render()
 	// now we want to fill in the depth information of the portal, since everything behind it has already been drawn
 	glDisable(GL_STENCIL_TEST);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthFunc(GL_ALWAYS);
 	{
 		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
-		RenderHelper::drawMesh(mScreenModel);
+		{
+			// an additional transformation to avoid z fighting
+			const float adjustment = 0.0001f;
+			Transformation t2({ 0, adjustment * 0.5f, 0 }, { 0, 0, 0 }, { 1, 1 - adjustment, 1 });
+			RenderHelper::drawMesh(mScreenModel);
+		}
 	}
+	glDepthFunc(GL_LEQUAL);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 	// finally render the frame of the portal
@@ -193,22 +200,18 @@ void Portal::Render()
 
 void Portal::SetNearClippingPlane(float nearPlane)
 {
-	float w = Application::GetWindowX();
-	float h = Application::GetWindowY();
+	size_t w = Application::GetWindowX();
+	size_t h = Application::GetWindowY();
 
 	float ratio = (float)w / (float)h;
-	float fov = 120.0f;
+	float fov = 90.0f;
 	float farPlane = 100.0f;
 
 	// Use the Projection Matrix
 	glMatrixMode(GL_PROJECTION);
-
+	
 	// Reset Matrix
 	glLoadIdentity();
-
-	// Set the viewport to be the entire window
-	glViewport(0, 0, w, h);
-
 	// Set the correct perspective.
 	gluPerspective(fov, ratio, nearPlane, farPlane);
 
