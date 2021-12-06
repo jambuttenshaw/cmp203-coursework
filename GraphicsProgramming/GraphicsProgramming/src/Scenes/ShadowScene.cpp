@@ -16,6 +16,7 @@ void ShadowScene::OnSetup()
 	skybox = new Skybox("gfx/skybox2.png");
 
 	pointLight.setType(Light::LightType::Point);
+	pointLight.setPosition({ 0.0f, 4.0f, 0.0f });
 	pointLight.setDiffuseColor(1.0f);
 	pointLight.setAmbientColor(0.15f);
 	pointLight.setSpecularColor(1.0f);
@@ -28,6 +29,8 @@ void ShadowScene::OnSetup()
 	model = GeometryHelper::CreatePlane(2, 2);
 	modelTex = new Texture("gfx/perfection.png");
 	model.MeshTexture = modelTex;
+	modelTransform.SetTranslation({ 0, 1.5f, 0 });
+	//modelTransform.SetRotation({ 30.0f, 0.0f, 0 });
 
 
 	// move the camera up slightly
@@ -52,12 +55,13 @@ void ShadowScene::OnUpdate(float dt)
 	t += 0.5f * dt;
 
 	pointLight.setPosition({ 2 * cosf(t), 3, 2 * sinf(t) });
-	shadowVolume = ShadowHelper::BuildShadowVolume(model, pointLight.getPosition());
+	modelTransform.SetTranslation({ 2 * sinf(t + 0.8f), 1.5f, 0 });
+
+	shadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), pointLight.getPosition());
 }
 
 void ShadowScene::OnRenderShadowVolumes()
 {
-	Transformation t{ {0, 1.5f, 0} };
 	RenderHelper::drawMesh(shadowVolume);
 }
 
@@ -69,7 +73,7 @@ void ShadowScene::OnRenderObjects()
 	}
 
 	{
-		Transformation t{ {0, 1.5f, 0} };
+		Transformation t{ modelTransform };
 		RenderHelper::drawMesh(model);
 	}
 }

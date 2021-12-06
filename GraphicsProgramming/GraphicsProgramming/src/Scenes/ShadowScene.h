@@ -23,6 +23,8 @@ private:
 	Light pointLight;
 
 	Mesh groundPlane;
+
+	Transform modelTransform;
 	Mesh model;
 
 	Mesh shadowVolume;

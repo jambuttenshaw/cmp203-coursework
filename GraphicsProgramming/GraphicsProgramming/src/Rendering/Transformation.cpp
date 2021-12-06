@@ -27,6 +27,11 @@ Transformation::Transformation(const glm::vec3& t, const glm::vec3& r, const glm
 	glScalef(s.x, s.y, s.z);
 }
 
+Transformation::Transformation(const Transform& t)
+	: Transformation(t.GetTranslation(), t.GetRotation(), t.GetScale())
+{
+}
+
 Transformation::Transformation(const glm::mat4& matrix)
 {
 	// this doesnt work :(

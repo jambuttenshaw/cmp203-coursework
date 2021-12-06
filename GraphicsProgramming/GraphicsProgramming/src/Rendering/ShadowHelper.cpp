@@ -35,11 +35,11 @@ void ShadowHelper::CalculateShadowMatrix(glm::mat4& out, const glm::vec3& lightP
 	out[3][3] = d - (a * x + b * y + c * z);
 }
 
-Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::vec3& lightPos)
+Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::mat4& transform, const glm::vec3& lightPos)
 {
 	const float extension = 20.0f;
 
-	auto edges = CalculateSilhouette(mesh, lightPos);
+	auto edges = CalculateSilhouette(mesh, transform, lightPos);
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -69,6 +69,8 @@ Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::vec3& lightPos
 
 			// add the new vertices to the shadow volume
 			Vertex v = mesh.Vertices[edge.first];
+			v.Position = transform * glm::vec4(v.Position, 1);
+
 			vertices.push_back(v);
 			v.Position = ExtendVertex(v.Position, lightPos, extension);
 			vertices.push_back(v);
@@ -90,6 +92,8 @@ Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::vec3& lightPos
 			d = vertices.size() + 1;
 
 			Vertex v = mesh.Vertices[edge.second];
+			v.Position = transform * glm::vec4(v.Position, 1);
+
 			vertices.push_back(v);
 			v.Position = ExtendVertex(v.Position, lightPos, extension);
 			vertices.push_back(v);
@@ -117,7 +121,7 @@ glm::vec3 ShadowHelper::ExtendVertex(const glm::vec3& pos, const glm::vec3& ligh
 	return pos + extension * dir;
 }
 
-std::set<std::pair<size_t, size_t>> ShadowHelper::CalculateSilhouette(const Mesh& mesh, const glm::vec3& lightPos)
+std::set<std::pair<size_t, size_t>> ShadowHelper::CalculateSilhouette(const Mesh& mesh, const glm::mat4& transform, const glm::vec3& lightPos)
 {
 	std::set<std::pair<size_t, size_t>> silhouetteEdges;
 	std::array<std::pair<size_t, size_t>, 3> edges;
@@ -129,9 +133,9 @@ std::set<std::pair<size_t, size_t>> ShadowHelper::CalculateSilhouette(const Mesh
 		size_t indexB = mesh.Indices[triangle + 1];
 		size_t indexC = mesh.Indices[triangle + 2];
 
-		glm::vec3 a = mesh.Vertices[indexA].Position;
-		glm::vec3 b = mesh.Vertices[indexB].Position;
-		glm::vec3 c = mesh.Vertices[indexC].Position;
+		glm::vec3 a = transform * glm::vec4(mesh.Vertices[indexA].Position, 1);
+		glm::vec3 b = transform * glm::vec4(mesh.Vertices[indexB].Position, 1);
+		glm::vec3 c = transform * glm::vec4(mesh.Vertices[indexC].Position, 1);
 
 		// get the normal of the triangle
 		glm::vec3 normal = glm::cross(b - a, c - a);

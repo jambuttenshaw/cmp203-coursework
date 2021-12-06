@@ -3,8 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include "Transformation.h"
-
 
 class Transform
 {

@@ -24,5 +24,8 @@ private:
 	Light pointLight;
 
 	Mesh groundPlane;
+	
 	Mesh model;
+	Transform modelTransform;
+	Mesh modelShadowVolume;
 };

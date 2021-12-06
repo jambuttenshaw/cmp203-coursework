@@ -20,14 +20,19 @@ void World2::OnSetup()
 	pointLight.setDiffuseColor(1.0f);
 	pointLight.setAmbientColor(0.15f);
 	pointLight.setSpecularColor(1.0f);
-	pointLight.setPosition({ -4, 4, 0 });
+	pointLight.setPosition({ 5, 4, -8 });
 	RegisterLight(&pointLight);
 
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
+
 	model = GeometryHelper::LoadObj("models/bro.obj");
+	modelTransform.SetTranslation({ 0, 0, -3 });
+	modelTransform.SetRotation({ 0, 90, 0 });
+	modelTransform.SetScale({ 0.1f, 0.1f, 0.1f });
+	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), pointLight.getPosition());
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 0, 1, 6 });
@@ -66,6 +71,7 @@ void World2::OnRenderObjects()
 
 void World2::OnRenderShadowVolumes()
 {
+	RenderHelper::drawMesh(modelShadowVolume);
 }
 
 void World2::SetExitPortal(Portal* p)

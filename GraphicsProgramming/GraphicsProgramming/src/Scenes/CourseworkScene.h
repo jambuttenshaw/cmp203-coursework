@@ -23,11 +23,15 @@ private:
 	Light pointLight;
 
 	Mesh groundPlane;
+	
 	Mesh sphere;
+	Transform sphereTransform;
 	Mesh sphereShadowVolume;
 
 	Material red;
 	Material blue;
 	Material green;
 	Material yellow;
+
+	float temp = 0;
 };

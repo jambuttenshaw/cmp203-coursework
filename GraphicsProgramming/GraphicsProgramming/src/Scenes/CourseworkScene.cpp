@@ -28,8 +28,13 @@ void CourseworkScene::OnSetup()
 	mEntryPortal = mExitPortal;
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
-	sphere = GeometryHelper::CreateUnitSphere(150);
-	sphereShadowVolume = ShadowHelper::BuildShadowVolume(sphere, pointLight.getPosition());
+	
+	sphere = GeometryHelper::CreateUnitSphere(500);
+
+	sphereTransform.SetTranslation({ 2, 1.0f, 2.0f });
+	sphereTransform.SetScale({ 0.5f, 0.5f, 0.5f });
+	
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(sphere, sphereTransform.LocalToWorld(), pointLight.getPosition());
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 1.5f, 1.0f, 3.0f });
@@ -52,6 +57,11 @@ void CourseworkScene::OnHandleInput(float dt)
 
 void CourseworkScene::OnUpdate(float dt)
 {
+
+	temp += 0.5f * dt;
+	pointLight.setPosition({ 2 * cosf(temp), 3, 2 * sinf(temp) });
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(sphere, sphereTransform.LocalToWorld(), pointLight.getPosition());
+
 	mExitPortal->TestForTravelling(input, sceneCamera);
 }
 
@@ -73,7 +83,7 @@ void CourseworkScene::OnRenderObjects()
 
 	red.apply();
 	{
-		Transformation t({ 2, 1.0f, 2.0f }, {0, 0, 0}, {0.5f, 0.5f, 0.5f});
+		Transformation t(sphereTransform);
 		RenderHelper::drawMesh(sphere);
 	}
 	blue.apply();
@@ -89,10 +99,7 @@ void CourseworkScene::OnRenderObjects()
 
 void CourseworkScene::OnRenderShadowVolumes()
 {
-	{
-		Transformation t({ 2, 1.0f, 2.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-		RenderHelper::drawMesh(sphereShadowVolume);
-	}
+	RenderHelper::drawMesh(sphereShadowVolume);
 }
 
 void CourseworkScene::SetExitPortal(Portal* p)
