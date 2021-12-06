@@ -25,5 +25,5 @@ public:
 
 private:
 	static bool wireframe;
-};
+};   
 

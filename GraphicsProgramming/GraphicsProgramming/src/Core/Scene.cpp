@@ -71,6 +71,11 @@ void Scene::render()
 	// Render geometry/scene here -------------------------------------
 	skybox->render(currentCamera->getPosition());
 
+	// render all portals first
+	portalPass = true;
+	OnRenderPortals();
+	portalPass = false;
+
 	if (shadowVolumesEnabled)
 	{
 		RenderWithShadowVolumes();
@@ -245,33 +250,33 @@ void Scene::RenderWithShadowVolumes()
 	// render depth info of scene
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	OnRenderObjects();
-
+	
 	glDepthMask(GL_FALSE);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_CULL_FACE);
-
+	
 	glCullFace(GL_BACK);
-	glStencilFunc(GL_ALWAYS, 0, 0xFF);
+	glStencilFunc(GL_ALWAYS, 0, 0x0F);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-
+	
 	OnRenderShadowVolumes();
-
+	
 	glCullFace(GL_FRONT);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
-
+	
 	OnRenderShadowVolumes();
-
+	
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	glDisable(GL_CULL_FACE);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDepthMask(GL_TRUE);
 
 	// render shadowed scene
-	glStencilFunc(GL_LESS, 0, 0xFF);
+	glStencilFunc(GL_LESS, 0, 0x0F);
 	DisableSceneLights();
 	OnRenderObjects();
 
-	glStencilFunc(GL_EQUAL, 0, 0xFF);
+	glStencilFunc(GL_EQUAL, 0, 0x0F);
 	RenderSceneLights();
 	OnRenderObjects();
 

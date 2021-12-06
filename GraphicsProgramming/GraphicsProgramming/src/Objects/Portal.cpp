@@ -66,18 +66,17 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 
 void Portal::Render()
 {
+	assert(mSceneToRender->PortalPassActive());
+
 	// dont draw this portal if were already rendering one to the screen!
-	if (sPortalRenderInProgress)
-	{
-		// just draw the frame
-		{
-			Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
-			RenderHelper::drawMesh(mFrameModel);
-		}
-		return;
-	}
+	if (sPortalRenderInProgress) return;
+
+
 	// mark portal rendering as begun
 	sPortalRenderInProgress = true;
+
+	// preserve the outside state
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
 
 	// draw portal screen into stencil buffer
 
@@ -86,16 +85,21 @@ void Portal::Render()
 	glDepthMask(GL_FALSE);
 	// enable & setup stencil test
 	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1 << 2, 0x0C);
-	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilFunc(GL_ALWAYS, 0x10, 0XF0);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 	// draw our stencil
 	{
 		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
-		RenderHelper::drawMesh(mScreenModel);
+		{
+			// an additional transformation to avoid z fighting
+			const float adjustment = 0.0001f;
+			Transformation t2({ 0, adjustment * 0.5f, 0 }, { 0, 0, 0 }, { 1, 1 - adjustment, 1 });
+			RenderHelper::drawMesh(mScreenModel);
+		}
 	}
 	glDisable(GL_CULL_FACE);
 
@@ -106,11 +110,8 @@ void Portal::Render()
 
 	// we do not want to change the stencil buffer from here
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-
 	// render everything on one side of the portal
-	glStencilFunc(GL_EQUAL, 1 << 2, 0x0C);
-	//glStencilFunc(GL_EQUAL, 1, 0xFF);
+	glStencilFunc(GL_EQUAL, 0x10, 0XF0);
 
 	// this is where we want to render another scene
 	// check to make sure theres actually a portal linked to this one
@@ -146,15 +147,32 @@ void Portal::Render()
 			}
 
 			// render the scene that the linked portal looks into
-			SetNearClippingPlane(std::max(0.05f, distanceToPortal - 2.0f));
+			SetClippingPlanes(std::max(0.05f, distanceToPortal - 2.0f), 100.0f);
 			
 			Skybox::DisableSkyboxRendering();
+			mLinkedPortal->mSceneToRender->RenderSceneLights();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
 			Skybox::EnableSkyboxRendering();
 			
-			SetNearClippingPlane(0.05f);
+			SetClippingPlanes(0.05f, 100.0f);
 		}
 		glPopAttrib();
+
+
+		// now we want to fill in the depth information of the portal, since everything behind it has already been drawn
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+		glDepthFunc(GL_ALWAYS);
+		{
+			Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+			{
+				// an additional transformation to avoid z fighting
+				const float adjustment = 0.0001f;
+				Transformation t2({ 0, adjustment * 0.5f, 0 }, { 0, 0, 0 }, { 1, 1 - adjustment, 1 });
+				RenderHelper::drawMesh(mScreenModel);
+			}
+		}
+		glDepthFunc(GL_LEQUAL);
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 	}
 	else
@@ -174,41 +192,28 @@ void Portal::Render()
 
 		glPopAttrib();
 	}
-
-	// now we want to fill in the depth information of the portal, since everything behind it has already been drawn
+	
 	glDisable(GL_STENCIL_TEST);
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	glDepthFunc(GL_ALWAYS);
-	{
-		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
-		{
-			// an additional transformation to avoid z fighting
-			const float adjustment = 0.0001f;
-			Transformation t2({ 0, adjustment * 0.5f, 0 }, { 0, 0, 0 }, { 1, 1 - adjustment, 1 });
-			RenderHelper::drawMesh(mScreenModel);
-		}
-	}
-	glDepthFunc(GL_LEQUAL);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 	// finally render the frame of the portal
 	{
-		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
-		RenderHelper::drawMesh(mFrameModel);
+		//Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+		//RenderHelper::drawMesh(mFrameModel);
 	}
+
+	glPopAttrib();
 
 	// portal render is finished
 	sPortalRenderInProgress = false;
 }
 
-void Portal::SetNearClippingPlane(float nearPlane)
+void Portal::SetClippingPlanes(float nearPlane, float farPlane)
 {
 	size_t w = Application::GetWindowX();
 	size_t h = Application::GetWindowY();
 
 	float ratio = (float)w / (float)h;
 	float fov = 90.0f;
-	float farPlane = 100.0f;
 
 	// Use the Projection Matrix
 	glMatrixMode(GL_PROJECTION);

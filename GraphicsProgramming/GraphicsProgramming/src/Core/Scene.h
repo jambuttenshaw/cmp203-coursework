@@ -28,6 +28,7 @@
 #include "Rendering/Transformation.h"
 #include "Rendering/Camera.h"
 #include "Rendering/Skybox.h"
+#include "Rendering/ShadowHelper.h"
 
 
 class Scene
@@ -49,6 +50,11 @@ public:
 
 	Camera* GetActiveCamera() const { return currentCamera; }
 	Skybox* GetSkybox() const { return skybox; }
+
+	bool PortalPassActive() const { return portalPass; }
+
+	void RenderSceneLights();
+	void DisableSceneLights();
 
 
 protected:
@@ -72,12 +78,7 @@ private:
 	void renderTextOutput();
 	void calculateFPS();
 
-	void RenderSceneLights();
-	void DisableSceneLights();
-
 	void RenderWithShadowVolumes();
-
-
 public:
 	// to be implemented by client scenes
 	virtual void OnSetup() {}
@@ -87,6 +88,7 @@ public:
 	// rendering
 	virtual void OnRenderShadowVolumes() {}
 	virtual void OnRenderObjects() {}
+	virtual void OnRenderPortals() {}
 
 protected:
 	// For access to user input.
@@ -114,6 +116,8 @@ private:
 	// the camera to render from 
 	Camera* currentCamera = nullptr;
 	bool shadowVolumesEnabled = false;
+
+	bool portalPass = false;
 };
 
 #endif

@@ -24,6 +24,7 @@ private:
 
 	Mesh groundPlane;
 	Mesh sphere;
+	Mesh sphereShadowVolume;
 
 	Material red;
 	Material blue;

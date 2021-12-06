@@ -53,8 +53,6 @@ void World2::OnRenderObjects()
 	Material::Default.apply();
 
 
-	mExitPortal->Render();
-
 	// render the rest of the scene as normal
 	{
 		Transformation t({ 0, 0, -3 }, { 0, 90, 0 }, { 0.1f, 0.1f, 0.1f });

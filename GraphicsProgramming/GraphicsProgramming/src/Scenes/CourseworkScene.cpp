@@ -29,6 +29,7 @@ void CourseworkScene::OnSetup()
 
 	groundPlane = GeometryHelper::CreatePlane(10, 10);
 	sphere = GeometryHelper::CreateUnitSphere(150);
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(sphere, pointLight.getPosition());
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 1.5f, 1.0f, 3.0f });
@@ -58,9 +59,6 @@ void CourseworkScene::OnRenderObjects()
 {
 	Material::Default.apply();
 
-
-	mExitPortal->Render();
-
 	// render the rest of the scene as normal
 	green.apply();
 	{
@@ -75,7 +73,7 @@ void CourseworkScene::OnRenderObjects()
 
 	red.apply();
 	{
-		Transformation t({ 0, 1.0f, 4.0f }, {0, 0, 0}, {0.5f, 0.5f, 0.5f});
+		Transformation t({ 2, 1.0f, 2.0f }, {0, 0, 0}, {0.5f, 0.5f, 0.5f});
 		RenderHelper::drawMesh(sphere);
 	}
 	blue.apply();
@@ -91,6 +89,10 @@ void CourseworkScene::OnRenderObjects()
 
 void CourseworkScene::OnRenderShadowVolumes()
 {
+	{
+		Transformation t({ 2, 1.0f, 2.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+		RenderHelper::drawMesh(sphereShadowVolume);
+	}
 }
 
 void CourseworkScene::SetExitPortal(Portal* p)

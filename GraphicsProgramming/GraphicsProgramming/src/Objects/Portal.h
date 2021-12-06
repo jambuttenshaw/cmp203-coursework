@@ -31,7 +31,7 @@ private:
 	inline void SetSideOfPortal(float s) { mLastSideOfPortal = s; }
 
 
-	void SetNearClippingPlane(float nearPlane);
+	void SetClippingPlanes(float nearPlane, float farPlane);
 
 
 private:

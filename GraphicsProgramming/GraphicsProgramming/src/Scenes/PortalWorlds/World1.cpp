@@ -58,9 +58,6 @@ void World1::OnRenderObjects()
 	Material::Default.apply();
 
 
-	mExitPortal->Render();
-
-
 	// render the rest of the scene as normal
 	blue.apply();
 	{
