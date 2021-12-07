@@ -69,7 +69,8 @@ void Scene::render()
 
 	auto start = std::chrono::steady_clock::now();
 	// Render geometry/scene here -------------------------------------
-	skybox->render(currentCamera->getPosition());
+	if (skybox != nullptr)
+		skybox->render(currentCamera->getPosition());
 
 	// render all portals first
 	portalPass = true;

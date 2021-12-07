@@ -53,7 +53,7 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 
 				Camera* cam = newScene->GetActiveCamera();
 
-				cam->setPosition(traveller->getPosition() + 0.05f * traveller->getMoveDirection());
+				cam->setPosition(traveller->getPosition() + 0.05f * traveller->getMoveDirection() - mTransform.GetTranslation() + mLinkedPortal->mTransform.GetTranslation());
 				cam->setPitch(traveller->getPitch());
 				cam->setYaw(traveller->getYaw());
 
@@ -143,7 +143,7 @@ void Portal::Render()
 			const Skybox* s = mLinkedPortal->mSceneToRender->GetSkybox();
 			if (s != nullptr)
 			{
-				s->render(mSceneToRender->GetActiveCamera()->getPosition());
+				s->render(mSceneToRender->GetActiveCamera()->getPosition() - mTransform.GetTranslation());
 			}
 
 			// render the scene that the linked portal looks into

@@ -22,16 +22,19 @@ public:
 private:
 	Light pointLight;
 
-	Mesh groundPlane;
-	
-	Mesh sphere;
-	Transform sphereTransform;
-	Mesh sphereShadowVolume;
+	Mesh whitePlane;
+	Mesh blackPlane;
 
-	Material red;
-	Material blue;
-	Material green;
-	Material yellow;
+	Mesh cube;
+	Mesh cubeShadowVolume;
+	Transform cubeTransform;
 
-	float temp = 0;
+	Mesh portalGun;
+	Mesh portalGunShadowVolume;
+	Transform portalGunTransform;
+	Material portalGunMat;
+
+	Texture* cubeTexture = nullptr;
+	Texture* whiteWallTexture = nullptr;
+	Texture* blackWallTexture = nullptr;
 };
