@@ -24,18 +24,22 @@ public:
 
 private:
 	Light pointLight;
+	Light spotLight;
 
 	Texture* cubeTexture = nullptr;
 	Texture* whiteWallTexture = nullptr;
 	Texture* blackWallTexture = nullptr;
+	Texture* concreteTexture = nullptr;
 
 	Mesh whitePlane;
 	Mesh blackPlane;
 
 	GameObject cube;
 	GameObject portalGun;
+	GameObject cylinder;
 
 	Material portalGunMat;
 
-	std::vector<Mesh> shadowVolumes;
+	std::vector<Mesh> pointLightShadowVolumes;
+	std::vector<Mesh> spotLightShadowVolumes;
 };

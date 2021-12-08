@@ -298,26 +298,40 @@ Mesh GeometryHelper::CreateCylinder(float height, float radius, size_t resolutio
 
 	CombineMeshes(topCap, bottomCap);
 
+	Mesh side;
+	side.Vertices = topCap.Vertices;
+
 	for (size_t i = 1; i < resolution + 1; i++)
 	{
 		// create 2 triangles connecting the top and bottom cap
-		topCap.Indices.push_back(i);
-		if (i + resolution + 2 >= topCap.Vertices.size())
-			topCap.Indices.push_back(resolution + 2);
+		side.Indices.push_back(i);
+		if (i + resolution + 2 >= side.Vertices.size())
+			side.Indices.push_back(resolution + 2);
 		else
-			topCap.Indices.push_back(i + resolution + 2);
-		topCap.Indices.push_back(i + resolution + 1);
+			side.Indices.push_back(i + resolution + 2);
+		side.Indices.push_back(i + resolution + 1);
 
-		topCap.Indices.push_back(i);
+		side.Indices.push_back(i);
 		if (i + 1 >= resolution + 1)
-			topCap.Indices.push_back(1);
+			side.Indices.push_back(1);
 		else
-			topCap.Indices.push_back(i + 1);
-		if (i + resolution + 2 >= topCap.Vertices.size())
-			topCap.Indices.push_back(resolution + 2);
+			side.Indices.push_back(i + 1);
+		if (i + resolution + 2 >= side.Vertices.size())
+			side.Indices.push_back(resolution + 2);
 		else
-			topCap.Indices.push_back(i + resolution + 2);
+			side.Indices.push_back(i + resolution + 2);
 	}
+
+	for (auto& vertex : side.Vertices)
+	{
+		glm::vec3 n = vertex.Position / radius;
+		vertex.Normal = glm::vec3(n.x, 0.0f, n.y);
+
+		float theta = acosf(vertex.Position.x / radius);
+		vertex.TexCoord = glm::vec2(theta / (2 * PI), vertex.Position.y > 0 ? 0 : 1);
+	}
+
+	CombineMeshes(topCap, side);
 	return topCap;
 }
 

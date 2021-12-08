@@ -25,9 +25,7 @@ bool Portal::sPortalRenderInProgress = false;
 
 Portal::Portal(PortalScene* sceneToRender)
 {
-	mFrameModel = GeometryHelper::LoadObj("models/portal.obj");
 	mScreenModel = GeometryHelper::LoadObj("models/portalScreen.obj");
-
 	mSceneToRender = sceneToRender;
 }
 
@@ -194,13 +192,6 @@ void Portal::Render()
 	}
 	
 	glDisable(GL_STENCIL_TEST);
-
-	// finally render the frame of the portal
-	{
-		//Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
-		//RenderHelper::drawMesh(mFrameModel);
-	}
-
 	glPopAttrib();
 
 	// portal render is finished

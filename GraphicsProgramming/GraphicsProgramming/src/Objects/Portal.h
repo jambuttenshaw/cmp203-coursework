@@ -23,8 +23,6 @@ public:
 	void Render();
 
 	inline void SetLinkedPortal(Portal* portal) { mLinkedPortal = portal; }
-	inline void SetTexture(Texture* tex) { mFrameModel.MeshTexture = tex; }
-
 	inline Transform& GetTransform() { return mTransform; }
 	
 private:
@@ -35,7 +33,6 @@ private:
 
 
 private:
-	Mesh mFrameModel;
 	Mesh mScreenModel;
 
 	Portal* mLinkedPortal = nullptr;
