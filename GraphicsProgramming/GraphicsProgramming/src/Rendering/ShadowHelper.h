@@ -5,6 +5,7 @@
 #include <set>
 
 #include "Mesh.h"
+#include "Objects/GameObject.h"
 
 
 class ShadowHelper
@@ -16,6 +17,7 @@ public:
 
 	// build shadow volume
 	static Mesh BuildShadowVolume(const Mesh& mesh, const glm::mat4& transform, const glm::vec3& lightPos);
+	static Mesh BuildShadowVolume(const GameObject& gameObject, const glm::vec3& lightPos);
 
 private:
 	// extend vertex helper function

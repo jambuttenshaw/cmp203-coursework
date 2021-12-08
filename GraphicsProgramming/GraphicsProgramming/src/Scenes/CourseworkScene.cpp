@@ -18,6 +18,7 @@ void CourseworkScene::OnSetup()
 
 	enableShadowVolumes(true);
 
+	// set up lighting
 	pointLight.setType(Light::LightType::Point);
 	pointLight.setDiffuseColor(1.0f);
 	pointLight.setAmbientColor(0.15f);
@@ -25,11 +26,13 @@ void CourseworkScene::OnSetup()
 	pointLight.setPosition({ -4, 4, 0 });
 	RegisterLight(&pointLight);
 
+	// set up portals
 	mExitPortal = new Portal(this);
 	mExitPortal->GetTransform().SetTranslation({ -2.0f, 0.0, -2.5f });
 	// this scene is to be entered and exited by the same portal
 	mEntryPortal = mExitPortal;
 
+	// load textures
 	whiteWallTexture = new Texture("gfx/PortalScene/whiteWall.png", Texture::Flags::MIPMAPS);
 	whiteWallTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	whiteWallTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
@@ -38,30 +41,34 @@ void CourseworkScene::OnSetup()
 	blackWallTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	blackWallTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
+	cubeTexture = new Texture("gfx/portalCube.png");
+	cubeTexture->SetFilterMode(Texture::FilterMode::Linear, Texture::FilterMode::Linear);
+
+	// create procedural geometry
 	whitePlane = GeometryHelper::CreatePlane(10, 10, {0, 1, 0}, 5, 5);
 	whitePlane.MeshTexture = whiteWallTexture;
 	blackPlane = GeometryHelper::CreatePlane(10, 10, {0, 0, 1}, 5, 2.5f);
 	blackPlane.MeshTexture = blackWallTexture;
 
-
-	cube = GeometryHelper::CreateUnitCube(10);
-	cubeTexture = new Texture("gfx/portalCube.png");
-	cubeTexture->SetFilterMode(Texture::FilterMode::Linear, Texture::FilterMode::Linear);
-	cube.MeshTexture = cubeTexture;
-
-	cubeTransform.SetTranslation({ 0.5f, 0.25f, -3.0f });
-	cubeTransform.SetScale({ 0.5f, 0.5f, 0.5f });
-
-	cubeShadowVolume = ShadowHelper::BuildShadowVolume(cube, cubeTransform.LocalToWorld(), pointLight.getPosition());
+	cube.GetMesh() = GeometryHelper::CreateUnitCube(10);
+	cube.GetMesh().MeshTexture = cubeTexture;
+	cube.GetTransform().SetTranslation({ 0.5f, 0.25f, -3.0f });
+	cube.GetTransform().SetScale({ 0.5f, 0.5f, 0.5f });
 
 
-	portalGun = GeometryHelper::LoadObj("models/portalGun.obj");
+	portalGun.GetMesh() = GeometryHelper::LoadObj("models/portalGun.obj");
+	portalGun.GetTransform().SetTranslation({ 0, 0.5f, 0 });
+	portalGun.GetTransform().SetScale(glm::vec3(0.01f));
+
+
+	// build shadow volumes
+	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition()));
+	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(portalGun, pointLight.getPosition()));
+
+	// set up materials
+	portalGunMat.setAmbientAndDiffuse(0.55f);
 	portalGunMat.setShininess(128);
 	portalGunMat.setSpecular(Color::White);
-	portalGunMat.setAmbientAndDiffuse(0.55f);
-	portalGunTransform.SetTranslation({ 0, 0.5f, 0 });
-	portalGunTransform.SetScale(glm::vec3(0.01f));
-	portalGunShadowVolume = ShadowHelper::BuildShadowVolume(portalGun, portalGunTransform.LocalToWorld(), pointLight.getPosition());
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 1.5f, 1.0f, 3.0f });
@@ -86,13 +93,13 @@ void CourseworkScene::OnRenderObjects()
 {
 	portalGunMat.apply();
 	{
-		Transformation t(portalGunTransform);
+		Transformation t(portalGun);
 		RenderHelper::drawMesh(portalGun);
 	}
 
 	Material::Default.apply();
 	{
-		Transformation t(cubeTransform);
+		Transformation t(cube);
 		RenderHelper::drawMesh(cube);
 	}
 
@@ -125,8 +132,7 @@ void CourseworkScene::OnRenderObjects()
 
 void CourseworkScene::OnRenderShadowVolumes()
 {
-	RenderHelper::drawMesh(cubeShadowVolume);
-	RenderHelper::drawMesh(portalGunShadowVolume);
+	for (const auto& shadowVolume : shadowVolumes) RenderHelper::drawMesh(shadowVolume);
 }
 
 void CourseworkScene::SetExitPortal(Portal* p)

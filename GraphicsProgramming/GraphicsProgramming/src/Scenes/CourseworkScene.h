@@ -3,6 +3,9 @@
 #include "Objects/PortalScene.h"
 #include "Objects/Portal.h"
 
+#include <vector>
+
+
 class CourseworkScene : public PortalScene
 {
 public:
@@ -22,19 +25,17 @@ public:
 private:
 	Light pointLight;
 
-	Mesh whitePlane;
-	Mesh blackPlane;
-
-	Mesh cube;
-	Mesh cubeShadowVolume;
-	Transform cubeTransform;
-
-	Mesh portalGun;
-	Mesh portalGunShadowVolume;
-	Transform portalGunTransform;
-	Material portalGunMat;
-
 	Texture* cubeTexture = nullptr;
 	Texture* whiteWallTexture = nullptr;
 	Texture* blackWallTexture = nullptr;
+
+	Mesh whitePlane;
+	Mesh blackPlane;
+
+	GameObject cube;
+	GameObject portalGun;
+
+	Material portalGunMat;
+
+	std::vector<Mesh> shadowVolumes;
 };

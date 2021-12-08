@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Objects\GameObject.cpp" />
     <ClCompile Include="src\Objects\PortalScene.cpp" />
     <ClCompile Include="src\Scenes\ShadowScene.cpp" />
     <ClCompile Include="src\Objects\Portal.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="src\Scenes\PortalWorlds\World2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\Objects\PortalScene.h" />
     <ClInclude Include="src\Scenes\ShadowScene.h" />
     <ClInclude Include="src\Objects\Portal.h" />

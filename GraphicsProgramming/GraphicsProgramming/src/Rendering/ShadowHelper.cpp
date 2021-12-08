@@ -115,6 +115,11 @@ Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::mat4& transfor
 	return Mesh(vertices, indices);
 }
 
+Mesh ShadowHelper::BuildShadowVolume(const GameObject& gameObject, const glm::vec3& lightPos)
+{
+	return BuildShadowVolume(gameObject.GetMesh(), gameObject.GetTransform().LocalToWorld(), lightPos);
+}
+
 glm::vec3 ShadowHelper::ExtendVertex(const glm::vec3& pos, const glm::vec3& lightPos, float extension)
 {
 	glm::vec3 dir = glm::normalize(pos - lightPos);

@@ -29,6 +29,7 @@
 #include "Rendering/Camera.h"
 #include "Rendering/Skybox.h"
 #include "Rendering/ShadowHelper.h"
+#include "Objects/GameObject.h"
 
 
 class Scene

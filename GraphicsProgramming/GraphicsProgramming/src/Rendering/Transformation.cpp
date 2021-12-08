@@ -32,6 +32,11 @@ Transformation::Transformation(const Transform& t)
 {
 }
 
+Transformation::Transformation(const GameObject& go)
+	: Transformation(go.GetTransform())
+{
+}
+
 Transformation::Transformation(const glm::mat4& matrix)
 {
 	// this doesnt work :(

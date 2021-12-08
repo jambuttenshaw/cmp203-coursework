@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "Mesh.h"
+#include "Objects/GameObject.h"
 
 class RenderHelper
 {
@@ -14,6 +15,7 @@ public:
 
 	static void drawUnitCube();
 
+	inline static void drawMesh(const GameObject& go) { drawMesh(go.GetMesh()); }
 	static void drawMesh(const Mesh& mesh);
 	static void drawMeshWireframeOverlay(const Mesh& mesh);
 
