@@ -53,7 +53,7 @@ void CourseworkScene::OnSetup()
 
 	// set up portals
 	mExitPortal = new Portal(this);
-	mExitPortal->GetTransform().SetTranslation({ 0, 0, -8 });
+	mExitPortal->GetTransform().SetTranslation({ 0, 0, -9 });
 	// this scene is to be entered and exited by the same portal
 	mEntryPortal = mExitPortal;
 

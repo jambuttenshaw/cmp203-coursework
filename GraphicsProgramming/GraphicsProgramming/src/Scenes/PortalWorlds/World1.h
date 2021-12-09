@@ -38,4 +38,5 @@ private:
 
 	float baseRotation = 0.0f;
 	float t = 0.0f;
+	float t2 = 0.0f;
 };

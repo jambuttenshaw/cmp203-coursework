@@ -65,7 +65,7 @@ void World1::OnHandleInput(float dt)
 	if (input->isKeyDown('j'))
 		t += dt;
 	if (input->isKeyDown('k'))
-		t -= dt;
+		t2 += dt;
 
 }
 
@@ -78,7 +78,7 @@ void World1::OnUpdate(float dt)
 
 
 	armMiddle.GetTransform().SetRotation({ 90 * cosf(t), 0, 0 });
-	armTop.GetTransform().SetRotation({ 90 * sinf(t), 0, 0 });
+	armTop.GetTransform().SetRotation({ 90 * sinf(t2), 0, 0 });
 }
 
 void World1::OnRenderObjects()
