@@ -143,7 +143,7 @@ void CourseworkScene::OnHandleInput(float dt)
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
 		input->setKeyUp(VK_ESCAPE);
 	}
-	sceneCamera->Process3DControllerInputs(dt, false);
+	sceneCamera->Process3DControllerInputs(dt, true);
 }
 
 void CourseworkScene::OnUpdate(float dt)

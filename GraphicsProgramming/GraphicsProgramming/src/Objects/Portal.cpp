@@ -40,7 +40,7 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 	{
 		// check to make sure the traveller actually passed through the inside of the portal
 		glm::vec3 localPos = mTransform.WorldToLocal() * glm::vec4(traveller->getPosition(), 1);
-		if (glm::abs(localPos.x) < 0.5f)
+		if (glm::abs(localPos.x) < 0.5f && localPos.y > 0 && localPos.y < 2)
 		{
 			// we have travelled!
 			// switch scenes and move the traveller

@@ -45,7 +45,7 @@ void World2::OnHandleInput(float dt)
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
 		input->setKeyUp(VK_ESCAPE);
 	}
-	sceneCamera->Process3DControllerInputs(dt, false);
+	sceneCamera->Process3DControllerInputs(dt, true);
 }
 
 void World2::OnUpdate(float dt)

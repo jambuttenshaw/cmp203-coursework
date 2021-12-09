@@ -14,7 +14,7 @@ void World1::OnSetup()
 {
 	skybox = new Skybox("gfx/skybox3.png");
 
-	enableShadowVolumes(true);
+	enableShadowVolumes(false);
 
 	pointLight.setType(Light::LightType::Point);
 	pointLight.setDiffuseColor(1.0f);
@@ -26,16 +26,31 @@ void World1::OnSetup()
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
 
-	groundPlane = GeometryHelper::CreatePlane(10, 10);
-	sphere = GeometryHelper::CreateUnitSphere(150);
 
-	// move the camera up slightly
-	sceneCamera->setPosition({ 0, 1, 6 });
+	portalPlatform.GetMesh() = GeometryHelper::LoadObj("models/portalPlatform.obj");
 
-	red.setAmbientAndDiffuse(Color::Red);
-	blue.setAmbientAndDiffuse(Color::Blue);
-	green.setAmbientAndDiffuse(Color::Green);
-	yellow.setAmbientAndDiffuse(Color::Yellow);
+	basePlatform.GetMesh() = GeometryHelper::LoadObj("models/portalPlatform.obj");
+	basePlatform.GetTransform().SetTranslation({ 0, 0, -13 });
+
+	longPlatform.GetMesh() = GeometryHelper::CreatePlane(50, 10);
+	longPlatform.GetTransform().SetTranslation({ 0, -0.2f, -6.5f });
+	longPlatform.GetTransform().SetScale({ 2, 1, 10	});
+
+
+	// robot arm
+	armBase.GetMesh() = GeometryHelper::LoadObj("models/robotArm/bottom.obj");
+	armBase.GetTransform().SetScale(glm::vec3{ 2 });
+	armMiddle.GetMesh() = GeometryHelper::LoadObj("models/robotArm/middle.obj");
+	armMiddle.GetTransform().SetTranslation({ 0, 1.8f, 0 });
+	armTop.GetMesh() = GeometryHelper::LoadObj("models/robotArm/top.obj");
+	armTop.GetTransform().SetTranslation({ 0, 1.6f, 0 });
+
+
+	portalPlatformMat.setAmbientAndDiffuse({ 0.6f });
+	portalPlatformMat.setSpecular(Color::White);
+	portalPlatformMat.setShininess(115);
+
+	sceneCamera->setPosition({ 0, 1.0f, 3.0f });
 }
 
 void World1::OnHandleInput(float dt)
@@ -45,48 +60,58 @@ void World1::OnHandleInput(float dt)
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
 		input->setKeyUp(VK_ESCAPE);
 	}
-	sceneCamera->Process3DControllerInputs(dt, false);
+	sceneCamera->Process3DControllerInputs(dt, true);
+
+	if (input->isKeyDown('j'))
+		t += dt;
+	if (input->isKeyDown('k'))
+		t -= dt;
+
 }
 
 void World1::OnUpdate(float dt)
 {
 	mExitPortal->TestForTravelling(input, sceneCamera);
+
+	baseRotation += 10.0f * dt;
+	basePlatform.GetTransform().SetRotation({ 0, baseRotation, 0 });
+
+
+	armMiddle.GetTransform().SetRotation({ 90 * cosf(t), 0, 0 });
+	armTop.GetTransform().SetRotation({ 90 * sinf(t), 0, 0 });
 }
 
 void World1::OnRenderObjects()
 {
-	Material::Default.apply();
+	portalPlatformMat.apply();
 
-
-	// render the rest of the scene as normal
-	blue.apply();
 	{
-		Transformation t{ {2.5f, 0, 0}, {0, 0, 0}, {5, 1, 10} };
-		RenderHelper::drawMesh(groundPlane);
-	}
-	red.apply();
-	{
-		Transformation t{ {-2.5f, 0, 0}, {0, 0, 0}, {5, 1, 10} };
-		RenderHelper::drawMesh(groundPlane);
+		Transformation t(portalPlatform);
+		RenderHelper::drawMesh(portalPlatform);
 	}
 
 	{
-		Transformation t({ 0, 0, 0 }, { 0, 90, 0 }, { 1, 1, 1 });
-		yellow.apply();
+		Transformation t(basePlatform);
+		RenderHelper::drawMesh(basePlatform);
 		{
-			Transformation t({ 0, 1.0f, 4.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-			RenderHelper::drawUnitCube();
-		}
-		green.apply();
-		{
-			Transformation t({ -1.5f, 1.5f, 5.0f }, { 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
-			RenderHelper::drawUnitCube();
-		}
-		{
-			Transformation t({ 2.0f, 0.8f, -5.0f }, { 30, 45, 0 }, { 0.5f, 0.5f, 0.5f });
-			RenderHelper::drawMesh(sphere);
+			Transformation t2(armBase);
+			RenderHelper::drawMesh(armBase);
+			{
+				Transformation t3(armMiddle);
+				RenderHelper::drawMesh(armMiddle);
+				{
+					Transformation t4(armTop);
+					RenderHelper::drawMesh(armTop);
+				}
+			}
 		}
 	}
+
+	{
+		Transformation t(longPlatform);
+		RenderHelper::drawMesh(longPlatform);
+	}
+	
 }
 
 void World1::OnRenderShadowVolumes()

@@ -23,11 +23,19 @@ public:
 private:
 	Light pointLight;
 
-	Mesh groundPlane;
-	Mesh sphere;
+	GameObject portalPlatform;
+	GameObject basePlatform;
+	GameObject longPlatform;
 
-	Material red;
-	Material blue;
-	Material green;
-	Material yellow;
+	// robot arm
+	GameObject armBase;
+	GameObject armMiddle;
+	GameObject armTop;
+
+
+	Material portalPlatformMat;
+
+
+	float baseRotation = 0.0f;
+	float t = 0.0f;
 };
