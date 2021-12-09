@@ -25,21 +25,34 @@ public:
 private:
 	Light pointLight;
 	Light spotLight;
+	Light panelLight;
 
 	Texture* cubeTexture = nullptr;
 	Texture* whiteWallTexture = nullptr;
 	Texture* blackWallTexture = nullptr;
 	Texture* concreteTexture = nullptr;
 
-	Mesh whitePlane;
-	Mesh blackPlane;
+	Mesh hallWhitePlane;
+	Mesh hallBlackPlane;
+	Mesh backWallPlane;
+	Mesh corridorWhitePlane;
+	Mesh corridorWallPlane;
+	Mesh corridorEndPlane;
+
+	Mesh ceilingLight;
 
 	GameObject cube;
 	GameObject portalGun;
 	GameObject cylinder;
+	GameObject lightPanel;
 
 	Material portalGunMat;
+	Material ceilingLightMat;
+	Material spotLightMat;
+	Material lightPanelMat;
 
 	std::vector<Mesh> pointLightShadowVolumes;
 	std::vector<Mesh> spotLightShadowVolumes;
+
+	float portalGunRotation = 0.0f;
 };
