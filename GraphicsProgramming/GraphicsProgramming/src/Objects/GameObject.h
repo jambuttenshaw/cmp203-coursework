@@ -14,7 +14,7 @@ public:
 	inline Mesh& GetMesh() const { return *mMesh; }
 	inline Transform& GetTransform() const { return *mTransform; }
 	
-private:
+protected:
 	Mesh* mMesh = nullptr;
 	Transform* mTransform = nullptr;
 };

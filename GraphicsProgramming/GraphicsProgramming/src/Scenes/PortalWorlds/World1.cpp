@@ -6,22 +6,22 @@
 World1::~World1()
 {
 	if (skybox != nullptr) delete skybox;
-
 	if (mExitPortal != nullptr) delete mExitPortal;
 }
 
 void World1::OnSetup()
 {
+	setGlobalAmbientLighting(Color::Black);
 	skybox = new Skybox("gfx/skybox3.png");
 
 	enableShadowVolumes(false);
 
-	pointLight.setType(Light::LightType::Point);
-	pointLight.setDiffuseColor(1.0f);
-	pointLight.setAmbientColor(0.15f);
-	pointLight.setSpecularColor(1.0f);
-	pointLight.setPosition({ -4, 4, 0 });
-	RegisterLight(&pointLight);
+	dirLight.setType(Light::LightType::Directional);
+	dirLight.setDiffuseColor(0.9f);
+	dirLight.setAmbientColor(0.15f);
+	dirLight.setSpecularColor(1.0f);
+	dirLight.setPosition({ -1, 1, 0 });
+	RegisterLight(&dirLight);
 
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
@@ -46,11 +46,28 @@ void World1::OnSetup()
 	armTop.GetTransform().SetTranslation({ 0, 1.6f, 0 });
 
 
+	armMiddle.GetTransform().SetRotation({ 90 * cosf(t), 0, 0 });
+	armTop.GetTransform().SetRotation({ 90 * sinf(t2), 0, 0 });
+
+
+
+	spotlights[0].Setup({ -3, 0, -10 },   45, 75, { 1.8f, 1.8f, 5.0f });
+	spotlights[1].Setup({ -3, 0, -16 },  -45, 75, { 5.0f, 1.8f, 1.8f });
+	spotlights[2].Setup({  3, 0, -10 },  135, 75, { 5.0f, 1.8f, 1.8f });
+	spotlights[3].Setup({  3, 0, -16 }, -135, 75, { 1.8f, 1.8f, 5.0f });
+	for (auto& s : spotlights)
+		RegisterLight(s.GetLight());
+
+
 	portalPlatformMat.setAmbientAndDiffuse({ 0.6f });
 	portalPlatformMat.setSpecular(Color::White);
 	portalPlatformMat.setShininess(115);
 
-	sceneCamera->setPosition({ 0, 1.0f, 3.0f });
+	darkMat.setAmbientAndDiffuse(0.2f);
+	darkMat.setSpecular({ 1.3f, 0.8f, 0.9f });
+	darkMat.setShininess(128);
+
+	sceneCamera->setPosition({ 0, 1.0f, -3.0f });
 }
 
 void World1::OnHandleInput(float dt)
@@ -73,7 +90,7 @@ void World1::OnUpdate(float dt)
 {
 	mExitPortal->TestForTravelling(input, sceneCamera);
 
-	baseRotation += 10.0f * dt;
+	baseRotation += 15.0f * dt;
 	basePlatform.GetTransform().SetRotation({ 0, baseRotation, 0 });
 
 
@@ -93,6 +110,8 @@ void World1::OnRenderObjects()
 	{
 		Transformation t(basePlatform);
 		RenderHelper::drawMesh(basePlatform);
+		
+		darkMat.apply();
 		{
 			Transformation t2(armBase);
 			RenderHelper::drawMesh(armBase);
@@ -107,9 +126,17 @@ void World1::OnRenderObjects()
 		}
 	}
 
+	portalPlatformMat.apply();
 	{
 		Transformation t(longPlatform);
 		RenderHelper::drawMesh(longPlatform);
+	}
+
+
+	for (auto& s : spotlights)
+	{
+		Transformation t(s);
+		RenderHelper::drawMesh(s);
 	}
 	
 }

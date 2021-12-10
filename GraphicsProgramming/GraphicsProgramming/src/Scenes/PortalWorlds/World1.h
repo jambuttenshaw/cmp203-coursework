@@ -3,6 +3,10 @@
 #include "Objects/PortalScene.h"
 #include "Objects/Portal.h"
 
+#include "Objects/Spotlight.h"
+
+#include <array>
+
 
 class World1 : public PortalScene
 {
@@ -21,7 +25,7 @@ public:
 	inline virtual Portal* GetEntryPortal() const override { return mExitPortal; }
 
 private:
-	Light pointLight;
+	Light dirLight;
 
 	GameObject portalPlatform;
 	GameObject basePlatform;
@@ -32,11 +36,14 @@ private:
 	GameObject armMiddle;
 	GameObject armTop;
 
+	std::array<Spotlight, 4> spotlights;
+
 
 	Material portalPlatformMat;
+	Material darkMat;
 
 
 	float baseRotation = 0.0f;
-	float t = 0.0f;
-	float t2 = 0.0f;
+	float t = 1.3f;
+	float t2 = 2.7f;
 };

@@ -232,7 +232,7 @@ void Scene::RenderSceneLights()
 	{
 		Light* current = sceneLights[i];
 		if ((i < lightCount) && current->getEnabled())
-			current->render(GL_LIGHT0 + i, false);
+			current->render(GL_LIGHT0 + i, true);
 		else
 			glDisable(GL_LIGHT0 + i);
 	}
