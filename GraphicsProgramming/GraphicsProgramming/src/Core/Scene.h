@@ -15,6 +15,7 @@
 // Further includes should go here:
 #include "SOIL.h"
 #include <array>
+#include <vector>
 
 // includes that most scenes will use
 #include "Core/Color.h"
@@ -30,6 +31,7 @@
 #include "Rendering/Skybox.h"
 #include "Rendering/ShadowHelper.h"
 #include "Objects/GameObject.h"
+#include "Objects/TransparentObject.h"
 
 
 class Scene
@@ -69,6 +71,11 @@ protected:
 	// lighting
 	void RegisterLight(Light* light);
 	void RemoveLight(Light* light);
+
+	void RegisterTransparentObject(TransparentObject* o);
+	void RemoveTransparentObject(TransparentObject* o);
+
+	void RenderTransparentObjects();
 
 private:
 	// configure opengl render pipeline
@@ -111,6 +118,8 @@ private:
 	// all lights acting in the scene
 	std::array<Light*, 8> sceneLights;
 	size_t lightCount = 0;
+
+	std::vector<TransparentObject*> transparentObjects;
 
 	// wireframe mode
 	char wireframeModeKey = 'r';

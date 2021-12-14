@@ -182,5 +182,8 @@
     <ClInclude Include="src\Objects\Spotlight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Objects\TransparentObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ public:
 	static void drawSphere(float radius, int slices = 20, int stacks = 20);
 
 	static void drawQuad();
+	static void drawQuad(Texture* tex);
 
 	static void drawUnitCube();
 

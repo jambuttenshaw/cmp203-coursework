@@ -46,7 +46,7 @@ void CourseworkScene::OnSetup()
 	panelLight.setDiffuseColor({ 1.4f, 2.0f, 0.8f });
 	panelLight.setAmbientColor(0.1f);
 	panelLight.setSpecularColor(Color::White);
-	panelLight.setPosition({ 0, 4.9f, -7.5f });
+	panelLight.setPosition({ 0, 4.8f, -7.5f });
 	panelLight.setAttenuation({ 1, 0.0f, 0.05f });
 	RegisterLight(&panelLight);
 
