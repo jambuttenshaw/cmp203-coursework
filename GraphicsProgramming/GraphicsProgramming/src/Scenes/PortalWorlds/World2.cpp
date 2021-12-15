@@ -39,9 +39,10 @@ void World2::OnSetup()
 	groundPlane = GeometryHelper::CreatePlane(200, 200, { 0, 1, 0 }, 10, 10, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
 	groundPlane.MeshTexture = sandTexture;
 
-	proceduralSphere.GetMesh() = GeometryHelper::CreateUnitSphere(100);
-	proceduralSphere.GetTransform().SetTranslation({ -4, 1.5f, 1 });
-	proceduralSphere.GetTransform().SetScale(glm::vec3{ 0.25f });
+	proceduralSphere.gameObject.GetMesh() = GeometryHelper::CreateUnitSphere(100);
+	proceduralSphere.gameObject.GetTransform().SetTranslation({ -4, 1.5f, 1 });
+	proceduralSphere.gameObject.GetTransform().SetScale(glm::vec3{ 0.25f });
+	
 
 	model = GeometryHelper::LoadObj("models/bro.obj");
 	modelTransform.SetTranslation({ 0, 0, -3 });
@@ -49,7 +50,7 @@ void World2::OnSetup()
 	modelTransform.SetScale({ 0.1f, 0.1f, 0.1f });
 
 
-	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere, dirLight.getPosition());
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere.gameObject, dirLight.getPosition());
 	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), dirLight.getPosition());
 
 
@@ -57,6 +58,25 @@ void World2::OnSetup()
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 0, 1, 6 });
+
+
+	// set up rendering transparent objects
+	proceduralSphere.mat = &transparentMat;
+	proceduralSphere.renderObject = [this]() {
+		proceduralSphere.mat->apply();
+		Transformation t(proceduralSphere.gameObject);
+		RenderHelper::drawMesh(proceduralSphere.gameObject);
+	};
+	RegisterTransparentObject(&proceduralSphere);
+
+
+	window.mat = &Material::Default;
+	window.renderObject = [this]() {
+		window.mat->apply();
+		Transformation t({ 0, 2, 2 }, { 90, 0, 0 }, { 2, 2, 2 });
+		RenderHelper::drawQuad(windowTexture);
+	};
+	RegisterTransparentObject(&window);
 }
 
 void World2::OnHandleInput(float dt)
@@ -75,8 +95,8 @@ void World2::OnUpdate(float dt)
 
 
 	t += 0.5f * dt;
-	proceduralSphere.GetTransform().SetTranslation({ -4, 1.5f + sinf(t), cosf(t) });
-	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere, dirLight.getPosition());
+	proceduralSphere.gameObject.GetTransform().SetTranslation({ -4, 1.5f + sinf(t), cosf(t) });
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere.gameObject, dirLight.getPosition());
 
 }
 
@@ -94,22 +114,9 @@ void World2::OnRenderObjects()
 		Transformation t{ {0, 0, 0}, {0, 0, 0}, {50, 1, 50} };
 		RenderHelper::drawMesh(groundPlane);
 	}
+	
 
-	glEnable(GL_BLEND);
-	glDepthMask(GL_FALSE);
-	transparentMat.apply();
-	{
-		Transformation t(proceduralSphere);
-		RenderHelper::drawMesh(proceduralSphere);
-	}
-
-	Material::Default.apply();
-	{
-		Transformation t({ 0, 2, 2 }, { 90, 0, 0 }, { 2, 2, 2 });
-		RenderHelper::drawQuad(windowTexture);
-	}
-	glDepthMask(GL_TRUE);
-	glDisable(GL_BLEND);
+	RenderTransparentObjects();
 }
 
 void World2::OnRenderShadowVolumes()

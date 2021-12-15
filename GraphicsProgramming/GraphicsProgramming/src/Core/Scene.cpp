@@ -130,13 +130,25 @@ void Scene::RenderTransparentObjects()
 {
 	const glm::vec3& cameraPos = currentCamera->getPosition();
 	std::sort(transparentObjects.begin(), transparentObjects.end(), [cameraPos](TransparentObject* a, TransparentObject* b) -> bool {
-			
+			// sort by whick is closest to the camera position
+			// work out the position of each transparent object
+			glm::vec3 toA = cameraPos - a->gameObject.GetTransform().GetTranslation();
+			glm::vec3 toB = cameraPos - b->gameObject.GetTransform().GetTranslation();
+			return glm::dot(toA, toA) > glm::dot(toB, toB);
 		});
+
+
+	glPushAttrib(GL_ENABLE_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_BLEND);
+	glDepthMask(GL_FALSE);
 
 	for (const auto& t : transparentObjects)
 	{
 		t->renderObject();  
 	}
+
+	glPopAttrib();
 }
 
 void Scene::initialiseOpenGL()

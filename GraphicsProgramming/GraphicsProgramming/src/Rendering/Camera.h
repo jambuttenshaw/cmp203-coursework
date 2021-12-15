@@ -61,7 +61,7 @@ private:
 	glm::vec3 forward = {0, 0, -1};
 
 	// the last amount that the camera moved by
-	glm::vec3 movement;
+	glm::vec3 movement = { 0, 0, 0 };
 
 
 	// camera controller
