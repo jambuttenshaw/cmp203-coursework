@@ -39,7 +39,7 @@ void World1::OnSetup()
 
 	// robot arm
 	armBase.GetMesh() = GeometryHelper::LoadObj("models/robotArm/bottom.obj");
-	armBase.GetTransform().SetScale(glm::vec3{ 2 });
+	armBase.GetTransform().SetScale(glm::vec3{ 1.2f });
 	armMiddle.GetMesh() = GeometryHelper::LoadObj("models/robotArm/middle.obj");
 	armMiddle.GetTransform().SetTranslation({ 0, 1.8f, 0 });
 	armTop.GetMesh() = GeometryHelper::LoadObj("models/robotArm/top.obj");
@@ -51,12 +51,18 @@ void World1::OnSetup()
 
 
 
-	spotlights[0].Setup({ -3, 0, -10 },   45, 75, { 1.8f, 1.8f, 5.0f });
-	spotlights[1].Setup({ -3, 0, -16 },  -45, 75, { 5.0f, 1.8f, 1.8f });
-	spotlights[2].Setup({  3, 0, -10 },  135, 75, { 5.0f, 1.8f, 1.8f });
-	spotlights[3].Setup({  3, 0, -16 }, -135, 75, { 1.8f, 1.8f, 5.0f });
+	spotlights[0].Setup({ -3, 0, -10 },   45, 70, { 0.8f, 0.8f, 1.0f });
+	spotlights[1].Setup({ -3, 0, -16 },  -45, 70, { 1.0f, 0.8f, 0.8f });
+	spotlights[2].Setup({  3, 0, -10 },  135, 70, { 1.0f, 0.8f, 0.8f });
+	spotlights[3].Setup({  3, 0, -16 }, -135, 70, { 0.8f, 0.8f, 1.0f });
 	for (auto& s : spotlights)
 		RegisterLight(s.GetLight());
+
+
+	dome.GetMesh() = GeometryHelper::LoadObj("models/highPolyHemisphere.obj");
+	dome.GetTransform().SetScale(glm::vec3(10));
+	dome.GetTransform().SetRotation({ -30, 0, 0 });
+	dome.GetTransform().SetTranslation({ 0, 5, -13 });
 
 
 	portalPlatformMat.setAmbientAndDiffuse({ 0.6f });
@@ -138,7 +144,13 @@ void World1::OnRenderObjects()
 		Transformation t(s);
 		RenderHelper::drawMesh(s);
 	}
-	
+
+	darkMat.apply();
+	{
+		Transformation t(dome);
+		RenderHelper::drawMesh(dome);
+	}
+
 }
 
 void World1::OnRenderShadowVolumes()

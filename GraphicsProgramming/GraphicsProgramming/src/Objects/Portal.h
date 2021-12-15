@@ -29,11 +29,12 @@ private:
 	inline void SetSideOfPortal(float s) { mLastSideOfPortal = s; }
 
 
-	void SetClippingPlanes(float nearPlane, float farPlane);
+	void SetNearClippingPlane(float nearPlane);
 
 
 private:
 	Mesh mScreenModel;
+	Mesh mFrameModel;
 
 	Portal* mLinkedPortal = nullptr;
 	PortalScene* mSceneToRender = nullptr;

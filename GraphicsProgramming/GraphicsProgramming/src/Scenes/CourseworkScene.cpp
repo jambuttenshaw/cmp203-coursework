@@ -150,7 +150,7 @@ void CourseworkScene::OnUpdate(float dt)
 {
 	mExitPortal->TestForTravelling(input, sceneCamera);
 
-	if (rand() % 100 > 90)
+	if (rand() % 100 > 95)
 	{
 		if (spotLight.getEnabled())
 		{

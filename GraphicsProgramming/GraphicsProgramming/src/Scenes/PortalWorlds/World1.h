@@ -38,6 +38,8 @@ private:
 
 	std::array<Spotlight, 4> spotlights;
 
+	GameObject dome;
+
 
 	Material portalPlatformMat;
 	Material darkMat;

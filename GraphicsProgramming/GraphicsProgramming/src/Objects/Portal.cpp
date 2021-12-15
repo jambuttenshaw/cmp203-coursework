@@ -26,6 +26,7 @@ bool Portal::sPortalRenderInProgress = false;
 Portal::Portal(PortalScene* sceneToRender)
 {
 	mScreenModel = GeometryHelper::LoadObj("models/portalScreen.obj");
+	mFrameModel = GeometryHelper::LoadObj("models/portal.obj");
 	mSceneToRender = sceneToRender;
 }
 
@@ -51,7 +52,7 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 
 				Camera* cam = newScene->GetActiveCamera();
 
-				cam->setPosition(traveller->getPosition() + 0.05f * traveller->getMoveDirection() - mTransform.GetTranslation() + mLinkedPortal->mTransform.GetTranslation());
+				cam->setPosition(traveller->getPosition() + 0.1f * traveller->getMoveDirection() - mTransform.GetTranslation() + mLinkedPortal->mTransform.GetTranslation());
 				cam->setPitch(traveller->getPitch());
 				cam->setYaw(traveller->getYaw());
 
@@ -91,7 +92,7 @@ void Portal::Render()
 	glCullFace(GL_FRONT);
 	// draw our stencil
 	{
-		Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+		Transformation t(mTransform);
 		{
 			// an additional transformation to avoid z fighting
 			const float adjustment = 0.0001f;
@@ -145,14 +146,14 @@ void Portal::Render()
 			}
 
 			// render the scene that the linked portal looks into
-			SetClippingPlanes(std::max(0.05f, distanceToPortal - 2.0f), 100.0f);
+			SetNearClippingPlane(std::max(0.05f, distanceToPortal - 0.5f));
 			
 			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->RenderSceneLights();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
 			Skybox::EnableSkyboxRendering();
 			
-			SetClippingPlanes(0.05f, 100.0f);
+			SetNearClippingPlane(0.05f);
 		}
 		glPopAttrib();
 
@@ -161,7 +162,7 @@ void Portal::Render()
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 		glDepthFunc(GL_ALWAYS);
 		{
-			Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+			Transformation t(mTransform);
 			{
 				// an additional transformation to avoid z fighting
 				const float adjustment = 0.0001f;
@@ -184,7 +185,7 @@ void Portal::Render()
 
 		glColor3fv(Color::Magenta.ptr());
 		{
-			Transformation t(mTransform.GetTranslation(), mTransform.GetRotation(), mTransform.GetScale());
+			Transformation t(mTransform);
 			RenderHelper::drawMesh(mScreenModel);
 		}
 
@@ -192,13 +193,26 @@ void Portal::Render()
 	}
 	
 	glDisable(GL_STENCIL_TEST);
+
+
+	Material::Default.apply();
+	{
+		Transformation t(mTransform);
+		{
+			const float scaleAdjustment = 0.001f;
+			Transformation adjustement({ 0, 0, 0 }, { 0, 0, 0 }, glm::vec3{ 1 - scaleAdjustment });
+			RenderHelper::drawMesh(mFrameModel);
+		}
+	}
+
 	glPopAttrib();
+
 
 	// portal render is finished
 	sPortalRenderInProgress = false;
 }
 
-void Portal::SetClippingPlanes(float nearPlane, float farPlane)
+void Portal::SetNearClippingPlane(float nearPlane)
 {
 	size_t w = Application::GetWindowX();
 	size_t h = Application::GetWindowY();
@@ -211,8 +225,9 @@ void Portal::SetClippingPlanes(float nearPlane, float farPlane)
 	
 	// Reset Matrix
 	glLoadIdentity();
+
 	// Set the correct perspective.
-	gluPerspective(fov, ratio, nearPlane, farPlane);
+	gluPerspective(fov, ratio, nearPlane, 100.0f);
 
 	// Get Back to the Modelview
 	glMatrixMode(GL_MODELVIEW);
