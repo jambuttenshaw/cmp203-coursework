@@ -70,13 +70,28 @@ void World2::OnSetup()
 	RegisterTransparentObject(&proceduralSphere);
 
 
-	window.mat = &Material::Default;
-	window.renderObject = [this]() {
-		window.mat->apply();
-		Transformation t({ 0, 2, 2 }, { 90, 0, 0 }, { 2, 2, 2 });
+	// windows
+	window1.mat = &Material::Default;
+	window1.gameObject.GetTransform().SetTranslation({ 2, 2, 2 });
+	window1.gameObject.GetTransform().SetRotation({ 90, 0, -45 });
+	window1.gameObject.GetTransform().SetScale(glm::vec3(2.0f));
+	window1.renderObject = [this]() {
+		window1.mat->apply();
+		Transformation t(window1.gameObject);
 		RenderHelper::drawQuad(windowTexture);
 	};
-	RegisterTransparentObject(&window);
+	RegisterTransparentObject(&window1);
+
+	window2.mat = &Material::Default;
+	window2.gameObject.GetTransform().SetTranslation({ 4, 2, 4 });
+	window2.gameObject.GetTransform().SetRotation({ 90, 0, -45 });
+	window2.gameObject.GetTransform().SetScale(glm::vec3(2.0f));
+	window2.renderObject = [this]() {
+		window2.mat->apply();
+		Transformation t(window2.gameObject);
+		RenderHelper::drawQuad(windowTexture);
+	};
+	RegisterTransparentObject(&window2);
 }
 
 void World2::OnHandleInput(float dt)

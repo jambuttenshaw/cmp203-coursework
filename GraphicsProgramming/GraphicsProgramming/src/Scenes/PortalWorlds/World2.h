@@ -29,7 +29,8 @@ private:
 	Mesh groundPlane;
 
 	TransparentObject proceduralSphere;
-	TransparentObject window;
+	TransparentObject window1;
+	TransparentObject window2;
 
 	Mesh model;
 	Transform modelTransform;
