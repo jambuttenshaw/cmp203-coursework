@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include <chrono>
+#include <algorithm>
 
 
 Scene::Scene()
@@ -115,6 +116,29 @@ void Scene::RemoveLight(Light* light)
 	lightCount--;
 }
 
+void Scene::RegisterTransparentObject(TransparentObject* o)
+{
+	transparentObjects.push_back(o);
+}
+
+void Scene::RemoveTransparentObject(TransparentObject* o)
+{
+	transparentObjects.erase(std::remove(transparentObjects.begin(), transparentObjects.end(), o), transparentObjects.end());
+}
+
+void Scene::RenderTransparentObjects()
+{
+	const glm::vec3& cameraPos = currentCamera->getPosition();
+	std::sort(transparentObjects.begin(), transparentObjects.end(), [cameraPos](TransparentObject* a, TransparentObject* b) -> bool {
+			
+		});
+
+	for (const auto& t : transparentObjects)
+	{
+		t->renderObject();  
+	}
+}
+
 void Scene::initialiseOpenGL()
 {
 	//OpenGL settings
@@ -127,6 +151,7 @@ void Scene::initialiseOpenGL()
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 // Handles the resize of the window. If the window changes size the perspective matrix requires re-calculation to match new window size.
@@ -184,6 +209,10 @@ void Scene::renderTextOutput()
 	displayText(-1.f, 0.96f, 1.f, 0.f, 0.f, mouseText);
 	displayText(-1.f, 0.90f, 1.f, 0.f, 0.f, fps);
 	displayText(-1.f, 0.84f, 1.f, 0.f, 0.f, renderTime);
+
+	char camInfo[40];
+	sprintf_s(camInfo, "Pitch: %1.00f, Yaw: %1.00f", currentCamera->getPitch(), currentCamera->getYaw());
+	displayText(-1.f, 0.78f, 1.f, 0.f, 0.f, camInfo);
 }
 
 // Renders text to screen. Must be called last in render function (before swap buffers)

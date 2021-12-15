@@ -21,11 +21,22 @@ public:
 	inline virtual Portal* GetEntryPortal() const override { return mExitPortal; }
 
 private:
-	Light pointLight;
+	Light dirLight;
+
+	Texture* sandTexture = nullptr;
+	Texture* windowTexture = nullptr;
 
 	Mesh groundPlane;
-	
+
+	GameObject proceduralSphere;
+
 	Mesh model;
 	Transform modelTransform;
+
 	Mesh modelShadowVolume;
+	Mesh sphereShadowVolume;
+
+	Material transparentMat;
+
+	float t = 0;
 };

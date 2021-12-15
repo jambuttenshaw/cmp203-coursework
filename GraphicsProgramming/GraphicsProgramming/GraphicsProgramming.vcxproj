@@ -118,6 +118,7 @@
     <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\Objects\PortalScene.h" />
     <ClInclude Include="src\Objects\Spotlight.h" />
+    <ClInclude Include="src\Objects\TransparentObject.h" />
     <ClInclude Include="src\Scenes\ShadowScene.h" />
     <ClInclude Include="src\Objects\Portal.h" />
     <ClInclude Include="src\Rendering\ShadowHelper.h" />

@@ -461,21 +461,43 @@ void GeometryHelper::CombineMeshes(Mesh& a, Mesh& b)
 
 #pragma region HeightFuncs
 
+
+// from https://en.wikipedia.org/wiki/Smoothstep
+float clamp(float x, float lowerlimit, float upperlimit) {
+	if (x < lowerlimit)
+		x = lowerlimit;
+	if (x > upperlimit)
+		x = upperlimit;
+	return x;
+}
+
+
+float smootherstep(float edge0, float edge1, float x) {
+	// Scale, and clamp x to 0..1 range
+	x = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+	// Evaluate polynomial
+	return x * x * x * (x * (x * 6 - 15) + 10);
+}
+
+
+
 float GeometryHelper::HeightFuncs::PerlinNoiseTerrain(float x, float z)
 {
 	static PerlinNoise noise;
+	
+	float smoothingValue = smootherstep(0.005f, 0.05f, fabsf(x * x + z * z));
 
-	float value = 0.0f;
-	float s = 1.2f;
+	float noiseValue = 0.0f;
+	float s = 3.2f;
 	float f = 4;
 	for (int i = 0; i < 4; i++)
 	{
-		value += s * (float)noise.noise(f * (double)x, 0, f * (double)z);
-		f *= 1.7f;
+		noiseValue += s * (float)noise.noise(f * (double)x, 0, f * (double)z);
+		f *= 2.3f;
 		s *= 0.5f;
 	}
 
-	return 0.7f * value - 1.0f;
+	return (0.9f * noiseValue - 1.0f) * smoothingValue;
 }
 
 #pragma endregion

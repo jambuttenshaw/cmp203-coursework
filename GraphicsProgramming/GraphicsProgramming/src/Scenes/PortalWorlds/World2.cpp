@@ -6,33 +6,54 @@
 World2::~World2()
 {
 	if (skybox != nullptr) delete skybox;
-
 	if (mExitPortal != nullptr) delete mExitPortal;
+	if (sandTexture != nullptr) delete sandTexture;
+	if (windowTexture != nullptr) delete windowTexture;
 }
 
 void World2::OnSetup()
 {
-	skybox = new Skybox("gfx/skybox.png");
+	skybox = new Skybox("gfx/skybox2.png");
 
-	enableShadowVolumes(true);
+	enableShadowVolumes(false);
 
-	pointLight.setType(Light::LightType::Point);
-	pointLight.setDiffuseColor(1.0f);
-	pointLight.setAmbientColor(0.15f);
-	pointLight.setSpecularColor(1.0f);
-	pointLight.setPosition({ 5, 4, -8 });
-	RegisterLight(&pointLight);
+	dirLight.setType(Light::LightType::Directional);
+	dirLight.setDiffuseColor({ 0.9f, 0.9f, 0.7f });
+	dirLight.setAmbientColor(0.15f);
+	dirLight.setSpecularColor(1.0f);
+	dirLight.setPosition({ -25, 87, 43 });
+	RegisterLight(&dirLight);
 
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
 
-	groundPlane = GeometryHelper::CreatePlane(10, 10);
+
+	sandTexture = new Texture("gfx/sand.png", Texture::Flags::MIPMAPS);
+	sandTexture->SetSampleMode(Texture::SampleMode::Repeat);
+	sandTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+	windowTexture = new Texture("gfx/window.png", Texture::Flags::MIPMAPS);
+	windowTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+
+	groundPlane = GeometryHelper::CreatePlane(200, 200, { 0, 1, 0 }, 10, 10, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
+	groundPlane.MeshTexture = sandTexture;
+
+	proceduralSphere.GetMesh() = GeometryHelper::CreateUnitSphere(100);
+	proceduralSphere.GetTransform().SetTranslation({ -4, 1.5f, 1 });
+	proceduralSphere.GetTransform().SetScale(glm::vec3{ 0.25f });
 
 	model = GeometryHelper::LoadObj("models/bro.obj");
 	modelTransform.SetTranslation({ 0, 0, -3 });
 	modelTransform.SetRotation({ 0, 90, 0 });
 	modelTransform.SetScale({ 0.1f, 0.1f, 0.1f });
-	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), pointLight.getPosition());
+
+
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere, dirLight.getPosition());
+	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), dirLight.getPosition());
+
+
+	transparentMat.setAmbientAndDiffuse({ 1.0f, 0.0f, 0.0f, 0.5f });
 
 	// move the camera up slightly
 	sceneCamera->setPosition({ 0, 1, 6 });
@@ -51,6 +72,12 @@ void World2::OnHandleInput(float dt)
 void World2::OnUpdate(float dt)
 {
 	mExitPortal->TestForTravelling(input, sceneCamera);
+
+
+	t += 0.5f * dt;
+	proceduralSphere.GetTransform().SetTranslation({ -4, 1.5f + sinf(t), cosf(t) });
+	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere, dirLight.getPosition());
+
 }
 
 void World2::OnRenderObjects()
@@ -64,14 +91,31 @@ void World2::OnRenderObjects()
 		RenderHelper::drawMesh(model);
 	}
 	{
-		Transformation t{ {0, 0, 0}, {0, 0, 0}, {10, 1, 10} };
+		Transformation t{ {0, 0, 0}, {0, 0, 0}, {50, 1, 50} };
 		RenderHelper::drawMesh(groundPlane);
 	}
+
+	glEnable(GL_BLEND);
+	glDepthMask(GL_FALSE);
+	transparentMat.apply();
+	{
+		Transformation t(proceduralSphere);
+		RenderHelper::drawMesh(proceduralSphere);
+	}
+
+	Material::Default.apply();
+	{
+		Transformation t({ 0, 2, 2 }, { 90, 0, 0 }, { 2, 2, 2 });
+		RenderHelper::drawQuad(windowTexture);
+	}
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 }
 
 void World2::OnRenderShadowVolumes()
 {
 	RenderHelper::drawMesh(modelShadowVolume);
+	RenderHelper::drawMesh(sphereShadowVolume);
 }
 
 void World2::SetExitPortal(Portal* p)

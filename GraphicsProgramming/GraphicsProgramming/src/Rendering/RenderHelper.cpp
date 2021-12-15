@@ -6,9 +6,10 @@
 
 #include "Core/Color.h"
 
+#include <cassert>
+
 
 bool RenderHelper::wireframe = false;
-
 
 void RenderHelper::drawSphere(float radius, int slices, int stacks)
 {
@@ -18,6 +19,15 @@ void RenderHelper::drawSphere(float radius, int slices, int stacks)
 void RenderHelper::drawQuad()
 {
 	drawMesh(Mesh::Quad);
+}
+
+void RenderHelper::drawQuad(Texture* tex)
+{
+	static Mesh texturedQuad = Mesh::Quad;
+
+	assert(tex != nullptr);
+	texturedQuad.MeshTexture = tex;
+	drawMesh(texturedQuad);
 }
 
 void RenderHelper::drawUnitCube()
