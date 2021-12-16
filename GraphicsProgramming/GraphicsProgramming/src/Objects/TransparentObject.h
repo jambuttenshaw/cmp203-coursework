@@ -1,13 +1,15 @@
 #pragma once
 
 #include "Rendering/Mesh.h"
+#include "Rendering/Material.h"
 #include "GameObject.h"
 
 #include <functional>
 
 
-struct TransparentObject
+class TransparentObject
 {
+public:
 	// properties of the object
 	GameObject gameObject;
 	const Material* mat;

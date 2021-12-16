@@ -1,5 +1,8 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
+
 struct Color
 {
 	Color() = default;
@@ -9,6 +12,10 @@ struct Color
 		: r(red), g(green), b(blue), a(alpha) {}
 	Color(float v)
 		: r(v), g(v), b(v) {}
+	Color(const glm::vec3& c)
+		: r(c.r), g(c.g), b(c.b) {}
+	Color(const glm::vec4& c)
+		: r(c.r), g(c.g), b(c.b), a(c.a) {}
 
 	float const* ptr() const { return reinterpret_cast<float const*>(this); }
 

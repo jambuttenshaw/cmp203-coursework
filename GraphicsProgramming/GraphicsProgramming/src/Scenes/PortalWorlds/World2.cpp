@@ -39,18 +39,12 @@ void World2::OnSetup()
 	groundPlane = GeometryHelper::CreatePlane(200, 200, { 0, 1, 0 }, 10, 10, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
 	groundPlane.MeshTexture = sandTexture;
 
-	proceduralSphere.gameObject.GetMesh() = GeometryHelper::CreateUnitSphere(100);
-	proceduralSphere.gameObject.GetTransform().SetTranslation({ -4, 1.5f, 1 });
-	proceduralSphere.gameObject.GetTransform().SetScale(glm::vec3{ 0.25f });
-	
-
 	model = GeometryHelper::LoadObj("models/bro.obj");
 	modelTransform.SetTranslation({ 0, 0, -3 });
 	modelTransform.SetRotation({ 0, 90, 0 });
 	modelTransform.SetScale({ 0.1f, 0.1f, 0.1f });
 
 
-	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere.gameObject, dirLight.getPosition());
 	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), dirLight.getPosition());
 
 
@@ -61,13 +55,6 @@ void World2::OnSetup()
 
 
 	// set up rendering transparent objects
-	proceduralSphere.mat = &transparentMat;
-	proceduralSphere.renderObject = [this]() {
-		proceduralSphere.mat->apply();
-		Transformation t(proceduralSphere.gameObject);
-		RenderHelper::drawMesh(proceduralSphere.gameObject);
-	};
-	RegisterTransparentObject(&proceduralSphere);
 
 
 	// windows
@@ -92,6 +79,15 @@ void World2::OnSetup()
 		RenderHelper::drawQuad(windowTexture);
 	};
 	RegisterTransparentObject(&window2);
+
+	icosahedron.mat = &Material::Default;
+	icosahedron.gameObject.GetTransform().SetTranslation({ 3, 3, 3 });
+	icosahedron.renderObject = [this]() {
+		icosahedron.mat->apply();
+		Transformation t(icosahedron.gameObject);
+		icosahedron.Render(GetActiveCamera()->getPosition());
+	};
+	RegisterTransparentObject(&icosahedron);
 }
 
 void World2::OnHandleInput(float dt)
@@ -110,9 +106,7 @@ void World2::OnUpdate(float dt)
 
 
 	t += 0.5f * dt;
-	proceduralSphere.gameObject.GetTransform().SetTranslation({ -4, 1.5f + sinf(t), cosf(t) });
-	sphereShadowVolume = ShadowHelper::BuildShadowVolume(proceduralSphere.gameObject, dirLight.getPosition());
-
+	icosahedron.gameObject.GetTransform().SetTranslation({ 3, 3 + sinf(t), 3 });
 }
 
 void World2::OnRenderObjects()
@@ -129,6 +123,8 @@ void World2::OnRenderObjects()
 		Transformation t{ {0, 0, 0}, {0, 0, 0}, {50, 1, 50} };
 		RenderHelper::drawMesh(groundPlane);
 	}
+
+	
 	
 
 	RenderTransparentObjects();

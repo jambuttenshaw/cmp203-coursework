@@ -335,6 +335,59 @@ Mesh GeometryHelper::CreateCylinder(float height, float radius, size_t resolutio
 	return topCap;
 }
 
+Mesh GeometryHelper::CreateIcosahedron()
+{
+	// from https://www.danielsieger.com/blog/2021/01/03/generating-platonic-solids.html
+
+	float phi = (1.0f + sqrt(5.0f)) * 0.5f; // golden ratio
+	float a = 1.0f;
+	float b = 1.0f / phi;
+
+	// add vertices
+	std::vector<glm::vec3> positions = {
+		{ 0, b, -a },
+		{ b, a, 0 },
+		{ -b, a, 0 },
+		{ 0, b, a },
+		{ 0, -b, a },
+		{ -a, 0, b },
+		{ 0, -b, -a },
+		{ a, 0, -b },
+		{ a, 0, b },
+		{ -a, 0, -b },
+		{ b, -a, 0 },
+		{ -b, -a, 0 }
+	};
+
+	for (auto& pos : positions) pos = glm::normalize(pos);
+
+	// add triangles
+	std::vector<unsigned int> indices = {
+		2, 1, 0,
+		1, 2, 3,
+		5, 4, 3,
+		4, 8, 3,
+		7, 6, 0,
+		6, 9, 0,
+		11, 10, 4,
+		10, 11, 6,
+		9, 5, 2,
+		5, 9, 11,
+		8, 7, 1,
+		7, 8, 10,
+		2, 5, 3,
+		8, 1, 3,
+		9, 2, 0,
+		1, 7, 0,
+		11, 9, 6,
+		7, 10, 6,
+		5, 11, 4,
+		10, 8, 4
+	};
+
+	return Mesh(positions, positions, indices);
+}
+
 
 
 Mesh GeometryHelper::LoadObj(const std::string& filename)

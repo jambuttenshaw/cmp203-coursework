@@ -29,6 +29,7 @@ public:
 	static Mesh CreateUnitSphere(size_t resolution);
 	static Mesh CreateDisc(float radius, size_t resolution);
 	static Mesh CreateCylinder(float height, float radius, size_t resolution);
+	static Mesh CreateIcosahedron();
 
 	static Mesh LoadObj(const std::string& filename);
 

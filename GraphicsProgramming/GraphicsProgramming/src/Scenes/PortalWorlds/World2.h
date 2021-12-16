@@ -2,6 +2,7 @@
 
 #include "Objects/PortalScene.h"
 #include "Objects/Portal.h"
+#include "Objects/TransparentIcosahedron.h"
 
 
 class World2 : public PortalScene
@@ -28,15 +29,17 @@ private:
 
 	Mesh groundPlane;
 
-	TransparentObject proceduralSphere;
 	TransparentObject window1;
 	TransparentObject window2;
+
+	TransparentIcosahedron icosahedron;
 
 	Mesh model;
 	Transform modelTransform;
 
 	Mesh modelShadowVolume;
 	Mesh sphereShadowVolume;
+
 
 	Material transparentMat;
 

@@ -4,11 +4,16 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "Core/Random.h"
+
+
 Application* Application::instance = nullptr;
 
 
 Application::Application(int argc, char** argv)
 {
+	Random::Init();
+
 	assert(instance == nullptr && "Cannot have more than one application in existence!");
 	instance = this;
 
@@ -50,6 +55,8 @@ Application::~Application()
 {
 	for (auto& scene : mScenes) delete scene;
 	delete mInput;
+
+	Random::Shutdown();
 }
 
 void Application::enterMainLoop()

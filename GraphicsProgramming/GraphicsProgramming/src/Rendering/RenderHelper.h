@@ -18,6 +18,7 @@ public:
 
 	inline static void drawMesh(const GameObject& go) { drawMesh(go.GetMesh()); }
 	static void drawMesh(const Mesh& mesh);
+	inline static void drawMeshWireframeOverlay(const GameObject& go) { drawMeshWireframeOverlay(go.GetMesh()); }
 	static void drawMeshWireframeOverlay(const Mesh& mesh);
 
 
