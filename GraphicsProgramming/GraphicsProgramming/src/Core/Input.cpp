@@ -21,7 +21,6 @@ void Input::setKeyDown(unsigned char key)
 	{
 		keys[key] = true;
 	}
-	updateModifiers();
 }
 
 void Input::setKeyUp(unsigned char key)
@@ -30,7 +29,6 @@ void Input::setKeyUp(unsigned char key)
 	{
 		keys[key] = false;
 	}
-	updateModifiers();
 }
 
 bool Input::isKeyDown(int key)
@@ -107,12 +105,4 @@ void Input::setMouseRDown(bool down)
 bool Input::isMouseRDown()
 {
 	return mouse.right;
-}
-
-void Input::updateModifiers()
-{
-	int mods = glutGetModifiers();
-	shift = mods & GLUT_ACTIVE_SHIFT;
-	ctrl = mods & GLUT_ACTIVE_CTRL;
-	alt = mods & GLUT_ACTIVE_ALT;
 }

@@ -34,11 +34,8 @@ private:
 
 	TransparentIcosahedron icosahedron;
 
-	Mesh model;
-	Transform modelTransform;
-
+	GameObject model;
 	Mesh modelShadowVolume;
-	Mesh sphereShadowVolume;
 
 
 	Material transparentMat;

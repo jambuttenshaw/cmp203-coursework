@@ -15,7 +15,7 @@ void World2::OnSetup()
 {
 	skybox = new Skybox("gfx/skybox2.png");
 
-	enableShadowVolumes(false);
+	enableShadowVolumes(true);
 
 	dirLight.setType(Light::LightType::Directional);
 	dirLight.setDiffuseColor({ 0.9f, 0.9f, 0.7f });
@@ -26,6 +26,7 @@ void World2::OnSetup()
 
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
+	mExitPortal->GetTransform().SetTranslation({ 0, 0, -5 });
 
 
 	sandTexture = new Texture("gfx/sand.png", Texture::Flags::MIPMAPS);
@@ -39,13 +40,12 @@ void World2::OnSetup()
 	groundPlane = GeometryHelper::CreatePlane(200, 200, { 0, 1, 0 }, 10, 10, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
 	groundPlane.MeshTexture = sandTexture;
 
-	model = GeometryHelper::LoadObj("models/bro.obj");
-	modelTransform.SetTranslation({ 0, 0, -3 });
-	modelTransform.SetRotation({ 0, 90, 0 });
-	modelTransform.SetScale({ 0.1f, 0.1f, 0.1f });
+	model.GetMesh() = GeometryHelper::LoadObj("models/bro.obj");
+	model.GetTransform().SetTranslation({ -2, 0, -1 });
+	model.GetTransform().SetScale({ 0.1f, 0.1f, 0.1f });
 
 
-	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, modelTransform.LocalToWorld(), dirLight.getPosition());
+	modelShadowVolume = ShadowHelper::BuildShadowVolume(model, dirLight.getPosition());
 
 
 	transparentMat.setAmbientAndDiffuse({ 1.0f, 0.0f, 0.0f, 0.5f });
@@ -116,7 +116,7 @@ void World2::OnRenderObjects()
 
 	// render the rest of the scene as normal
 	{
-		Transformation t({ 0, 0, -3 }, { 0, 90, 0 }, { 0.1f, 0.1f, 0.1f });
+		Transformation t(model);
 		RenderHelper::drawMesh(model);
 	}
 	{
@@ -133,8 +133,8 @@ void World2::OnRenderObjects()
 void World2::OnRenderShadowVolumes()
 {
 	RenderHelper::drawMesh(modelShadowVolume);
-	RenderHelper::drawMesh(sphereShadowVolume);
 }
+
 
 void World2::SetExitPortal(Portal* p)
 {
