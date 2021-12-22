@@ -102,19 +102,28 @@ void World2::OnHandleInput(float dt)
 		input->setKeyUp(VK_ESCAPE);
 	}
 	if (GetActiveCamera() == sceneCamera)
+	{
 		sceneCamera->Process3DControllerInputs(dt, true);
+
+		int scroll = input->getMouseScrollWheel();
+		setFOV(getFOV() + 200 * scroll * dt);
+	}
 
 	if (input->isKeyDown('c'))
 	{
 		if (GetActiveCamera() == sceneCamera)
+		{
 			setCurrentCamera(orbitCamera);
+			oldFOV = getFOV();
+			setFOV(getDefaultFOV());
+		}
 		else
+		{
 			setCurrentCamera(sceneCamera);
+			setFOV(oldFOV);
+		}
 		input->setKeyUp('c');
 	}
-
-	float scroll = input->getMouseScrollWheel();
-	setFOV(getFOV() + 200 * scroll * dt);
 }
 
 void World2::OnUpdate(float dt)

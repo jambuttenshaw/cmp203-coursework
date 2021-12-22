@@ -7,7 +7,7 @@
 
 int Scene::width = 0;
 int Scene::height = 0;
-float Scene::fieldOfView = 100.0f;
+float Scene::fieldOfView = Scene::defaultFOV;
 float Scene::nearPlane = 0.05f;
 float Scene::farPlane = 100.0f;
 

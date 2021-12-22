@@ -24,6 +24,7 @@ public:
 private:
 	Camera* orbitCamera = nullptr;
 	const float orbitRadius = 3.0f;
+	float oldFOV = 0.0f;
 
 	Light dirLight;
 

@@ -57,6 +57,7 @@ public:
 	inline static int getWidth()		{ return width; }
 	inline static int getHeight()		{ return height; }
 	inline static float getFOV()		{ return fieldOfView; }
+	inline static float getDefaultFOV()	{ return defaultFOV; }
 	inline static float getFarPlane()	{ return farPlane; }
 	inline static float getNearPlane()	{ return nearPlane; }
 
@@ -123,6 +124,7 @@ private:
 	static int width, height;
 	static float fieldOfView, nearPlane, farPlane;
 
+	constexpr static float defaultFOV = 100.0f;
 	constexpr static float minFOV = 30.0f;
 	constexpr static float maxFOV = 130.0f;
 

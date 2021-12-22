@@ -144,6 +144,9 @@ void CourseworkScene::OnHandleInput(float dt)
 		input->setKeyUp(VK_ESCAPE);
 	}
 	sceneCamera->Process3DControllerInputs(dt, true);
+
+	int scroll = input->getMouseScrollWheel();
+	setFOV(getFOV() + 200 * scroll * dt);
 }
 
 void CourseworkScene::OnUpdate(float dt)

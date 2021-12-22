@@ -85,6 +85,9 @@ void World1::OnHandleInput(float dt)
 	}
 	sceneCamera->Process3DControllerInputs(dt, true);
 
+	int scroll = input->getMouseScrollWheel();
+	setFOV(getFOV() + 200 * scroll * dt);
+
 	if (input->isKeyDown('j'))
 		t += dt;
 	if (input->isKeyDown('k'))
