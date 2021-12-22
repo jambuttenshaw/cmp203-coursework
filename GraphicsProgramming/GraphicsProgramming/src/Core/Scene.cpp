@@ -83,6 +83,8 @@ void Scene::render()
 		skybox->render(currentCamera->getPosition());
 	}
 
+	RenderSceneLights();
+
 	// render all portals first
 	portalPass = true;
 	OnRenderPortals();
@@ -94,7 +96,6 @@ void Scene::render()
 	}
 	else
 	{
-		RenderSceneLights();
 		OnRenderObjects();
 	}
 	// End render geometry --------------------------------------
