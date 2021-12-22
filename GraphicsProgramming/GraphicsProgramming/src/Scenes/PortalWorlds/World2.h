@@ -22,6 +22,9 @@ public:
 	inline virtual Portal* GetEntryPortal() const override { return mExitPortal; }
 
 private:
+	Camera* orbitCamera = nullptr;
+	const float orbitRadius = 3.0f;
+
 	Light dirLight;
 
 	Texture* sandTexture = nullptr;

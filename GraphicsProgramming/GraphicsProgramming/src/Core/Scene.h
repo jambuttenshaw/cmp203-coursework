@@ -33,9 +33,10 @@
 #include "Objects/GameObject.h"
 #include "Objects/TransparentObject.h"
 
-
 class Scene
 {
+	friend class Application;
+
 public:
 	Scene();
 	virtual ~Scene();
@@ -47,8 +48,21 @@ public:
 	void handleInput(float dt);
 	// Update function receives delta time from parent (used for frame independent updating).
 	void update(float dt);
+
+
 	// Resizes the OpenGL output based on new window size.
-	void resize(int w, int h);
+	static void setup(int w, int h, float fov, float n, float f);
+	inline static void resize(int w, int h) { setup(w, h, fieldOfView, nearPlane, farPlane); }
+
+	inline static int getWidth()		{ return width; }
+	inline static int getHeight()		{ return height; }
+	inline static float getFOV()		{ return fieldOfView; }
+	inline static float getFarPlane()	{ return farPlane; }
+	inline static float getNearPlane()	{ return nearPlane; }
+
+	inline static void setFOV(float fov)		{ setup(width, height, fov, nearPlane, farPlane); }
+	inline static void setNearPlane(float n)	{ setup(width, height, fieldOfView, n, farPlane); }
+	inline static void setFarPlane(float f)		{ setup(width, height, fieldOfView, nearPlane, f); }
 
 
 	Camera* GetActiveCamera() const { return currentCamera; }
@@ -106,14 +120,18 @@ protected:
 		
 private:
 	// For Window and frustum calculation.
-	int width = 0, height = 0;
-	float fov = 0, nearPlane = 0, farPlane = 0;
+	static int width, height;
+	static float fieldOfView, nearPlane, farPlane;
 
+	constexpr static float minFOV = 30.0f;
+	constexpr static float maxFOV = 130.0f;
+
+private:
 	// For FPS counter and mouse coordinate output.
 	int frame = 0, time = 0, timebase = 0, rawRenderTime = 0;
-	char fps[40];
-	char mouseText[40];
-	char renderTime[40];
+	char fps[40]{ 0 };
+	char mouseText[40]{ 0 };
+	char renderTime[40]{ 0 };
 
 	// all lights acting in the scene
 	std::array<Light*, 8> sceneLights;

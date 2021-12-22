@@ -14,6 +14,7 @@ class Input
 		int oldX = 0, oldY = 0;
 		int dx = 0, dy = 0;
 		bool left = false, right = false;
+		int scrollWheel = 0;
 	};
 
 public:
@@ -28,11 +29,13 @@ public:
 	void setMouseY(int ly);
 	void setMousePos(int x, int y);
 	void setMouseOldPos(int x, int y);
+	void setMouseScrollWheel(int wheel);
 
 	int getMouseX();
 	int getMouseY();
 	int getMouseDeltaX();
 	int getMouseDeltaY();
+	int getMouseScrollWheel();
 
 	void calculateMouseDelta();
 

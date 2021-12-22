@@ -62,6 +62,11 @@ void Input::setMouseOldPos(int ix, int iy)
 	mouse.oldY = iy;
 }
 
+void Input::setMouseScrollWheel(int wheel)
+{
+	mouse.scrollWheel = wheel;
+}
+
 int Input::getMouseX()
 {
 	return mouse.x;
@@ -80,6 +85,11 @@ int Input::getMouseDeltaX()
 int Input::getMouseDeltaY()
 {
 	return mouse.dy;
+}
+
+int Input::getMouseScrollWheel()
+{
+	return mouse.scrollWheel;
 }
 
 void Input::calculateMouseDelta()

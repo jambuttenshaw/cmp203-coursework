@@ -1,10 +1,11 @@
 #include "World2.h"
 
 #include "Core/Application.h"
-
+#include <iostream>
 
 World2::~World2()
 {
+	if (orbitCamera != nullptr) delete orbitCamera;
 	if (skybox != nullptr) delete skybox;
 	if (mExitPortal != nullptr) delete mExitPortal;
 	if (sandTexture != nullptr) delete sandTexture;
@@ -13,6 +14,9 @@ World2::~World2()
 
 void World2::OnSetup()
 {
+	orbitCamera = new Camera(input);
+	orbitCamera->setPitch(0);
+
 	skybox = new Skybox("gfx/skybox2.png");
 
 	enableShadowVolumes(true);
@@ -97,16 +101,43 @@ void World2::OnHandleInput(float dt)
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
 		input->setKeyUp(VK_ESCAPE);
 	}
-	sceneCamera->Process3DControllerInputs(dt, true);
+	if (GetActiveCamera() == sceneCamera)
+		sceneCamera->Process3DControllerInputs(dt, true);
+
+	if (input->isKeyDown('c'))
+	{
+		if (GetActiveCamera() == sceneCamera)
+			setCurrentCamera(orbitCamera);
+		else
+			setCurrentCamera(sceneCamera);
+		input->setKeyUp('c');
+	}
+
+	float scroll = input->getMouseScrollWheel();
+	setFOV(getFOV() + 200 * scroll * dt);
 }
 
 void World2::OnUpdate(float dt)
 {
 	mExitPortal->TestForTravelling(input, sceneCamera);
 
-
 	t += 0.5f * dt;
-	icosahedron.gameObject.GetTransform().SetTranslation({ 3, 3 + sinf(t), 3 });
+	glm::vec3 icosPos{ 3, 3 + sinf(t), 3 };
+	icosahedron.gameObject.GetTransform().SetTranslation(icosPos);
+
+	if (GetActiveCamera() == orbitCamera)
+	{
+		// make the camera orbit the icosahedron
+		glm::vec3 p{ cosf(t), 0, sinf(t) };
+		orbitCamera->setPosition(icosPos + p * orbitRadius);
+
+		glm::vec3 dir{ glm::normalize(icosPos - orbitCamera->getPosition()) };
+		float cosAngle = glm::dot(dir, glm::vec3{ 1, 0, 0 });
+		float whichSide = glm::dot(dir, glm::vec3{ 0, 0, 1 });
+
+		float angle = glm::degrees(acosf(cosAngle));
+		orbitCamera->setYaw(whichSide > 0 ? angle : 360 - angle);
+	}
 }
 
 void World2::OnRenderObjects()

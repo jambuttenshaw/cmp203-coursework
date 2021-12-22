@@ -159,14 +159,14 @@ void Portal::Render()
 			glm::vec3 f{ cam->getForward() };
 			float angle = glm::dot(d, f);
 
-			SetNearClippingPlane(glm::max(0.05f, angle * distanceToPortal));
+			Scene::setNearPlane(glm::max(0.05f, angle * distanceToPortal));
 			
 			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->RenderSceneLights();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
 			Skybox::EnableSkyboxRendering();
 			
-			SetNearClippingPlane(0.05f);
+			Scene::setNearPlane(0.05f);
 		}
 		glPopAttrib();
 
@@ -224,82 +224,3 @@ void Portal::Render()
 	// portal render is finished
 	sPortalRenderInProgress = false;
 }
-
-void Portal::SetNearClippingPlane(float nearPlane)
-{
-	size_t w = Application::GetWindowX();
-	size_t h = Application::GetWindowY();
-
-	float ratio = (float)w / (float)h;
-	float fov = 90.0f;
-
-	// Use the Projection Matrix
-	glMatrixMode(GL_PROJECTION);
-	
-	// Reset Matrix
-	glLoadIdentity();
-
-	// Set the correct perspective.
-	gluPerspective(fov, ratio, nearPlane, 100.0f);
-
-	// Get Back to the Modelview
-	glMatrixMode(GL_MODELVIEW);
-}
-
-/*
-void Portal::SetNearClippingPlane(const glm::vec4& nearPlane)
-{
-	size_t w = Application::GetWindowX();
-	size_t h = Application::GetWindowY();
-
-	float ratio = (float)w / (float)h;
-	float fov = 90.0f;
-	float f = 100.0f;
-
-	// Use the Projection Matrix
-	glMatrixMode(GL_PROJECTION);
-
-	// Reset Matrix
-	glLoadIdentity();
-
-	// based upon: http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
-
-	float n = glm::dot(nearPlane, { 0, 0, 0, 1 });
-	glm::mat4 proj = glm::perspective(glm::radians(fov), ratio, n, f);
-	
-	//n = proj[3][2] / (proj[2][2] - 1);
-	//float b = n * (proj[2][1] - 1) / proj[1][1];
-	//float t = n * (proj[2][1] + 1) / proj[1][1];
-	//float l = n * (proj[2][0] - 1) / proj[0][0];
-	//float r = n * (proj[2][0] + 1) / proj[0][0];
-	//
-	//glm::vec4 Q = {
-	//	(glm::sign(nearPlane.x) * (r - l) / (2 * n)) + (r + l) / (2 * n),
-	//	(glm::sign(nearPlane.y) * (t - b) / (2 * n)) + (t + b) / (2 * n),
-	//	-1,
-	//	1 / f
-	//};
-	//// so that [] accesses rows instead of columns
-	//glm::mat4 projT = glm::transpose(proj);
-	//projT[2] = (-2 * Q.z) / (glm::dot(nearPlane, Q)) * nearPlane + glm::vec4{0, 0, 1, 0};
-	//
-	//glm::mat4 obliqueProj = glm::transpose(projT);
-	
-	glm::vec4 q = glm::inverse(proj) * glm::vec4{
-		glm::sign(nearPlane.x),
-		glm::sign(nearPlane.y),
-		1.0f,
-		1.0f
-	};
-	glm::vec4 c = nearPlane * (2.0f / (glm::dot(nearPlane, q)));
-
-	proj[0][2] = c.x - proj[0][3];
-	proj[1][2] = c.x - proj[1][3];
-	proj[2][2] = c.x - proj[2][3];
-	proj[3][2] = c.x - proj[3][3];
-
-	// Get Back to the Modelview
-	glMultMatrixf(glm::value_ptr(proj));
-	glMatrixMode(GL_MODELVIEW);
-}
-*/

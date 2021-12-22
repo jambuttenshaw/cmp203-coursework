@@ -2,6 +2,14 @@
 
 #include <chrono>
 #include <algorithm>
+#include <iostream>
+
+
+int Scene::width = 0;
+int Scene::height = 0;
+float Scene::fieldOfView = 100.0f;
+float Scene::nearPlane = 0.05f;
+float Scene::farPlane = 100.0f;
 
 
 Scene::Scene()
@@ -71,7 +79,9 @@ void Scene::render()
 	auto start = std::chrono::steady_clock::now();
 	// Render geometry/scene here -------------------------------------
 	if (skybox != nullptr)
+	{
 		skybox->render(currentCamera->getPosition());
+	}
 
 	// render all portals first
 	portalPass = true;
@@ -167,7 +177,7 @@ void Scene::initialiseOpenGL()
 }
 
 // Handles the resize of the window. If the window changes size the perspective matrix requires re-calculation to match new window size.
-void Scene::resize(int w, int h) 
+void Scene::setup(int w, int h, float fov, float n, float f)
 {
 	width = w;
 	height = h;
@@ -177,9 +187,12 @@ void Scene::resize(int w, int h)
 		h = 1;
 
 	float ratio = (float)w / (float)h;
-	fov = 90.0f;
-	nearPlane = 0.05f;
-	farPlane = 100.0f;
+
+	fov = glm::clamp(fov, minFOV, maxFOV);
+	fieldOfView = fov;
+
+	nearPlane = n;
+	farPlane = f;
 
 	// Use the Projection Matrix
 	glMatrixMode(GL_PROJECTION);
@@ -191,7 +204,7 @@ void Scene::resize(int w, int h)
 	glViewport(0, 0, w, h);
 
 	// Set the correct perspective.
-	gluPerspective(fov, ratio, nearPlane, farPlane);
+	gluPerspective(fov, ratio, n, f);
 
 	// Get Back to the Modelview
 	glMatrixMode(GL_MODELVIEW);
@@ -258,7 +271,7 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 	// Swap back to 3D rendering.
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(fov, ((float)width/(float)height), nearPlane, farPlane);
+	gluPerspective(fieldOfView, ((float)width/(float)height), nearPlane, farPlane);
 	glMatrixMode(GL_MODELVIEW);
 
 	// pop back to existing state

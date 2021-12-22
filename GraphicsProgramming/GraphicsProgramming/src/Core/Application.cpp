@@ -6,6 +6,8 @@
 
 #include "Core/Random.h"
 
+#include <iostream>
+
 
 Application* Application::instance = nullptr;
 
@@ -118,6 +120,8 @@ void Application::renderScene()
 	instance->mCurrentScene->handleInput(deltaTime);
 	instance->mCurrentScene->update(deltaTime);
 	instance->mCurrentScene->render();
+
+	instance->mInput->setMouseScrollWheel(0);
 }
 
 void Application::processNormalKeys(unsigned char key, int x, int y)
@@ -171,5 +175,11 @@ void Application::processMouseButtons(int button, int state, int x, int y)
 		else {
 			instance->mInput->setMouseRDown(false);
 		}
+	}
+	// scroll wheel
+	else if ((button == 3) || (button == 4))
+	{
+		if (state == GLUT_DOWN)
+			instance->mInput->setMouseScrollWheel(button == 3 ? -1 : 1);
 	}
 }
