@@ -52,7 +52,7 @@ void CourseworkScene::OnSetup()
 
 	// set up portals
 	mExitPortal = new Portal(this);
-	mExitPortal->GetTransform().SetTranslation({ 0, 0, -9 });
+	mExitPortal->GetTransform().SetTranslation({ 0, 0, -8 });
 	// this scene is to be entered and exited by the same portal
 	mEntryPortal = mExitPortal;
 
@@ -107,14 +107,14 @@ void CourseworkScene::OnSetup()
 	lightPanel.GetTransform().SetTranslation({ 0, 4.9f, -7.5f });
 	lightPanel.GetTransform().SetScale({ 2, 1, 2 });
 
+	sphere.GetMesh() = GeometryHelper::CreateUnitSphere(500);
+	sphere.GetTransform().SetScale(glm::vec3(0.8f));
+	sphere.GetTransform().SetTranslation({ -2, 0.8f, 2 });
 
 	// build shadow volumes
-	pointLightShadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition()));
-	spotLightShadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cube, spotLight.getPosition()));
-
-	pointLightShadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cylinder, pointLight.getPosition()));
-	spotLightShadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cylinder, spotLight.getPosition()));
-
+	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition()));
+	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cylinder, pointLight.getPosition()));
+	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(sphere, pointLight.getPosition()));
 
 	// set up materials
 	portalGunMat.setAmbientAndDiffuse(0.55f);
@@ -130,6 +130,10 @@ void CourseworkScene::OnSetup()
 
 	lightPanelMat.setAmbientAndDiffuse(Color::Black);
 	lightPanelMat.setEmission({ 1.4f, 2.0f, 0.8f });
+
+	plastic.setAmbientAndDiffuse({ 0.5f, 0.62f, 0.83f });
+	plastic.setSpecular({ 0.58f, 0.71f, 0.95f });
+	plastic.setShininess(5);
 
 	// move the camera
 	sceneCamera->setPosition({ 1.5f, 1.0f, 3.0f });
@@ -171,6 +175,9 @@ void CourseworkScene::OnUpdate(float dt)
 
 	float h = 0.1f * (sinf(Math::radians(4 * portalGunRotation)) + 1);
 	portalGun.GetTransform().SetTranslation({ 3, 1 + h, 0 });
+
+
+	sphere.GetTransform().SetRotation({ 0, -0.25f * portalGunRotation, 0 });
 }
 
 void CourseworkScene::OnRenderObjects()
@@ -183,6 +190,12 @@ void CourseworkScene::OnRenderObjects()
 	{
 		Transformation t(cylinder);
 		RenderHelper::drawMesh(cylinder);
+	}
+
+	plastic.apply();
+	{
+		Transformation t(sphere);
+		RenderHelper::drawMeshWireframeOverlay(sphere);
 	}
 
 	Material::Default.apply();
@@ -265,14 +278,7 @@ void CourseworkScene::OnRenderObjects()
 
 void CourseworkScene::OnRenderShadowVolumes()
 {
-	if (pointLight.getEnabled())
-	{
-		for (const auto& shadowVolume : pointLightShadowVolumes) RenderHelper::drawMesh(shadowVolume);
-	}
-	if (spotLight.getEnabled())
-	{
-		for (const auto& shadowVolume : spotLightShadowVolumes) RenderHelper::drawMesh(shadowVolume);
-	}
+	for (const auto& shadowVolume : shadowVolumes) RenderHelper::drawMesh(shadowVolume);
 }
 
 void CourseworkScene::SetExitPortal(Portal* p)

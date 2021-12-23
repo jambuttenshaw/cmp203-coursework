@@ -1,16 +1,26 @@
 #include "Spotlight.h"
 
-#include "Rendering/GeometryHelper.h"
 #include "Core/Math.h"
+#include "Rendering/GeometryHelper.h"
+#include "Rendering/RenderHelper.h"
+#include "Rendering/Transformation.h"
 
 
 void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color& color)
 {
-	*mMesh = GeometryHelper::LoadObj("models/spotlight.obj");
+	mBody.GetMesh() = GeometryHelper::LoadObj("models/spotlight.obj");
 
-	mTransform->SetTranslation(pos);
-	mTransform->SetRotation({ 0, yaw, pitch });
-	mTransform->SetScale(glm::vec3(0.25f));
+	mBody.GetTransform().SetTranslation(pos);
+	mBody.GetTransform().SetRotation({ 0, yaw, pitch });
+	mBody.GetTransform().SetScale(glm::vec3(0.25f));
+
+
+	mHemisphere.GetMesh() = GeometryHelper::LoadObj("models/hemisphere.obj");
+
+	mHemisphere.GetTransform().SetTranslation({ 1.3f, 0, 0 });
+	mHemisphere.GetTransform().SetRotation({ 0, 0, -90 });
+	mHemisphere.GetTransform().SetScale({ 0.85f, 0.4f, 0.85f });
+
 
 	mLight.setType(Light::LightType::Spot);
 
@@ -31,4 +41,28 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 
 	mLight.setSpotCutoff(50);
 	mLight.setSpotExponent(4);
+
+
+	emissiveMat.setAmbientAndDiffuse(Color::Black);
+	emissiveMat.setEmission(color);
+
+	bodyMat.setAmbientAndDiffuse(0.5f);
+	bodyMat.setSpecular(1.0f);
+	bodyMat.setShininess(120);
+}
+
+void Spotlight::Render() const
+{
+	{
+		Transformation t(mBody);
+		{
+			Transformation t2(mHemisphere);
+
+			emissiveMat.apply();
+			RenderHelper::drawMesh(mHemisphere);
+		}
+
+		bodyMat.apply();
+		RenderHelper::drawMesh(mBody);
+	}
 }

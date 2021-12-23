@@ -45,14 +45,15 @@ private:
 	GameObject portalGun;
 	GameObject cylinder;
 	GameObject lightPanel;
+	GameObject sphere;
 
 	Material portalGunMat;
 	Material ceilingLightMat;
 	Material spotLightMat;
 	Material lightPanelMat;
+	Material plastic;
 
-	std::vector<Mesh> pointLightShadowVolumes;
-	std::vector<Mesh> spotLightShadowVolumes;
+	std::vector<Mesh> shadowVolumes;
 
 	float portalGunRotation = 0.0f;
 };

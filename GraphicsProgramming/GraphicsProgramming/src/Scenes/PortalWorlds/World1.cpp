@@ -51,10 +51,10 @@ void World1::OnSetup()
 
 
 
-	spotlights[0].Setup({ -3, 0, -10 },   45, 70, { 0.8f, 0.8f, 1.0f });
-	spotlights[1].Setup({ -3, 0, -16 },  -45, 70, { 1.0f, 0.8f, 0.8f });
-	spotlights[2].Setup({  3, 0, -10 },  135, 70, { 1.0f, 0.8f, 0.8f });
-	spotlights[3].Setup({  3, 0, -16 }, -135, 70, { 0.8f, 0.8f, 1.0f });
+	spotlights[0].Setup({ -3, 0, -10 },   45, 60, { 0.4f, 0.4f, 1.0f });
+	spotlights[1].Setup({ -3, 0, -16 },  -45, 60, { 0.4f, 1.0f, 0.4f });
+	spotlights[2].Setup({  3, 0, -10 },  135, 60, { 1.0f, 0.4f, 1.0f });
+	spotlights[3].Setup({  3, 0, -16 }, -135, 60, { 0.4f, 0.4f, 1.0f });
 	for (auto& s : spotlights)
 		RegisterLight(s.GetLight());
 
@@ -142,10 +142,9 @@ void World1::OnRenderObjects()
 	}
 
 
-	for (auto& s : spotlights)
+	for (const auto& s : spotlights)
 	{
-		Transformation t(s);
-		RenderHelper::drawMesh(s);
+		s.Render();
 	}
 
 	darkMat.apply();
