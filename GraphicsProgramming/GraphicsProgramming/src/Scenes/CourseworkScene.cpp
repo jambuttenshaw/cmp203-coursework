@@ -29,7 +29,6 @@ void CourseworkScene::OnSetup()
 	RegisterLight(&pointLight);
 
 
-
 	spotLight.setType(Light::LightType::Spot);
 	spotLight.setPosition({ 3, 4.9f, 0 });
 	spotLight.setDiffuseColor(2.0f);

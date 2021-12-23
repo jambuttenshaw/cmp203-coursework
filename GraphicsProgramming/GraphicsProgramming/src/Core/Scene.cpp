@@ -96,6 +96,7 @@ void Scene::render()
 	}
 	else
 	{
+		RenderSceneLights();
 		OnRenderObjects();
 	}
 	// End render geometry --------------------------------------
@@ -287,7 +288,7 @@ void Scene::RenderSceneLights()
 	{
 		Light* current = sceneLights[i];
 		if ((i < lightCount) && current->getEnabled())
-			current->render(GL_LIGHT0 + i, true);
+			current->render(GL_LIGHT0 + i, false);
 		else
 			glDisable(GL_LIGHT0 + i);
 	}

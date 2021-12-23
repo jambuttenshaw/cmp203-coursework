@@ -74,9 +74,9 @@ private:
 	Color specularColor;
 
 	// spotlight
-	glm::vec3 spotDirection{ 0.0f };
+	glm::vec3 spotDirection{ 0.0f, 0.0f, -1.0f };
 	float spotExponent = 0.0f;
-	float spotCutoff = 0.0f;
+	float spotCutoff = 180.0f;
 
 	// attenuation
 	glm::vec3 attentuation = { 1, 0, 0 };

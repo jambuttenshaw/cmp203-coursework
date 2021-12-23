@@ -21,12 +21,9 @@ void Light::render(unsigned int lightID, bool debugSphere) const
 	glLightfv(lightID, GL_SPECULAR, specularColor.ptr());
 	glLightfv(lightID, GL_POSITION, homogeneousPos.ptr());
 
-	if (type == LightType::Spot)
-	{
-		glLightfv(lightID, GL_SPOT_DIRECTION, &spotDirection.x);
-		glLightf(lightID, GL_SPOT_EXPONENT, spotExponent);
-		glLightf(lightID, GL_SPOT_CUTOFF, spotCutoff);
-	}
+	glLightfv(lightID, GL_SPOT_DIRECTION, &spotDirection.x);
+	glLightf(lightID, GL_SPOT_EXPONENT, spotExponent);
+	glLightf(lightID, GL_SPOT_CUTOFF, spotCutoff);
 
 	glLightf(lightID, GL_CONSTANT_ATTENUATION, attentuation.x);
 	glLightf(lightID, GL_LINEAR_ATTENUATION, attentuation.y);
