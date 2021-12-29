@@ -112,6 +112,7 @@ void CourseworkScene::OnSetup()
 	sphere.GetTransform().SetTranslation({ -2, 0.8f, 2 });
 
 	// build shadow volumes
+	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(mExitPortal->GetFrameModel(), mExitPortal->GetTransform().LocalToWorld(), panelLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cylinder, pointLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(sphere, pointLight.getPosition()));

@@ -31,7 +31,7 @@ private:
 	Texture* sandTexture = nullptr;
 	Texture* windowTexture = nullptr;
 
-	Mesh groundPlane;
+	GameObject groundPlane;
 
 	TransparentObject window1;
 	TransparentObject window2;
@@ -39,8 +39,12 @@ private:
 	TransparentIcosahedron icosahedron;
 
 	GameObject model;
-	Mesh modelShadowVolume;
 
+	Mesh stand;
+	Transform modelStandTransform;
+	Transform icosahedronStandTransform;
+
+	std::vector<Mesh> shadowVolumes;
 
 	Material transparentMat;
 

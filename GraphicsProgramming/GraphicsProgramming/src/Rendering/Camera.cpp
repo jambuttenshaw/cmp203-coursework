@@ -60,6 +60,7 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
+	yaw = fmodf(yaw, 360);
 }
 
 glm::mat4 Camera::getLocalToWorldMatrix() const

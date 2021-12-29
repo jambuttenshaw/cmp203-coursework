@@ -35,8 +35,7 @@ TransparentIcosahedron::TransparentIcosahedron()
 		centroid /= 3.0f;
 		newFace.centroid = centroid;
 
-		newFace.color = Color{ glm::vec4(Random::RandomUnitVector3(), 0.5f) };
-		// newFace.color = centroid.x > 0 ? Color{0, 0, 1, 0.5f} : Color{ 0, 1, 0, 0.5f };
+		newFace.color = Color{ glm::vec4(Random::RandomUnitVector3(), faceAlpha) };
 
 		faces[i] = newFace;
 	}
@@ -62,4 +61,12 @@ void TransparentIcosahedron::Render(const glm::vec3& camPos)
 	}
 
 	glPopAttrib();
+}
+
+void TransparentIcosahedron::RandomizeColours()
+{
+	for (auto& face : faces)
+	{
+		face.color = Color{ glm::vec4(Random::RandomUnitVector3(), faceAlpha) };
+	}
 }

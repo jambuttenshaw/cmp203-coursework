@@ -13,7 +13,10 @@ public:
 	TransparentIcosahedron();
 
 	void Render(const glm::vec3& camPos);
+	void RandomizeColours();
 private:
+	const float faceAlpha = 0.7f;
+
 	struct Face
 	{
 		Mesh mesh;

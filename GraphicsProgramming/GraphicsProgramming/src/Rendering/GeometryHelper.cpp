@@ -550,7 +550,7 @@ float GeometryHelper::HeightFuncs::PerlinNoiseTerrain(float x, float z)
 		s *= 0.5f;
 	}
 
-	return (0.9f * noiseValue - 1.0f) * smoothingValue;
+	return (1.2f * noiseValue - 1.0f) * smoothingValue;
 }
 
 #pragma endregion

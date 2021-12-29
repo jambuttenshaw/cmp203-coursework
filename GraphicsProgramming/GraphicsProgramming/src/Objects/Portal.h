@@ -24,6 +24,8 @@ public:
 
 	inline void SetLinkedPortal(Portal* portal) { mLinkedPortal = portal; }
 	inline Transform& GetTransform() { return mTransform; }
+
+	inline const Mesh& GetFrameModel() const { return mFrameModel; }
 	
 private:
 	inline void SetSideOfPortal(float s) { mLastSideOfPortal = s; }
