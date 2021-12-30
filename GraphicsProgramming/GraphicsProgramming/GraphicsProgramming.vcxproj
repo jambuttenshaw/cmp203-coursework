@@ -92,7 +92,6 @@
     <ClCompile Include="src\Objects\PortalScene.cpp" />
     <ClCompile Include="src\Objects\Spotlight.cpp" />
     <ClCompile Include="src\Objects\TransparentIcosahedron.cpp" />
-    <ClCompile Include="src\Scenes\ShadowScene.cpp" />
     <ClCompile Include="src\Objects\Portal.cpp" />
     <ClCompile Include="src\Rendering\ShadowHelper.cpp" />
     <ClCompile Include="src\Rendering\Transform.cpp" />
@@ -112,9 +111,7 @@
     <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="src\Rendering\Transformation.cpp" />
     <ClCompile Include="src\Scenes\PortalWorlds\World1.cpp" />
-    <ClCompile Include="src\Scenes\Week5Scene.cpp" />
     <ClCompile Include="vendor\PerlinNoise.cpp" />
-    <ClCompile Include="src\Scenes\Week7Scene.cpp" />
     <ClCompile Include="src\Scenes\PortalWorlds\World2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -125,13 +122,11 @@
     <ClInclude Include="src\Objects\Spotlight.h" />
     <ClInclude Include="src\Objects\TransparentIcosahedron.h" />
     <ClInclude Include="src\Objects\TransparentObject.h" />
-    <ClInclude Include="src\Scenes\ShadowScene.h" />
     <ClInclude Include="src\Objects\Portal.h" />
     <ClInclude Include="src\Rendering\ShadowHelper.h" />
     <ClInclude Include="src\Rendering\Transform.h" />
     <ClInclude Include="src\Scenes\CourseworkScene.h" />
     <ClInclude Include="src\Rendering\Skybox.h" />
-    <ClInclude Include="src\Core\Math.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Rendering\Material.h" />
@@ -145,10 +140,8 @@
     <ClInclude Include="src\Rendering\Texture.h" />
     <ClInclude Include="src\Rendering\Transformation.h" />
     <ClInclude Include="src\Scenes\PortalWorlds\World1.h" />
-    <ClInclude Include="src\Scenes\Week5Scene.h" />
     <ClInclude Include="vendor\delaunator.hpp" />
     <ClInclude Include="vendor\PerlinNoise.h" />
-    <ClInclude Include="src\Scenes\Week7Scene.h" />
     <ClInclude Include="src\Scenes\PortalWorlds\World2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

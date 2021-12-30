@@ -10,8 +10,10 @@
 Billboard::Billboard(Texture* tex)
 	: mTex(tex)
 {
+	// set an initial rotation
 	gameObject.GetTransform().SetRotation({ 0, 0, 0 });
 
+	// tell the renderer how to render this transparent object
 	renderObject = [this]() { this->Render(); };
 }
 
@@ -37,6 +39,7 @@ void Billboard::Face(const glm::vec3& pos)
 
 void Billboard::Render()
 {
+	// we want the billboard to be unlit
 	glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
 
 	glDisable(GL_LIGHTING);

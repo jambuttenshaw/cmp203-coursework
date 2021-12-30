@@ -155,7 +155,7 @@ void CourseworkScene::OnHandleInput(float dt)
 
 void CourseworkScene::OnUpdate(float dt)
 {
-	mExitPortal->TestForTravelling(input, sceneCamera);
+	mExitPortal->Update(dt, input, sceneCamera);
 
 	if (rand() % 100 > 95)
 	{
@@ -174,7 +174,7 @@ void CourseworkScene::OnUpdate(float dt)
 	portalGunRotation += 30.0f * dt;
 	portalGun.GetTransform().SetRotation({ 0, portalGunRotation, 0 });
 
-	float h = 0.1f * (sinf(Math::radians(4 * portalGunRotation)) + 1);
+	float h = 0.1f * (sinf(glm::radians(4 * portalGunRotation)) + 1);
 	portalGun.GetTransform().SetTranslation({ 3, 1 + h, 0 });
 
 

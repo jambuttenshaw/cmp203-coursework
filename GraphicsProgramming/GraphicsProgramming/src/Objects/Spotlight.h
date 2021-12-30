@@ -4,7 +4,7 @@
 #include "Rendering/Light.h"
 #include "Rendering/Material.h"
 
-
+// specialized object used in one of the worlds
 class Spotlight
 {
 public:

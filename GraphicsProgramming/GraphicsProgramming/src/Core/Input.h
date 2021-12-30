@@ -1,6 +1,7 @@
 // Input class
 // Stores current keyboard and mouse state include, pressed keys, mouse button pressed and mouse position.
 // @author Paul Robertson
+// (Modified by Jamie Buttenshaw)
 #ifndef INPUT_H
 #define INPUT_H
 

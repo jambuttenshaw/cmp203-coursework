@@ -17,28 +17,37 @@
 #include "Rendering/Camera.h"
 
 #include <cassert>
-#include <iostream>
-#include <sstream>
 
 
-static float gLastSideOfPortal = 0;
+float Portal::sLastSideOfPortal = 0.0f;
+bool Portal::sPortalUpdateInProgress = false;
 bool Portal::sPortalRenderInProgress = false;
 
 Portal::Portal(PortalScene* sceneToRender)
 {
+	// load the models used by the portal
 	mScreenModel = GeometryHelper::LoadObj("models/portalScreen.obj");
 	mFrameModel = GeometryHelper::LoadObj("models/portal.obj");
 	mSceneToRender = sceneToRender;
 }
 
-void Portal::TestForTravelling(Input* in, Camera* traveller)
+void Portal::Update(float dt, Input* in, Camera* traveller)
 {
+	// only update the portals if this wasnt called by another portal updating
+	if (sPortalUpdateInProgress) return;
+	sPortalUpdateInProgress = true;
+
+	// update the scene that is visible through the portal
+	mLinkedPortal->mSceneToRender->OnUpdate(dt);
+
+	// work out which side of the portal we are on
 	glm::vec3 a = traveller->getPosition() - mTransform.GetTranslation();
 	glm::vec3 b = mTransform.LocalToWorld() * glm::vec4(0, 0, 1, 0);
 
 	float sideOfPortal = glm::sign(glm::dot(a, b));
 
-	if ((gLastSideOfPortal != sideOfPortal) && (gLastSideOfPortal != 0))
+	// check if weve switched sides of the portal
+	if ((sLastSideOfPortal != sideOfPortal) && (sLastSideOfPortal != 0))
 	{
 		// check to make sure the traveller actually passed through the inside of the portal
 		glm::vec3 localPos = mTransform.WorldToLocal() * glm::vec4(traveller->getPosition(), 1);
@@ -48,24 +57,28 @@ void Portal::TestForTravelling(Input* in, Camera* traveller)
 			// switch scenes and move the traveller
 			if (mLinkedPortal != nullptr)
 			{
+				// get the new scene and set it as active
 				Scene* newScene = mLinkedPortal->mSceneToRender;
 				Application::SetActiveScene(newScene);
 
+				// move the camera in the new scene to the position through the portal
 				Camera* cam = newScene->GetActiveCamera();
 
+				// adjust it slightly so we dont end up inside the portal again
 				cam->setPosition(traveller->getPosition() + 0.1f * traveller->getMoveDirection() - mTransform.GetTranslation() + mLinkedPortal->mTransform.GetTranslation());
 				cam->setPitch(traveller->getPitch());
 				cam->setYaw(traveller->getYaw());
-
-				mLinkedPortal->SetSideOfPortal(sideOfPortal);
 			}
 		}
 	}
-	gLastSideOfPortal = sideOfPortal;
+	sLastSideOfPortal = sideOfPortal;
+
+	sPortalUpdateInProgress = false;
 }
 
 void Portal::Render()
 {
+	// make sure we are rendering portals only in the portal pass
 	assert(mSceneToRender->PortalPassActive());
 
 	// dont draw this portal if were already rendering one to the screen!
@@ -149,10 +162,8 @@ void Portal::Render()
 			// render the scene that the linked portal looks into
 
 
-			// align the near clipping plane with the portal screen
-			// work out the equation of the plane of the screen
-			const float nearClipOffset = 0.1f;
-
+			// work out where to place the near clipping plane such that nothing on the far side of the portal is clipped,
+			// but everything on the near side of the portal is clipped
 			Camera* cam = mSceneToRender->GetActiveCamera();
 			
 			glm::vec3 d{ glm::normalize(mTransform.GetTranslation() - cam->getPosition()) };
@@ -161,11 +172,13 @@ void Portal::Render()
 
 			Scene::setNearPlane(glm::max(0.05f, angle * distanceToPortal));
 			
+			// render the other scene, but without its skybox
 			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->RenderSceneLights();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
 			Skybox::EnableSkyboxRendering();
 			
+			// reset the near plane
 			Scene::setNearPlane(0.05f);
 		}
 		glPopAttrib();
@@ -207,7 +220,7 @@ void Portal::Render()
 	
 	glDisable(GL_STENCIL_TEST);
 
-
+	// finally draw the frame of the portal just like a regular object
 	Material::Default.apply();
 	{
 		Transformation t(mTransform);

@@ -11,18 +11,24 @@
 class Application
 {
 public:
+	// create application using command line arguments
 	Application(int argc, char** argv);
 
+	// load and store a new scene
 	template<typename SceneType>
 	Scene* loadScene(bool setAsCurrent)
 	{
+		// only an object that inherits from Scene can be instantiated as a scene
 		static_assert(std::is_base_of<Scene, SceneType>::value, "SceneType must inherit from Scene.");
 
+		// create and initialize the new scene
 		Scene* newScene = new SceneType;
 		newScene->init(mInput);
 
+		// save the scene
 		mScenes.push_back(newScene);
 
+		// set it as the current scene if told to do so
 		if (setAsCurrent) mCurrentScene = newScene;
 
 		return newScene;
@@ -54,6 +60,7 @@ private:
 
 
 public:
+	// some public helper functions to get useful information about the application
 	static void SetActiveScene(Scene* scene) { instance->mQueuedScene = scene; }
 
 	static size_t GetWindowX() { return instance->windowX; }
@@ -63,6 +70,7 @@ public:
 	static bool IsCursorDisabled() { return instance->cursorDisabled; }
 
 private:
+	// Application is a singleton: only 1 application may exist, and everyone can know about the application existing
 	static Application* instance;
 
 
@@ -72,8 +80,6 @@ private:
 	static void renderScene();
 	static void processNormalKeys(unsigned char key, int x, int y);
 	static void processNormalKeysUp(unsigned char key, int x, int y);
-	static void processSpecialKeys(int key, int x, int y);
-	static void processSpecialKeysUp(int key, int x, int y);
 	static void processActiveMouseMove(int x, int y);
 	static void processPassiveMouseMove(int x, int y);
 	static void processMouseButtons(int button, int state, int x, int y);

@@ -2,9 +2,12 @@
 
 #include <glm/glm.hpp>
 
-
+/// <summary>
+///		Object to represent a color, with some helper functions
+/// </summary>
 struct Color
 {
+	// a bunch of constructors for creating colours in different ways
 	Color() = default;
 	Color(float red, float green, float blue)
 		: r(red), g(green), b(blue) {}
@@ -17,7 +20,10 @@ struct Color
 	Color(const glm::vec4& c)
 		: r(c.r), g(c.g), b(c.b), a(c.a) {}
 
-	float const* ptr() const { return reinterpret_cast<float const*>(this); }
+	// OpenGL often expects colours as an array of floats,
+	// which we can provide for by giving it a pointer to the first member of this class
+	// as all components of the colour are contiguous in memory
+	float const* ptr() const { return &r; }
 
 	float r = 0.0f;
 	float g = 0.0f;
@@ -40,5 +46,6 @@ struct Color
 
 };
 
+// operators to make working with colours easier
 Color operator+(const Color& lhs, const Color& rhs);
 Color operator*(const Color& lhs, float rhs);

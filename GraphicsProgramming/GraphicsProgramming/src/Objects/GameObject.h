@@ -4,7 +4,10 @@
 #include "Rendering/Texture.h"
 #include "Rendering/Mesh.h"
 
-
+/// <summary>
+///		A simple helper class that combines a mesh and a transform,
+///		to allow for less member variables in each scene class
+/// </summary>
 class GameObject
 {
 public:

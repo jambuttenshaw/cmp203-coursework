@@ -6,6 +6,9 @@ std::uniform_real_distribution<float> Random::s_NormamlizedFloatDistribution(0, 
 
 void Random::Init()
 {
+	// initialize the random number generator with a random seed
+	// std::random_device is too slow to use other than in the constructor,
+	// but it provides a very good seed
 	std::random_device rd;
 	s_RandomNumberGenerator = new std::mt19937(rd());
 }

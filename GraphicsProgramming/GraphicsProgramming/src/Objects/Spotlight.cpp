@@ -1,6 +1,5 @@
 #include "Spotlight.h"
 
-#include "Core/Math.h"
 #include "Rendering/GeometryHelper.h"
 #include "Rendering/RenderHelper.h"
 #include "Rendering/Transformation.h"
@@ -8,6 +7,7 @@
 
 void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color& color)
 {
+	// set up the models that make up this object
 	mBody.GetMesh() = GeometryHelper::LoadObj("models/spotlight.obj");
 
 	mBody.GetTransform().SetTranslation(pos);
@@ -21,7 +21,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 	mHemisphere.GetTransform().SetRotation({ 0, 0, -90 });
 	mHemisphere.GetTransform().SetScale({ 0.85f, 0.4f, 0.85f });
 
-
+	// set up the light source
 	mLight.setType(Light::LightType::Spot);
 
 	mLight.setAmbientColor(0.1f);
@@ -29,14 +29,16 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 	mLight.setSpecularColor(color);
 	mLight.setAttenuation({ 1.0f, 0.1f, 0 });
 
-	float yawRads = Math::radians(yaw);
-	float pitchRads = Math::radians(pitch);
+	// then calculate the direction the spotlight points in
+	float yawRads = glm::radians(yaw);
+	float pitchRads = glm::radians(pitch);
 
 	glm::vec3 dir;
 	dir.x = cosf(yawRads) * cosf(pitchRads);
 	dir.y = sinf(pitchRads);
 	dir.z = sinf(yawRads) * cosf(pitchRads);
 
+	// setup spotlight
 	mLight.setPosition(pos);
 	mLight.setSpotDirection(dir);
 
@@ -54,6 +56,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 
 void Spotlight::Render() const
 {
+	// render the body and the hemisphere at the top of the spotlight
 	{
 		Transformation t(mBody);
 		{
@@ -70,6 +73,7 @@ void Spotlight::Render() const
 
 void Spotlight::SetColour(const Color& c)
 {
+	// sets the colour of the spotlight and emissive material
 	mLight.setDiffuseColor(c);
 	mLight.setSpecularColor(c);
 

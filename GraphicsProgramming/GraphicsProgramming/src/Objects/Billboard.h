@@ -11,6 +11,8 @@
 class Billboard : public TransparentObject
 {
 public:
+	// a billboard is just a texture on a quad that rotates to face the camera
+	// I have used cylindrical billboarding
 	Billboard(Texture* tex);
 
 	inline Transform& GetTransform() { return gameObject.GetTransform(); }

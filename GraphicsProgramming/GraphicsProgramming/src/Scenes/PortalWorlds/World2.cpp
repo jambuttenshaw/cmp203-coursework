@@ -1,7 +1,7 @@
 #include "World2.h"
 
 #include "Core/Application.h"
-#include <iostream>
+
 
 World2::~World2()
 {
@@ -147,7 +147,7 @@ void World2::OnHandleInput(float dt)
 
 void World2::OnUpdate(float dt)
 {
-	mExitPortal->TestForTravelling(input, sceneCamera);
+	mExitPortal->Update(dt, input, sceneCamera);
 
 	t += 0.5f * dt;
 	glm::vec3 icosPos{ 2, 2.5f + sinf(t), 5 };

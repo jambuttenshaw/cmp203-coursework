@@ -165,7 +165,7 @@ void World1::OnHandleInput(float dt)
 
 void World1::OnUpdate(float dt)
 {
-	mExitPortal->TestForTravelling(input, sceneCamera);
+	mExitPortal->Update(dt, input, sceneCamera);
 
 	baseRotation += 15.0f * dt;
 	basePlatform.GetTransform().SetRotation({ 0, baseRotation, 0 });

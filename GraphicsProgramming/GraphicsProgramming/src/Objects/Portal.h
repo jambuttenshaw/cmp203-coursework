@@ -19,7 +19,7 @@ public:
 	Portal(PortalScene* sceneToRender);
 	~Portal() = default;
 
-	void TestForTravelling(Input* in, Camera* traveller);
+	void Update(float dt, Input* in, Camera* traveller);
 	void Render();
 
 	inline void SetLinkedPortal(Portal* portal) { mLinkedPortal = portal; }
@@ -27,9 +27,6 @@ public:
 
 	inline const Mesh& GetFrameModel() const { return mFrameModel; }
 	
-private:
-	inline void SetSideOfPortal(float s) { mLastSideOfPortal = s; }
-
 private:
 	Mesh mScreenModel;
 	Mesh mFrameModel;
@@ -39,10 +36,10 @@ private:
 
 	Transform mTransform;
 
-	// for tracking traveller
-	float mLastSideOfPortal = 0.0f;
 
 private:
+	static float sLastSideOfPortal;
 	static bool sPortalRenderInProgress;
+	static bool sPortalUpdateInProgress;
 
 };

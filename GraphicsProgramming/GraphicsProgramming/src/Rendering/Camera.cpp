@@ -4,8 +4,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#include "Core/Math.h"
-
 #include <glm/gtx/transform.hpp>
 
 
@@ -101,9 +99,9 @@ void Camera::ApplyLookAt()
 void Camera::RecalculateForward()
 {
 	// calculate forward vector
-	forward.x = cosf(Math::radians(yaw)) * cosf(Math::radians(pitch));
-	forward.y = sinf(Math::radians(pitch));
-	forward.z = sinf(Math::radians(yaw)) * cosf(Math::radians(pitch));
+	forward.x = cosf(glm::radians(yaw)) * cosf(glm::radians(pitch));
+	forward.y = sinf(glm::radians(pitch));
+	forward.z = sinf(glm::radians(yaw)) * cosf(glm::radians(pitch));
 	// make sure it is normalized
 	forward = glm::normalize(forward);
 }

@@ -9,7 +9,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#include <iostream>
 
 bool Skybox::sSkyboxesEnabled = true;
 
