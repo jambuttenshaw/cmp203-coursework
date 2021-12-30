@@ -4,6 +4,7 @@
 #include "Objects/Portal.h"
 
 #include "Objects/Spotlight.h"
+#include "Objects/Billboard.h"
 
 #include <array>
 
@@ -27,6 +28,10 @@ public:
 private:
 	Light dirLight;
 
+	Texture* starTexture = nullptr;
+	Texture* spaceshipTexture = nullptr;
+	Texture* marbleTexture = nullptr;
+
 	GameObject portalPlatform;
 	GameObject basePlatform;
 	GameObject longPlatform;
@@ -36,16 +41,25 @@ private:
 	GameObject armMiddle;
 	GameObject armTop;
 
+	GameObject spaceship;
+
 	std::array<Spotlight, 4> spotlights;
 
-	GameObject dome;
+	TransparentObject dome;
 
+	std::array<Billboard*, 6> stars{ nullptr };
 
+	Material domeMat;
 	Material portalPlatformMat;
-	Material darkMat;
+	Material armMat;
+	Material spaceshipMat;
 
+
+	std::vector<Mesh> shadowVolumes;
 
 	float baseRotation = 0.0f;
 	float t = 1.3f;
 	float t2 = 2.7f;
+
+	float spotlightColorParam = 0.0f;
 };

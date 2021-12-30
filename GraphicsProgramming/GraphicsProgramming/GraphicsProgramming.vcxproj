@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Random.cpp" />
+    <ClCompile Include="src\Objects\Billboard.cpp" />
     <ClCompile Include="src\Objects\GameObject.cpp" />
     <ClCompile Include="src\Objects\PortalScene.cpp" />
     <ClCompile Include="src\Objects\Spotlight.cpp" />
@@ -118,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Random.h" />
+    <ClInclude Include="src\Objects\Billboard.h" />
     <ClInclude Include="src\Objects\GameObject.h" />
     <ClInclude Include="src\Objects\PortalScene.h" />
     <ClInclude Include="src\Objects\Spotlight.h" />

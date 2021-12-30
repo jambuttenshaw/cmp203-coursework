@@ -27,6 +27,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 	mLight.setAmbientColor(0.1f);
 	mLight.setDiffuseColor(color);
 	mLight.setSpecularColor(color);
+	mLight.setAttenuation({ 1.0f, 0.1f, 0 });
 
 	float yawRads = Math::radians(yaw);
 	float pitchRads = Math::radians(pitch);
@@ -65,4 +66,12 @@ void Spotlight::Render() const
 		bodyMat.apply();
 		RenderHelper::drawMesh(mBody);
 	}
+}
+
+void Spotlight::SetColour(const Color& c)
+{
+	mLight.setDiffuseColor(c);
+	mLight.setSpecularColor(c);
+
+	emissiveMat.setEmission(c);
 }

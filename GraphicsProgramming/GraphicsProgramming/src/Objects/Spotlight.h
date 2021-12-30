@@ -15,6 +15,8 @@ public:
 
 	void Render() const;
 
+	void SetColour(const Color& c);
+
 private:
 	Light mLight;
 
