@@ -12,6 +12,7 @@ World1::~World1()
 	if (starTexture != nullptr) delete starTexture;
 	if (spaceshipTexture != nullptr) delete spaceshipTexture;
 	if (marbleTexture != nullptr) delete marbleTexture;
+	if (sunTexture != nullptr) delete sunTexture;
 
 	for (auto& star : stars)
 		if (star != nullptr) delete star;
@@ -28,7 +29,7 @@ void World1::OnSetup()
 	dirLight.setDiffuseColor(0.9f);
 	dirLight.setAmbientColor(0.15f);
 	dirLight.setSpecularColor(1.0f);
-	dirLight.setPosition({ -40, 40, 20 });
+	dirLight.setPosition({ -20, 3, 20 });
 	RegisterLight(&dirLight);
 
 	mExitPortal = new Portal(this);
@@ -44,6 +45,9 @@ void World1::OnSetup()
 	marbleTexture = new Texture("gfx/marble.png", Texture::Flags::MIPMAPS);
 	marbleTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	marbleTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
+
+	sunTexture = new Texture("gfx/sun.png");
+	sunTexture->SetFilterMode(Texture::FilterMode::Linear, Texture::FilterMode::Linear);
 
 
 	portalPlatform.GetMesh() = GeometryHelper::LoadObj("models/portalPlatform.obj");
@@ -77,6 +81,12 @@ void World1::OnSetup()
 	spaceship.GetTransform().SetScale(glm::vec3{ 4.0f });
 
 
+	sun.GetMesh() = GeometryHelper::CreateUnitSphere(300);
+	sun.GetMesh().MeshTexture = sunTexture;
+	sun.GetTransform().SetTranslation({ -20, 3, 20 });
+	sun.GetTransform().SetScale(glm::vec3{ 8 });
+
+
 	spotlights[0].Setup({ -3, 0, -10 },   45, 50, { 0.4f, 0.4f, 1.0f });
 	spotlights[1].Setup({ -3, 0, -16 },  -45, 50, { 0.4f, 1.0f, 0.4f });
 	spotlights[2].Setup({  3, 0, -10 },  135, 50, { 1.0f, 0.4f, 1.0f });
@@ -102,7 +112,7 @@ void World1::OnSetup()
 	{
 		star = new Billboard(starTexture);
 		star->GetTransform().SetTranslation({ Random::RandomFloat(3, 5) * (i < 3 ? 1 : -1) ,
-											  Random::RandomFloat(2, 4),
+											  Random::RandomFloat(1, 3),
 											  -( 1.0f + 2.5f * (i % 3))  });
 		RegisterTransparentObject(star);
 
@@ -125,6 +135,9 @@ void World1::OnSetup()
 	spaceshipMat.setAmbientAndDiffuse(Color::White);
 	spaceshipMat.setSpecular(0.8f);
 	spaceshipMat.setShininess(75);
+
+	sunMat.setAmbientAndDiffuse(Color::White);
+	sunMat.setEmission({ 2, 1, 0.1f });
 
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(mExitPortal->GetFrameModel(), mExitPortal->GetTransform().LocalToWorld(), dirLight.getPosition()));
 
@@ -178,6 +191,9 @@ void World1::OnUpdate(float dt)
 
 	for (auto& star : stars)
 		star->Face(GetActiveCamera()->getPosition());
+
+	// re-use baseRotation
+	sun.GetTransform().SetRotation({ 0, 0.3f * baseRotation, 0 });
 }
 
 void World1::OnRenderObjects()
@@ -221,10 +237,16 @@ void World1::OnRenderObjects()
 	}
 
 
-	Material::Default.apply();
+	spaceshipMat.apply();
 	{
 		Transformation t(spaceship);
 		RenderHelper::drawMesh(spaceship);
+	}
+
+	sunMat.apply();
+	{
+		Transformation t(sun);
+		RenderHelper::drawMesh(sun);
 	}
 
 	RenderTransparentObjects();

@@ -31,6 +31,7 @@ private:
 	Texture* starTexture = nullptr;
 	Texture* spaceshipTexture = nullptr;
 	Texture* marbleTexture = nullptr;
+	Texture* sunTexture = nullptr;
 
 	GameObject portalPlatform;
 	GameObject basePlatform;
@@ -42,6 +43,7 @@ private:
 	GameObject armTop;
 
 	GameObject spaceship;
+	GameObject sun;
 
 	std::array<Spotlight, 4> spotlights;
 
@@ -53,6 +55,7 @@ private:
 	Material portalPlatformMat;
 	Material armMat;
 	Material spaceshipMat;
+	Material sunMat;
 
 
 	std::vector<Mesh> shadowVolumes;
