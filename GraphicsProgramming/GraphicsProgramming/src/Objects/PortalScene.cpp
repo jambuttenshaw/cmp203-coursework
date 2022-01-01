@@ -4,6 +4,7 @@
 
 void PortalScene::OnRenderPortals()
 {
+	// nullptr checks,
 	if (mEntryPortal != nullptr)
 	{
 		mEntryPortal->Render();
@@ -11,6 +12,7 @@ void PortalScene::OnRenderPortals()
 
 	if (mExitPortal != nullptr)
 	{
+		// quite often the entry portal and exit portal will be identical
 		if (mEntryPortal != mExitPortal)
 		{
 			mExitPortal->Render();

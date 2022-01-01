@@ -13,6 +13,7 @@ Material::Material(const Color& ambientAndDiffuse)
 
 void Material::apply() const
 {
+	// assign all properties of this material to opengl
 	glMaterialfv(GL_FRONT, GL_AMBIENT, ambient.ptr());
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse.ptr());
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specular.ptr());

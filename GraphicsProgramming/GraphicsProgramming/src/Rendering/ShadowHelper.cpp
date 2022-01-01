@@ -5,6 +5,10 @@
 
 void ShadowHelper::CalculateShadowMatrix(glm::mat4& out, const glm::vec3& lightPos, const glm::vec3& planeNormal, const glm::vec3& pointOnPlane)
 {
+	// modified from the code we were provided in the lectures to take in a plane normal and a point on the plane
+	// since both of them are stored in a single vertex in a mesh class
+	// the actual body of the function performs the same operations as the code from the lectures.
+
 	float a = planeNormal.x;
 	float b = planeNormal.y;
 	float c = planeNormal.z;
@@ -37,10 +41,16 @@ void ShadowHelper::CalculateShadowMatrix(glm::mat4& out, const glm::vec3& lightP
 
 Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::mat4& transform, const glm::vec3& lightPos)
 {
-	const float extension = 20.0f;
+	// again extensively modified from the lectures to work with the Mesh class and allow for transformed meshes
 
+	// how much to extend vertices by
+	const float extension = 10.0f;
+
+	// first, we need a collection of vertices to extend to form the shadow volume
+	// these are calculated to be the silhouette of the mesh as viewed by the light pos
 	auto edges = CalculateSilhouette(mesh, transform, lightPos);
 
+	// vertices and indices of the shadow volume
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
@@ -68,10 +78,12 @@ Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::mat4& transfor
 			b = vertices.size() + 1;
 
 			// add the new vertices to the shadow volume
+			// the shadow volume shares a vertex with the silhouette
 			Vertex v = mesh.Vertices[edge.first];
 			v.Position = transform * glm::vec4(v.Position, 1);
 
 			vertices.push_back(v);
+			// extend this vertex by the extension amount away from the light position
 			v.Position = ExtendVertex(v.Position, lightPos, extension);
 			vertices.push_back(v);
 
@@ -117,18 +129,25 @@ Mesh ShadowHelper::BuildShadowVolume(const Mesh& mesh, const glm::mat4& transfor
 
 Mesh ShadowHelper::BuildShadowVolume(const GameObject& gameObject, const glm::vec3& lightPos)
 {
+	// shorthand way of building a shadow volume from a GameObject
 	return BuildShadowVolume(gameObject.GetMesh(), gameObject.GetTransform().LocalToWorld(), lightPos);
 }
 
 glm::vec3 ShadowHelper::ExtendVertex(const glm::vec3& pos, const glm::vec3& lightPos, float extension)
 {
+	// extend a vertex out by extension way from lightPos
 	glm::vec3 dir = glm::normalize(pos - lightPos);
 	return pos + extension * dir;
 }
 
 std::set<std::pair<size_t, size_t>> ShadowHelper::CalculateSilhouette(const Mesh& mesh, const glm::mat4& transform, const glm::vec3& lightPos)
 {
+	// reference used for algorithm: https://www.gamedev.net/reference/articles/article1873.asp
+
+	// this is the output of the function, all the edges that form the silhouette
 	std::set<std::pair<size_t, size_t>> silhouetteEdges;
+
+	// to save re-declaring an array many times in the loop, we just re-use this one to hold the 3 edges of each triangle in the mesh
 	std::array<std::pair<size_t, size_t>, 3> edges;
 
 	// loop through all triangles in the mesh
@@ -145,8 +164,10 @@ std::set<std::pair<size_t, size_t>> ShadowHelper::CalculateSilhouette(const Mesh
 		// get the normal of the triangle
 		glm::vec3 normal = glm::cross(b - a, c - a);
 
+		// does the triangle face the light source?
 		if (glm::dot(normal, lightPos - a) > 0)
 		{
+			// get all edges of the triangle
 			edges[0] = std::make_pair(indexA, indexB);		// ab
 			edges[1] = std::make_pair(indexB, indexC);		// bc
 			edges[2] = std::make_pair(indexC, indexA);		// ca

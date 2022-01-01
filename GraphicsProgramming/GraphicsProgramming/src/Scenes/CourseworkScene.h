@@ -23,15 +23,18 @@ public:
 	inline virtual Portal* GetEntryPortal() const override { return mExitPortal; }
 
 private:
+	// all the lights in the scene
 	Light pointLight;
 	Light spotLight;
 	Light panelLight;
 
+	// all the textures used in this scene
 	Texture* cubeTexture = nullptr;
 	Texture* whiteWallTexture = nullptr;
 	Texture* blackWallTexture = nullptr;
 	Texture* concreteTexture = nullptr;
 
+	// the meshes making up the room
 	Mesh hallWhitePlane;
 	Mesh hallBlackPlane;
 	Mesh backWallPlane;
@@ -39,21 +42,26 @@ private:
 	Mesh corridorWallPlane;
 	Mesh corridorEndPlane;
 
+	//  the ceiling light is not a gameobject as the same mesh is rendered in multiple locations
 	Mesh ceilingLight;
 
+	// a bunch of game objects in the scene
 	GameObject cube;
 	GameObject portalGun;
 	GameObject cylinder;
 	GameObject lightPanel;
 	GameObject sphere;
 
+	// all materials used in the scene
 	Material portalGunMat;
 	Material ceilingLightMat;
 	Material spotLightMat;
 	Material lightPanelMat;
 	Material plastic;
 
+	// all shadow volumes to render in the scene are in this container
 	std::vector<Mesh> shadowVolumes;
 
+	// a parameter used to rotate the portal gun
 	float portalGunRotation = 0.0f;
 };

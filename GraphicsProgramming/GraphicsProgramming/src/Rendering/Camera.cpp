@@ -12,7 +12,7 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 	// do not walk up or down the y-axis
 	glm::vec3 walkDir{ forward.x, 0.0f, forward.z };
 
-	// movement variable is used to make sure that the camera doesn't move faster
+	// movement variable is used to make sure that the camera doesn't move faster along diagonals
 	// when 'W' and 'A' are held for example
 	movement = {0, 0, 0};
 
@@ -26,6 +26,7 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 	if (input->isKeyDown('d'))
 		movement += glm::normalize(glm::cross(walkDir, up));
 
+	// dont attempt to normalize if the magnitude is 0!
 	if (glm::length(movement) > 0)
 	{
 		movement = glm::normalize(movement);
@@ -58,29 +59,31 @@ void Camera::Process3DControllerInputs(float dt, bool allowVertical)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
+
+	// keep yaw in the range [0, 360)
 	yaw = fmodf(yaw, 360);
 }
 
 glm::mat4 Camera::getLocalToWorldMatrix() const
 {
+	// calculate the local to world matrix for the camera
+
+	// get right vector
 	glm::vec3 right = glm::normalize(glm::cross(forward, up));
 
+	// get translation matrix
 	glm::mat4 t = glm::translate(position);
 
+	// create rotation matrix, where each column is one of the basis vectors
 	glm::mat4 r{ 1.0f };
 	r[0] = glm::vec4(right, 0.0f);
 	r[1] = glm::vec4(up, 0.0f);
 	r[2] = glm::vec4(forward, 0.0f);
 
+	// resulting transformation matrix is the composition of the translation and rotation
+	// a camera does not have 'scale'
 	glm::mat4 m = t * r;
-	 
-	/*
-	glm::mat4 m = glm::translate(mTranslation);
-	m *= glm::rotate(mRotation.x, glm::vec3{ 1, 0, 0 });
-	m *= glm::rotate(mRotation.y, glm::vec3{ 0, 1, 0 });
-	m *= glm::rotate(mRotation.z, glm::vec3{ 0, 0, 1 });
-	m *= glm::scale(mScale);
-	*/
+	
 	return m;
 }
 
@@ -99,9 +102,9 @@ void Camera::ApplyLookAt()
 void Camera::RecalculateForward()
 {
 	// calculate forward vector
-	forward.x = cosf(glm::radians(yaw)) * cosf(glm::radians(pitch));
-	forward.y = sinf(glm::radians(pitch));
-	forward.z = sinf(glm::radians(yaw)) * cosf(glm::radians(pitch));
+	forward.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+	forward.y = glm::sin(glm::radians(pitch));
+	forward.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
 	// make sure it is normalized
 	forward = glm::normalize(forward);
 }

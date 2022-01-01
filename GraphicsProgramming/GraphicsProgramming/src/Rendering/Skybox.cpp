@@ -37,6 +37,7 @@ void Skybox::render(const glm::vec3& position) const
 	// move to the given position
 	Transformation t{ position };
 	
+	// skybox then draws itself
 	RenderHelper::drawMesh(*this);
 
 	// revert opengl state
@@ -46,6 +47,7 @@ void Skybox::render(const glm::vec3& position) const
 void Skybox::Rebuild()
 {
 	// Remember: skybox is an inside-out cube, so normals will be opposite from what you expect!
+	// FaceData contains everything you need to construct a face of the skybox
 	struct FaceData
 	{
 		glm::vec3 normal;
@@ -95,15 +97,18 @@ void Skybox::Rebuild()
 
 	for (auto& face : faceData)
 	{
+		// create a plane mesh from the face data
 		Mesh faceMesh = GeometryHelper::CreatePlane(2, 2, face.normal, 0.25f, 0.25f,
 			[](float x, float y) -> float { return -0.5f; },
 			face.tangent, face.bitangent);
 
+		// apply the offset to the texture coordinates
 		for (auto& vertex : faceMesh.Vertices)
 		{
 			vertex.TexCoord += face.uvOffset;
 		}
 
+		// add the new face onto itself
 		GeometryHelper::CombineMeshes(*this, faceMesh);
 	}
 }

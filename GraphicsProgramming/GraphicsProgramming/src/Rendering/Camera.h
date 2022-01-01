@@ -38,8 +38,10 @@ public:
 	inline const glm::vec3& getForward() const { return forward; }
 	inline const glm::vec3& getUp() const { return up; }
 
+	// get the direction the camera last moved in
 	inline const glm::vec3& getMoveDirection() const { return movement; }
 
+	// get a matrix to convert between the cameras local space and world space
 	glm::mat4 getLocalToWorldMatrix() const;
 
 private:

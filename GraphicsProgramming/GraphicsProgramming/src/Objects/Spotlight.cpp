@@ -10,6 +10,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 	// set up the models that make up this object
 	mBody.GetMesh() = GeometryHelper::LoadObj("models/spotlight.obj");
 
+	// setup the transform of the body of the spotlight
 	mBody.GetTransform().SetTranslation(pos);
 	mBody.GetTransform().SetRotation({ 0, yaw, pitch });
 	mBody.GetTransform().SetScale(glm::vec3(0.25f));
@@ -17,6 +18,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 
 	mHemisphere.GetMesh() = GeometryHelper::LoadObj("models/hemisphere.obj");
 
+	// setup the hemisphere that sits on top of the spotlight to make it appear if its lit
 	mHemisphere.GetTransform().SetTranslation({ 1.3f, 0, 0 });
 	mHemisphere.GetTransform().SetRotation({ 0, 0, -90 });
 	mHemisphere.GetTransform().SetScale({ 0.85f, 0.4f, 0.85f });
@@ -45,7 +47,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 	mLight.setSpotCutoff(50);
 	mLight.setSpotExponent(4);
 
-
+	// setup the materials
 	emissiveMat.setAmbientAndDiffuse(Color::Black);
 	emissiveMat.setEmission(color);
 
@@ -60,6 +62,7 @@ void Spotlight::Render() const
 	{
 		Transformation t(mBody);
 		{
+			// heirarchal transform: the hemisphere is rendered relative to the body of the spotlight
 			Transformation t2(mHemisphere);
 
 			emissiveMat.apply();

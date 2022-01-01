@@ -7,6 +7,7 @@
 class Light
 {
 public:
+	// quick enum to represent different types of lights
 	enum class LightType
 	{
 		Invalid,
@@ -18,6 +19,7 @@ public:
 	Light() : type(LightType::Invalid) {}
 	Light(LightType t) { setType(t); }
 
+	// give all of the lights properties to opengl
 	void render(unsigned int lightID, bool debugSphere = false) const;
 
 	// getters/setters
@@ -60,12 +62,13 @@ private:
 	LightType type = LightType::Point;
 
 	// position
+	// handle little trick so we can seperately manipulate xyz from w, but pass xyzw into opengl very simple
 	struct
 	{
 		glm::vec3 xyz{ 0.0f };
 		float w = 1.0f;
 
-		float const* ptr() const { return reinterpret_cast<float const*>(this); }
+		float const* ptr() const { return &xyz.x; }
 	} homogeneousPos;
 
 	// color

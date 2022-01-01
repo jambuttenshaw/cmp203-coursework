@@ -10,8 +10,10 @@ public:
 	Material() = default;
 	Material(const Color& ambientAndDiffuse);
 
+	// set this material as the current material
 	void apply() const;
 
+	// getters and setters
 	inline void setAmbient(const Color& c) { ambient = c; }
 	inline const Color& getAmbient() const { return ambient; }
 
@@ -30,6 +32,7 @@ public:
 	inline float getShininess() const { return shininess; }
 
 private:
+	// default material properties
 	Color ambient = Color::White;
 	Color diffuse = Color::White;
 	Color specular = Color::Black;
@@ -39,6 +42,7 @@ private:
 	float shininess = 0.0f;
 
 public:
+	// some handy default materials for quick use
 	static const Material Default;
 	static const Material Error;
 };

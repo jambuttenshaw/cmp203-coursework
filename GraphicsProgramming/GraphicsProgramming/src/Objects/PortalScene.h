@@ -10,6 +10,8 @@ class PortalScene : public Scene
 public:
 	virtual ~PortalScene() {}
 
+	// implement the OnRenderPortals function from Scene,
+	// this is the PortalScene's handle into the rendering pipeline
 	virtual void OnRenderPortals() override;
 
 	// the portal you will travel from this scene into

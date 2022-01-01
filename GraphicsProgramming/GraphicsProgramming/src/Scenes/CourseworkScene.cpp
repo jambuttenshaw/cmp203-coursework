@@ -16,6 +16,7 @@ CourseworkScene::~CourseworkScene()
 
 void CourseworkScene::OnSetup()
 {
+	// setup scene
 	setGlobalAmbientLighting(0.15f);
 	enableShadowVolumes(true);
 
@@ -89,16 +90,20 @@ void CourseworkScene::OnSetup()
 	corridorEndPlane = GeometryHelper::CreatePlane(20, 25, { 0, 0, 1 }, 2.0f, 2.5f);
 	corridorEndPlane.MeshTexture = blackWallTexture;
 
+	// load objects from file
 	ceilingLight = GeometryHelper::LoadObj("models/hemisphere.obj");
 
+	// generate cube mesh procedurally
 	cube.GetMesh() = GeometryHelper::CreateUnitCube(4);
 	cube.GetMesh().MeshTexture = cubeTexture;
 	cube.GetTransform().SetTranslation({ -1.7f, 0.5f, -1.2f });
 
+	// portal gun is loaded from file
 	portalGun.GetMesh() = GeometryHelper::LoadObj("models/portalGun.obj");
 	portalGun.GetTransform().SetTranslation({ 3, 1, 0 });
 	portalGun.GetTransform().SetScale(glm::vec3(0.005f));
 
+	// create cylinder procedurally
 	cylinder.GetMesh() = GeometryHelper::CreateCylinder(0.8f, 0.3f, 15);
 	cylinder.GetMesh().MeshTexture = concreteTexture;
 	cylinder.GetTransform().SetTranslation({ 3, 0.4f, 0 });
@@ -107,6 +112,7 @@ void CourseworkScene::OnSetup()
 	lightPanel.GetTransform().SetTranslation({ 0, 4.9f, -7.5f });
 	lightPanel.GetTransform().SetScale({ 2, 1, 2 });
 
+	// sphere is created procedurally
 	sphere.GetMesh() = GeometryHelper::CreateUnitSphere(500);
 	sphere.GetTransform().SetScale(glm::vec3(0.8f));
 	sphere.GetTransform().SetTranslation({ -2, 0.8f, 2 });
@@ -121,7 +127,6 @@ void CourseworkScene::OnSetup()
 	portalGunMat.setAmbientAndDiffuse(0.55f);
 	portalGunMat.setShininess(128);
 	portalGunMat.setSpecular(Color::White);
-
 
 	ceilingLightMat.setAmbientAndDiffuse(Color::Black);
 	ceilingLightMat.setEmission({ 0.66f, 0.95f, 1.0f });
@@ -142,21 +147,26 @@ void CourseworkScene::OnSetup()
 
 void CourseworkScene::OnHandleInput(float dt)
 {
+	// escape releases the mouse from the application
 	if (input->isKeyDown(VK_ESCAPE))
 	{
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
 		input->setKeyUp(VK_ESCAPE);
 	}
+	// allow the mouse and keyboard to control the camera
 	sceneCamera->Process3DControllerInputs(dt, true);
 
+	// the scroll wheel controls the FOV
 	int scroll = input->getMouseScrollWheel();
 	setFOV(getFOV() + 200 * scroll * dt);
 }
 
 void CourseworkScene::OnUpdate(float dt)
 {
+	// update the portal
 	mExitPortal->Update(dt, input, sceneCamera);
 
+	// a crude method to make the light flicker randomly
 	if (rand() % 100 > 95)
 	{
 		if (spotLight.getEnabled())
@@ -171,18 +181,21 @@ void CourseworkScene::OnUpdate(float dt)
 		}
 	}
 
+	// rotate the portal gun
 	portalGunRotation += 30.0f * dt;
 	portalGun.GetTransform().SetRotation({ 0, portalGunRotation, 0 });
 
+	// alsp make the portal gun bob up and down
 	float h = 0.1f * (sinf(glm::radians(4 * portalGunRotation)) + 1);
 	portalGun.GetTransform().SetTranslation({ 3, 1 + h, 0 });
 
-
+	// the sphere also rotates slowly, re-using the portalGunRotation parameter
 	sphere.GetTransform().SetRotation({ 0, -0.25f * portalGunRotation, 0 });
 }
 
 void CourseworkScene::OnRenderObjects()
 {
+	// render the portal gun and the cylinder it stands upon
 	portalGunMat.apply();
 	{
 		Transformation t(portalGun);
@@ -193,12 +206,14 @@ void CourseworkScene::OnRenderObjects()
 		RenderHelper::drawMesh(cylinder);
 	}
 
+	// draw the sphere with a plastic type of material
 	plastic.apply();
 	{
 		Transformation t(sphere);
 		RenderHelper::drawMeshWireframeOverlay(sphere);
 	}
 
+	// draw the textured cube
 	Material::Default.apply();
 	{
 		Transformation t(cube);
@@ -259,7 +274,7 @@ void CourseworkScene::OnRenderObjects()
 		RenderHelper::drawMesh(corridorEndPlane);
 	}
 
-
+	// then draw the little meshes that are designed to look like there is light emitting from them
 	ceilingLightMat.apply();
 	{
 		Transformation t{ pointLight.getPosition(), {180, 0, 0}, {0.1f, 0.1f, 0.1f} };
@@ -279,6 +294,7 @@ void CourseworkScene::OnRenderObjects()
 
 void CourseworkScene::OnRenderShadowVolumes()
 {
+	// render all shadow volumes
 	for (const auto& shadowVolume : shadowVolumes) RenderHelper::drawMesh(shadowVolume);
 }
 

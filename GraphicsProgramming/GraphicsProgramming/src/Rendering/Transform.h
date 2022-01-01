@@ -3,17 +3,21 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-
+// stores translation, rotation and scale with helper functions
 class Transform
 {
 public:
 	Transform() = default;
 
 
+	// get a local-to-world matrix or world-to-local matrix
 	glm::mat4 LocalToWorld() const;
 	glm::mat4 WorldToLocal() const;
+
+	// reset to identity
 	void Identity();
 
+	// getters and setters
 	inline void SetTranslation(const glm::vec3& t) { mTranslation = t; }
 	inline void Translate(const glm::vec3& t) { mTranslation += t; }
 	inline const glm::vec3& GetTranslation() const { return mTranslation; }

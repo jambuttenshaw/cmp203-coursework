@@ -14,14 +14,18 @@ World2::~World2()
 
 void World2::OnSetup()
 {
+	// create the second camera
 	orbitCamera = new Camera(input);
 	orbitCamera->setPitch(0);
 
+	// create the skybox
 	skybox = new Skybox("gfx/skybox2.png");
 
+	// setup scene
 	enableShadowVolumes(true);
 	setGlobalAmbientLighting({ 0.15f, 0.15f, 0.07f });
 
+	// setup lighting
 	dirLight.setType(Light::LightType::Directional);
 	dirLight.setDiffuseColor({ 0.9f, 0.9f, 0.7f });
 	dirLight.setAmbientColor(0.15f);
@@ -29,11 +33,13 @@ void World2::OnSetup()
 	dirLight.setPosition({ -25, 87, 43 });
 	RegisterLight(&dirLight);
 
+	// setup portal
 	mExitPortal = new Portal(this);
 	mEntryPortal = mExitPortal;
+	// move it upward slightly so it doesnt clip the terrain
 	mExitPortal->GetTransform().SetTranslation({ 0, 0.01f, 0 });
 
-
+	// load textures
 	sandTexture = new Texture("gfx/sand.png", Texture::Flags::MIPMAPS);
 	sandTexture->SetSampleMode(Texture::SampleMode::Repeat);
 	sandTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
@@ -41,11 +47,12 @@ void World2::OnSetup()
 	windowTexture = new Texture("gfx/window.png", Texture::Flags::MIPMAPS);
 	windowTexture->SetFilterMode(Texture::FilterMode::LinearMipMapLinear, Texture::FilterMode::Linear);
 
-
+	// create geometry
 	groundPlane.GetMesh() = GeometryHelper::CreatePlane(200, 200, { 0, 1, 0 }, 10, 10, GeometryHelper::HeightFuncs::PerlinNoiseTerrain);
 	groundPlane.GetMesh().MeshTexture = sandTexture;
 	groundPlane.GetTransform().SetScale({ 60, 1, 60 });
 
+	// load model
 	model.GetMesh() = GeometryHelper::LoadObj("models/bro.obj");
 	model.GetTransform().SetTranslation({ 0, 0.25f, 0 });
 	model.GetTransform().SetScale({ 0.1f, 0.1f, 0.1f });
@@ -57,14 +64,14 @@ void World2::OnSetup()
 	modelStandTransform.SetTranslation({ -2, 0.25f, -5 });
 	icosahedronStandTransform.SetTranslation({ 2, 0.25f, 5 });
 
-
+	// create shadow volumes
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(mExitPortal->GetFrameModel(), mExitPortal->GetTransform().LocalToWorld(), dirLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(model.GetMesh(), modelStandTransform.LocalToWorld() * model.GetTransform().LocalToWorld(),
 		dirLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(stand, modelStandTransform.LocalToWorld(), dirLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(stand, icosahedronStandTransform.LocalToWorld(), dirLight.getPosition()));
 
-
+	// setup material
 	transparentMat.setAmbientAndDiffuse({ 1.0f, 0.0f, 0.0f, 0.5f });
 
 	// move the camera up slightly
@@ -97,6 +104,7 @@ void World2::OnSetup()
 	};
 	RegisterTransparentObject(&window2);
 
+	// the transparent icosahedron
 	icosahedron.mat = &Material::Default;
 	icosahedron.gameObject.GetTransform().SetTranslation({ 2, 3, 5 });
 	icosahedron.renderObject = [this]() {
@@ -109,6 +117,7 @@ void World2::OnSetup()
 
 void World2::OnHandleInput(float dt)
 {
+	// escape pops out the mouse cursor
 	if (input->isKeyDown(VK_ESCAPE))
 	{
 		Application::SetCursorDisabled(!Application::IsCursorDisabled());
@@ -116,28 +125,35 @@ void World2::OnHandleInput(float dt)
 	}
 	if (GetActiveCamera() == sceneCamera)
 	{
+		// if we are using the default camera, 
+		// let mouse and keyboard move it around
 		sceneCamera->Process3DControllerInputs(dt, true);
 
+		// scroll wheel controls fov
 		int scroll = input->getMouseScrollWheel();
 		setFOV(getFOV() + 200 * scroll * dt);
 	}
 
+	// c toggles cameras
 	if (input->isKeyDown('c'))
 	{
 		if (GetActiveCamera() == sceneCamera)
 		{
 			setCurrentCamera(orbitCamera);
+			// save the old fov so we can go back to it when we switch back
 			oldFOV = getFOV();
 			setFOV(getDefaultFOV());
 		}
 		else
 		{
+			// switch back to the scene camera
 			setCurrentCamera(sceneCamera);
 			setFOV(oldFOV);
 		}
 		input->setKeyUp('c');
 	}
 
+	// x randomizes the colours of the icosahedron
 	if (input->isKeyDown('x'))
 	{
 		icosahedron.RandomizeColours();
@@ -147,12 +163,15 @@ void World2::OnHandleInput(float dt)
 
 void World2::OnUpdate(float dt)
 {
+	// update portal
 	mExitPortal->Update(dt, input, sceneCamera);
 
+	// make the icosahedron bob up and down
 	t += 0.5f * dt;
 	glm::vec3 icosPos{ 2, 2.5f + sinf(t), 5 };
 	icosahedron.gameObject.GetTransform().SetTranslation(icosPos);
 
+	// if were using the orbit camera
 	if (GetActiveCamera() == orbitCamera)
 	{
 		// make the camera orbit the icosahedron
@@ -163,6 +182,7 @@ void World2::OnUpdate(float dt)
 		float cosAngle = glm::dot(dir, glm::vec3{ 1, 0, 0 });
 		float whichSide = glm::dot(dir, glm::vec3{ 0, 0, 1 });
 
+		// work out the angle to face the icosahedron
 		float angle = glm::degrees(acosf(cosAngle));
 		orbitCamera->setYaw(whichSide > 0 ? angle : 360 - angle);
 	}
@@ -172,6 +192,7 @@ void World2::OnRenderObjects()
 {
 	Material::Default.apply();
 
+	// render all game objects in the scene
 	{
 		Transformation t{groundPlane};
 		RenderHelper::drawMesh(groundPlane);
@@ -185,16 +206,19 @@ void World2::OnRenderObjects()
 		Transformation t(modelStandTransform);
 		RenderHelper::drawMesh(stand);
 		{
+			// model is rendered relative to the stand
 			Transformation t2(model);
 			RenderHelper::drawMesh(model);
 		}
 	}
 
+	// render all transparent objects
 	RenderTransparentObjects();
 }
 
 void World2::OnRenderShadowVolumes()
 {
+	// render all shadow volumes
 	for (const auto& shadowVolume : shadowVolumes)
 	{
 		RenderHelper::drawMesh(shadowVolume);

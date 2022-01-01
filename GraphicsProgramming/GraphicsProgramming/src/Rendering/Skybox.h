@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include "Mesh.h"
 
-
+// a skybox is just a fancy mesh that gets rendered in a special way
 class Skybox : public Mesh
 {
 public:

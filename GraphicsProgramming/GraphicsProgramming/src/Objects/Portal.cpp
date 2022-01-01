@@ -140,6 +140,7 @@ void Portal::Render()
 		glm::vec3 pos = m[3];
 
 		// get rotations
+		// note: rotations do not work. do not rotate portals. you will see nothing through them but pain and suffering
 		glm::quat q(m);
 		glm::vec3 euler = glm::eulerAngles(q);
 
@@ -148,11 +149,12 @@ void Portal::Render()
 		float distanceToPortal = glm::length(glm::vec2(a.x, a.z));
 
 
+		// mostly for peace of mind that we wont mess up the opengl state by rendering another scene within this one
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{
 			Transformation t(pos, euler, { 1, 1, 1 });
 
-			// we need to render the skybox at a different position than the scene would render it itself
+			// we need to render the skybox at a specific position
 			const Skybox* s = mLinkedPortal->mSceneToRender->GetSkybox();
 			if (s != nullptr)
 			{
@@ -172,7 +174,7 @@ void Portal::Render()
 
 			Scene::setNearPlane(glm::max(0.05f, angle * distanceToPortal));
 			
-			// render the other scene, but without its skybox
+			// render the other scene, but without its skybox as it has already been rendered
 			Skybox::DisableSkyboxRendering();
 			mLinkedPortal->mSceneToRender->RenderSceneLights();
 			mLinkedPortal->mSceneToRender->OnRenderObjects();
@@ -203,8 +205,9 @@ void Portal::Render()
 	else
 	{
 		// there is no linked portal: just fill the screen with *magenta*
-		// to save the material that is currently applied
-		glPushAttrib(GL_ENABLE_BIT);
+		
+		// save the material that is currently applied
+		glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
 
 		glDisable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
@@ -225,6 +228,7 @@ void Portal::Render()
 	{
 		Transformation t(mTransform);
 		{
+			// the adjustment is required to stop z-fighting against the interior of the portal and the floor
 			const float scaleAdjustment = 0.001f;
 			Transformation adjustement({ 0, 0, 0 }, { 0, 0, 0 }, glm::vec3{ 1 - scaleAdjustment });
 			RenderHelper::drawMesh(mFrameModel);

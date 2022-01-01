@@ -7,6 +7,9 @@
 class Random
 {
 public:
+	// static class: do not instantiate
+	Random() = delete;
+
 	static void Init();
 	static void Shutdown();
 

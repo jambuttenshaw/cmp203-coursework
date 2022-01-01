@@ -1,6 +1,8 @@
 #include "Mesh.h"
 
 
+// a lot of data to define a simple quad and unit cube
+
 const Mesh Mesh::Quad{
 	// Vertices
 	{

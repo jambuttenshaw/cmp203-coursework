@@ -6,7 +6,8 @@
 
 #include <functional>
 
-
+// represents a transparent object
+// it is a class instead of a struct because classes may want to derive from this to add in behaviour
 class TransparentObject
 {
 public:
