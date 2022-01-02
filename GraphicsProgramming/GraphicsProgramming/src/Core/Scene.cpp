@@ -109,7 +109,7 @@ void Scene::render()
 void Scene::setGlobalAmbientLighting(const Color& c)
 {
 	// set the global ambient lighting
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, c.ptr());
+	globalAmbientColour = c;
 }
 
 void Scene::RegisterLight(Light* light)
@@ -305,6 +305,9 @@ void Scene::displayText(float x, float y, float r, float g, float b, char* strin
 
 void Scene::RenderSceneLights()
 {
+	// global ambient lighting
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbientColour.ptr());
+
 	// render all lights in the scene
 	for (unsigned int i = 0; i < 8; i++)
 	{

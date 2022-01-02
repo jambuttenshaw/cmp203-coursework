@@ -150,7 +150,7 @@ void Portal::Render()
 
 
 		// mostly for peace of mind that we wont mess up the opengl state by rendering another scene within this one
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		//glPushAttrib(GL_ALL_ATTRIB_BITS);
 		{
 			Transformation t(pos, euler, { 1, 1, 1 });
 
@@ -183,7 +183,7 @@ void Portal::Render()
 			// reset the near plane
 			Scene::setNearPlane(0.05f);
 		}
-		glPopAttrib();
+		//glPopAttrib();
 
 
 		// now we want to fill in the depth information of the portal, since everything behind it has already been drawn

@@ -119,7 +119,10 @@ void CourseworkScene::OnSetup()
 
 	// build shadow volumes
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(mExitPortal->GetFrameModel(), mExitPortal->GetTransform().LocalToWorld(), panelLight.getPosition()));
+
+	boxShadowVolumeIndex = shadowVolumes.size();
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition()));
+
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(cylinder, pointLight.getPosition()));
 	shadowVolumes.push_back(ShadowHelper::BuildShadowVolume(sphere, pointLight.getPosition()));
 
@@ -191,6 +194,12 @@ void CourseworkScene::OnUpdate(float dt)
 
 	// the sphere also rotates slowly, re-using the portalGunRotation parameter
 	sphere.GetTransform().SetRotation({ 0, -0.25f * portalGunRotation, 0 });
+
+
+	boxPos += 0.5f * dt;
+	float t = (glm::sin(boxPos) + 1) * 0.5f;
+	cube.GetTransform().SetTranslation({ -1.7f, 0.5f + 4 * t, -1.2f });
+	shadowVolumes[boxShadowVolumeIndex] = ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition());
 }
 
 void CourseworkScene::OnRenderObjects()

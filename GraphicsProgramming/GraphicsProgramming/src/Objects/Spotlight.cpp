@@ -38,7 +38,7 @@ void Spotlight::Setup(const glm::vec3& pos, float yaw, float pitch, const Color&
 	glm::vec3 dir;
 	dir.x = cosf(yawRads) * cosf(pitchRads);
 	dir.y = sinf(pitchRads);
-	dir.z = sinf(yawRads) * cosf(pitchRads);
+	dir.z = -sinf(yawRads) * cosf(pitchRads);
 
 	// setup spotlight
 	mLight.setPosition(pos);

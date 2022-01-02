@@ -145,6 +145,8 @@ private:
 	// all transparent objects in the scene
 	std::vector<TransparentObject*> transparentObjects;
 
+	Color globalAmbientColour;
+
 	// wireframe mode
 	char wireframeModeKey = 'r';
 	// the camera to render from 

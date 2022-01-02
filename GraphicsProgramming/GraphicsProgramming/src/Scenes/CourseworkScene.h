@@ -64,4 +64,7 @@ private:
 
 	// a parameter used to rotate the portal gun
 	float portalGunRotation = 0.0f;
+
+	size_t boxShadowVolumeIndex = 0;
+	float boxPos = 0.0f;
 };
