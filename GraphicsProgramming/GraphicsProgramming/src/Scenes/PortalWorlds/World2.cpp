@@ -60,6 +60,9 @@ void World2::OnSetup()
 
 	stand = GeometryHelper::CreateCylinder(0.5f, 1.5f, 6);
 
+	sphere.GetMesh() = GeometryHelper::CreateUnitSphere(200);
+	sphere.GetTransform().SetScale(glm::vec3{ 0.33f });
+
 
 	modelStandTransform.SetTranslation({ -2, 0.25f, -5 });
 	icosahedronStandTransform.SetTranslation({ 2, 0.25f, 5 });
@@ -170,6 +173,7 @@ void World2::OnUpdate(float dt)
 	t += 0.5f * dt;
 	glm::vec3 icosPos{ 2, 2.5f + sinf(t), 5 };
 	icosahedron.gameObject.GetTransform().SetTranslation(icosPos);
+	sphere.GetTransform().SetTranslation(icosPos);
 
 	// if were using the orbit camera
 	if (GetActiveCamera() == orbitCamera)
@@ -210,6 +214,11 @@ void World2::OnRenderObjects()
 			Transformation t2(model);
 			RenderHelper::drawMesh(model);
 		}
+	}
+
+	{
+		Transformation t(sphere);
+		RenderHelper::drawMeshWireframeOverlay(sphere);
 	}
 
 	// render all transparent objects

@@ -42,6 +42,8 @@ private:
 	TransparentObject window2;
 
 	TransparentIcosahedron icosahedron;
+	// the sphere inside the icosahedron
+	GameObject sphere; 
 
 	// an awesome dude
 	GameObject model;

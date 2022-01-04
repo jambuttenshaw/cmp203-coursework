@@ -28,7 +28,7 @@ public:
 private:
 	// the main directional light in the scene, that originates from the sun
 	Light dirLight;
-
+	
 	// all textures used in the scene
 	Texture* starTexture = nullptr;
 	Texture* spaceshipTexture = nullptr;

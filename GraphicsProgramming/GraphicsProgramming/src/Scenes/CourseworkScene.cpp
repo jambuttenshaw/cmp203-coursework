@@ -50,6 +50,16 @@ void CourseworkScene::OnSetup()
 	panelLight.setAttenuation({ 1, 0.0f, 0.05f });
 	RegisterLight(&panelLight);
 
+	torch.setType(Light::LightType::Spot);
+	// position and direction will be set in update
+	torch.setDiffuseColor({ 2.5f, 2.5f, 1.5f });
+	torch.setSpecularColor(Color::White);
+	torch.setAmbientColor(0.2f);
+	torch.setSpotExponent(15);
+	torch.setSpotCutoff(30);
+	torch.setAttenuation({ 1, 0.1f, 0.05f });
+	RegisterLight(&torch);
+
 
 	// set up portals
 	mExitPortal = new Portal(this);
@@ -162,6 +172,14 @@ void CourseworkScene::OnHandleInput(float dt)
 	// the scroll wheel controls the FOV
 	int scroll = input->getMouseScrollWheel();
 	setFOV(getFOV() + 200 * scroll * dt);
+
+
+	// clicking turns the torch on and off
+	if (input->isMouseLDown())
+	{
+		torch.setEnabled(!torch.getEnabled());
+		input->setMouseLDown(false);
+	}
 }
 
 void CourseworkScene::OnUpdate(float dt)
@@ -200,6 +218,11 @@ void CourseworkScene::OnUpdate(float dt)
 	float t = (glm::sin(boxPos) + 1) * 0.5f;
 	cube.GetTransform().SetTranslation({ -1.7f, 0.5f + 4 * t, -1.2f });
 	shadowVolumes[boxShadowVolumeIndex] = ShadowHelper::BuildShadowVolume(cube, pointLight.getPosition());
+
+
+	// move the torch and set its direction
+	torch.setPosition(sceneCamera->getPosition());
+	torch.setSpotDirection(sceneCamera->getForward());
 }
 
 void CourseworkScene::OnRenderObjects()

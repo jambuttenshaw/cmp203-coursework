@@ -91,10 +91,10 @@ void World1::OnSetup()
 	sun.GetTransform().SetScale(glm::vec3{ 8 });
 
 	// setup the spotlight objects
-	spotlights[0].Setup({ -3, 6, -10 },   45, -45, { 0.4f, 0.4f, 1.0f });
-	spotlights[1].Setup({ -3, 0, -16 },  -45,  45, { 0.4f, 1.0f, 0.4f });
-	spotlights[2].Setup({  3, 0, -10 },  135,  45, { 1.0f, 0.4f, 1.0f });
-	spotlights[3].Setup({  3, 6, -16 }, -135, -45, { 0.4f, 0.4f, 1.0f });
+	spotlights[0].Setup({ -3, 0, -10 },   45, 45, { 0.4f, 0.4f, 1.0f });
+	spotlights[1].Setup({ -3, 0, -16 },  -45, 45, { 0.4f, 1.0f, 0.4f });
+	spotlights[2].Setup({  3, 0, -10 },  135, 45, { 1.0f, 0.4f, 1.0f });
+	spotlights[3].Setup({  3, 0, -16 }, -135, 45, { 0.4f, 0.4f, 1.0f });
 	for (auto& s : spotlights)
 		RegisterLight(s.GetLight()); // we need to register the light for it to be rendered
 
@@ -142,7 +142,7 @@ void World1::OnSetup()
 
 	spaceshipMat.setAmbientAndDiffuse(Color::White);
 	spaceshipMat.setSpecular(0.8f);
-	spaceshipMat.setShininess(75);
+	spaceshipMat.setShininess(120);
 
 	sunMat.setAmbientAndDiffuse(Color::White);
 	sunMat.setEmission({ 2, 1, 0.1f });

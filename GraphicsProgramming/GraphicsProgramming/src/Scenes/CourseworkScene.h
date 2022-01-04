@@ -27,6 +27,8 @@ private:
 	Light pointLight;
 	Light spotLight;
 	Light panelLight;
+	// a torch held by the 'player'
+	Light torch;
 
 	// all the textures used in this scene
 	Texture* cubeTexture = nullptr;

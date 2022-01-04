@@ -102,8 +102,6 @@ void Portal::Render()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilFunc(GL_ALWAYS, 0x10, 0XF0);
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
 	// draw our stencil
 	{
 		Transformation t(mTransform);
@@ -114,7 +112,6 @@ void Portal::Render()
 			RenderHelper::drawMesh(mScreenModel);
 		}
 	}
-	glDisable(GL_CULL_FACE);
 
 
 	// re-enable writing to frame buffer
@@ -139,20 +136,14 @@ void Portal::Render()
 		glm::mat4 m = mTransform.LocalToWorld() * mLinkedPortal->GetTransform().WorldToLocal();
 		glm::vec3 pos = m[3];
 
-		// get rotations
-		// note: rotations do not work. do not rotate portals. you will see nothing through them but pain and suffering
-		glm::quat q(m);
-		glm::vec3 euler = glm::eulerAngles(q);
-
 		// get distance from pos to portal
 		glm::vec3& a = mSceneToRender->GetActiveCamera()->getPosition() - GetTransform().GetTranslation();
 		float distanceToPortal = glm::length(glm::vec2(a.x, a.z));
 
 
-		// mostly for peace of mind that we wont mess up the opengl state by rendering another scene within this one
 		glPushAttrib(GL_LIGHTING_BIT);
 		{
-			Transformation t(pos, euler, { 1, 1, 1 });
+			Transformation t(pos); // rotate portals does not work yet
 
 			// we need to render the skybox at a specific position
 			const Skybox* s = mLinkedPortal->mSceneToRender->GetSkybox();
