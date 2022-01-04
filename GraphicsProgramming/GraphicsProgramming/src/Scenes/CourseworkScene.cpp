@@ -22,7 +22,7 @@ void CourseworkScene::OnSetup()
 
 	// set up lighting
 	pointLight.setType(Light::LightType::Point);
-	pointLight.setDiffuseColor({0.44f, 0.63f, 0.67f});
+	pointLight.setDiffuseColor({0.22f, 0.31f, 0.34f});
 	pointLight.setAmbientColor(0.1f);
 	pointLight.setSpecularColor(0.7f);
 	pointLight.setPosition({ 0, 4.9f, 0 });
@@ -47,12 +47,12 @@ void CourseworkScene::OnSetup()
 	panelLight.setAmbientColor(0.1f);
 	panelLight.setSpecularColor(Color::White);
 	panelLight.setPosition({ 0, 4.8f, -7.5f });
-	panelLight.setAttenuation({ 1, 0.0f, 0.05f });
+	panelLight.setAttenuation({ 1, 0.1f, 0.1f });
 	RegisterLight(&panelLight);
 
 	torch.setType(Light::LightType::Spot);
 	// position and direction will be set in update
-	torch.setDiffuseColor({ 2.5f, 2.5f, 1.5f });
+	torch.setDiffuseColor({ 2.5f, 2.5f, 0.8f });
 	torch.setSpecularColor(Color::White);
 	torch.setAmbientColor(0.2f);
 	torch.setSpotExponent(15);
